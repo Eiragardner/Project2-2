@@ -46,7 +46,7 @@ user_data = user_data.select_dtypes(include=[np.number])
 user_data = user_data[X_train.columns] 
 
 predicted_prices = model.predict(user_data)
-user_data["Predicted Price"] = predicted_prices
+user_data["Predicted Price"] = np.round(predicted_prices,2)
 output_file = "predicted_prices.csv"
 user_data.to_csv(output_file, index=False)
 
