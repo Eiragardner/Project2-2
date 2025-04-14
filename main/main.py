@@ -1,10 +1,22 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from data.data import encode_data, load_data, prepare_train_test_data, preprocessed_data, save_prepared_data
+import pandas as pd
+from data.dataOptimization import dataOptimization
+from data.dataPlots import dataPlots
+
+class Main:
+    def __init__(self, filepath='prepared_data.csv'):
+        self.filepath = filepath
+        self.data = pd.read_csv(filepath)
+        # Create optimizer and plotter objects
+        self.optimizer = dataOptimization(self.data)
+        self.plotter = dataPlots(self.data)
+
+    def run(self):
+        # Example usage of your classes
+        self.optimizer.optimize(max_remove=336)
+        #self.optimizer.train_and_evaluate()
+       # self.plotter.pricePlotOriginalSet()
+       # self.plotter.priceBoxPlotOriginalSet()
+
 if __name__ == "__main__":
-    data = load_data("RentNL.csv")
-    data = preprocessed_data(data)
-    data_encoded = encode_data(data)
-    save_prepared_data(data_encoded, 'prepared_data.csv')
-    
+    app = Main()
+    app.run()

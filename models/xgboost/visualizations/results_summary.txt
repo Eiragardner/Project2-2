@@ -1,0 +1,53 @@
+========================================================
+         XGBoost Real Estate Price Prediction           
+                   Results Summary                      
+========================================================
+
+Model Performance Metrics:
+-------------------------
+MAE: 108177.7403
+MSE: 34673414298.7303
+RMSE: 186207.9867
+R2: 0.6487
+Mean Percentage Error: 19.4984
+Median Percentage Error: 13.5553
+
+Dataset Statistics:
+------------------
+Training samples: 4444
+Testing samples: 1111
+Number of features: 11
+Mean price: 561825.70
+Price range: 149000.00 - 4700000.00
+
+Top 10 Important Features:
+-------------------------
+3. Living space size (m2): 0.3431
+5. Total Rooms: 0.1001
+6. Bedrooms: 0.0816
+8. Basement(kelder): 0.0799
+2. Lot size (m2): 0.0746
+7. Total Floors: 0.0689
+4. Build year: 0.0639
+1. City: 0.0562
+11. Estimated neighbourhood price per m2: 0.0453
+10. Loft(vliering): 0.0435
+
+Error Analysis:
+--------------
+Mean absolute error: 108177.74
+Mean percentage error: 19.50%
+Median percentage error: 13.56%
+Percentage of predictions within 10% of actual: 37.9%
+Percentage of predictions within 20% of actual: 65.4%
+
+List of Figures Generated:
+-----------------------
+1. correlation_heatmap.png
+2. error_by_price_range.png
+3. feature_importance.png
+4. performance_multiplot.png
+5. predicted_prices_distribution.png
+6. shap_bar.png
+7. shap_beeswarm.png
+8. shap_dependence_plots.png
