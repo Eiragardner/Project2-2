@@ -3,7 +3,7 @@ from data.dataOptimization import dataOptimization
 from data.dataPlots import dataPlots
 
 class Main:
-    def __init__(self, filepath='prepared_data.csv'):
+    def __init__(self, filepath='data\without30.csv'):
         self.filepath = filepath
         self.data = pd.read_csv(filepath)
         # Create optimizer and plotter objects
@@ -12,9 +12,9 @@ class Main:
 
     def run(self):
         # Example usage of your classes
-        self.optimizer.optimize(max_remove=336)
+        #self.optimizer.optimize(max_remove=336)
         #self.optimizer.train_and_evaluate()
-       # self.plotter.pricePlotOriginalSet()
+        self.plotter.pricePlotOriginalSet()
        # self.plotter.priceBoxPlotOriginalSet()
 
 if __name__ == "__main__":

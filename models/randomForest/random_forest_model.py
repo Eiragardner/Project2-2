@@ -6,7 +6,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("C:/Users/tahai/PycharmProjects/Project2-2/prepared_data.csv")
+df = pd.read_csv("data\without30.csv")
 
 X = df.iloc[:, [0] + list(range(2, df.shape[1]))]  
 y = df.iloc[:, 1] 
@@ -73,7 +73,7 @@ plt.show()
 
 
 try:
-    user_data = pd.read_csv("C:/Users/tahai/PycharmProjects/Project2-2/to_predict.csv")
+    user_data = pd.read_csv("to_predict.csv")
     user_data = user_data.iloc[:, [0] + list(range(2, user_data.shape[1]))]
 
     predicted_prices = model.predict(user_data)

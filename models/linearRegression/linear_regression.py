@@ -33,7 +33,7 @@ Additional Operations:
     O(n * d) for train-test split
 '''
 
-df = pd.read_csv("without30.csv")
+df = pd.read_csv("data\without30.csv")
 df = df.select_dtypes(include=[np.number])
 X = df.drop(columns=["Price"])
 y = df["Price"]

@@ -684,7 +684,7 @@ if __name__ == "__main__":
         model = XGBoostModel()
         
         # Load and prepare data
-        X_train, X_test, y_train, y_test = model.load_data("without30.csv")
+        X_train, X_test, y_train, y_test = model.load_data("data\without30.csv")
         
         # Train model
         model.train(X_train, y_train)
