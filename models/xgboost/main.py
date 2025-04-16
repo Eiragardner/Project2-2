@@ -104,7 +104,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run XGBoost model for real estate price prediction")
-    parser.add_argument("--data_path", type=str, default="without30.csv", help="Path to prepared data CSV")
+    parser.add_argument("--data_path", type=str, default="data\without30.csv", help="Path to prepared data CSV")
     parser.add_argument("--predict_path", type=str, default="to_predict.csv", help="Path to data to predict CSV")
     parser.add_argument("--output_path", type=str, default="predicted_prices.csv", help="Path to save predictions")
     parser.add_argument("--target_column", type=str, default="Price", help="Target column name")
