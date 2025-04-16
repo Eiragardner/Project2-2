@@ -38,24 +38,26 @@ df = df.select_dtypes(include=[np.number])
 X = df.drop(columns=["Price"])
 y = df["Price"]
 
-# Perform k-fold cross-validation
-kfold = KFold(n_splits=5, shuffle=True, random_state=42)
+# First split into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Perform k-fold cross-validation only on training data
+kfold = KFold(n_splits=5, shuffle=True, random_state=123)
 model = LinearRegression()
 
-# Calculate cross-validation scores
-cv_scores = cross_val_score(model, X, y, cv=kfold, scoring='r2')
-mae_scores = -cross_val_score(model, X, y, cv=kfold, scoring='neg_mean_absolute_error')
-rmse_scores = np.sqrt(-cross_val_score(model, X, y, cv=kfold, scoring='neg_mean_squared_error'))
+# Calculate cross-validation scores using only training data
+cv_scores = cross_val_score(model, X_train, y_train, cv=kfold, scoring='r2')
+mae_scores = -cross_val_score(model, X_train, y_train, cv=kfold, scoring='neg_mean_absolute_error')
+rmse_scores = np.sqrt(-cross_val_score(model, X_train, y_train, cv=kfold, scoring='neg_mean_squared_error'))
 
 # Print cross-validation results
-print("Cross-validation results:")
+print("Cross-validation results (on training data):")
 print(f"R² scores for each fold: {cv_scores}")
 print(f"Average R²: {cv_scores.mean():.3f} (+/- {cv_scores.std() * 2:.3f})")
 print(f"Average MAE: {mae_scores.mean():.2f} (+/- {mae_scores.std() * 2:.2f})")
 print(f"Average RMSE: {rmse_scores.mean():.2f} (+/- {rmse_scores.std() * 2:.2f})")
 
 # Train final model on full training set for predictions
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
