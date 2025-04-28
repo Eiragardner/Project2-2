@@ -5,6 +5,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import matplotlib.pyplot as plt
+import shap
+import os
 
 df = pd.read_csv("data\without30.csv")
 
@@ -39,12 +41,11 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-# Feature Importance Plot
 importances = model.feature_importances_
 features = X.columns
 
-N = 20  # Adjust based on your needs
-sorted_idx = np.argsort(importances)[-N:]  # Top N indices
+N = 20  
+sorted_idx = np.argsort(importances)[-N:]  
 importances_top = importances[sorted_idx]
 features_top = features[sorted_idx]
 
@@ -57,7 +58,6 @@ plt.title(f"Top {N} Feature Importance")
 plt.grid(axis='x', alpha=0.5)
 plt.show()
 
-# Residual vs Predicted Values Plot
 
 residuals = y_test - y_pred
 
@@ -71,6 +71,35 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
+vis_folder = os.path.join("models", "randomForest", "visualizations")
+os.makedirs(vis_folder, exist_ok=True)
+
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X_train)
+
+plt.figure(figsize=(10, 6))
+shap.summary_plot(shap_values, X_train, plot_type="bar", show=False)
+plt.tight_layout()
+plt.savefig(os.path.join(vis_folder, "shap_summary_bar.png"))
+plt.close()
+
+plt.figure(figsize=(10, 6))
+shap.summary_plot(shap_values, X_train, show=False)
+plt.tight_layout()
+plt.savefig(os.path.join(vis_folder, "shap_summary.png"))
+plt.close()
+
+shap_abs_mean = np.abs(shap_values).mean(axis=0)
+top5_idx = np.argsort(shap_abs_mean)[-5:]
+for idx in top5_idx:
+    feature = X_train.columns[idx]
+    plt.figure(figsize=(8, 6))
+    shap.dependence_plot(feature, shap_values, X_train, show=False)
+    plt.tight_layout()
+    plt.savefig(os.path.join(vis_folder, f"shap_dependence_{feature}.png"))
+    plt.close()
+
+print(f"SHAP plots saved to {vis_folder}")
 
 try:
     user_data = pd.read_csv("to_predict.csv")
