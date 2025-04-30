@@ -39,18 +39,20 @@ class XGBoostModel:
     with fallback to sklearn's GradientBoostingRegressor if XGBoost is not available
     """
     
-    def __init__(self, random_state=42):
+    def __init__(self, random_state=42, model_params=None):
         """Initialize the XGBoost model with default parameters"""
         self.random_state = random_state
         self.model = None
         self.feature_importance = None
         self.shap_values = None
         self.features = None
+        self.model_params = model_params or {}
         self.params = {
             'objective': 'reg:squarederror',
             'eval_metric': 'rmse',
-            'random_state': random_state
-        }
+            'random_state': random_state,
+            **self.model_params  # <-- include custom parameters
+}
         logger.info("XGBoost model initialized")
     
     def load_data(self, data_path, target_column='Price', test_size=0.2):
@@ -535,6 +537,15 @@ class XGBoostModel:
             # Fit GridSearchCV
             grid_search.fit(X_train, y_train)
             
+            # Log or print all results
+            results_df = pd.DataFrame(grid_search.cv_results_)
+            results_df = results_df.sort_values(by="rank_test_score")
+
+            # Save to CSV or just print top 5
+            results_df.to_csv("tuning_results.csv", index=False)
+            print("\nTop 5 parameter combinations:")
+            print(results_df[["rank_test_score", "mean_test_score", "params"]].head())
+
             # Get best parameters
             best_params = grid_search.best_params_
             
