@@ -682,40 +682,40 @@ class XGBoostModel:
             raise
 
 # Main execution
-if __name__ == "__main__":
-    try:
+#if __name__ == "__main__":
+   # try:
         # Initialize model
-        model = XGBoostModel()
+       # model = XGBoostModel()
         
         # Load and prepare data
-        X_train, X_test, y_train, y_test = model.load_data("data\without30.csv")
+      #  X_train, X_test, y_train, y_test = model.load_data("data\without30.csv")
         
         # Train model
-        model.train(X_train, y_train)
+        #model.train(X_train, y_train)
         
         # Evaluate model
-        metrics, y_pred = model.evaluate(X_test, y_test)
+       # metrics, y_pred = model.evaluate(X_test, y_test)
         
         # Print metrics
-        print("Training complete.")
-        print(f"Mean Absolute Error (MAE): {metrics['MAE']:,.2f}")
-        print(f"Root Mean Squared Error (RMSE): {metrics['RMSE']:,.2f}")
-        print(f"R-squared: {metrics['R2']:.2f}")
-        print(f"Mean Percentage Error: {metrics['Mean Percentage Error']:,.2f}%")
+       # print("Training complete.")
+       # print(f"Mean Absolute Error (MAE): {metrics['MAE']:,.2f}")
+       # print(f"Root Mean Squared Error (RMSE): {metrics['RMSE']:,.2f}")
+       # print(f"R-squared: {metrics['R2']:.2f}")
+       # print(f"Mean Percentage Error: {metrics['Mean Percentage Error']:,.2f}%")
         
         # Generate predictions for new data
-        try:
-            model.save_predictions("to_predict.csv")
-            print("Predictions saved to predicted_prices.csv")
-        except Exception as pred_error:
-            print(f"Could not generate predictions: {str(pred_error)}")
+      #  try:
+         #   model.save_predictions("to_predict.csv")
+         #   print("Predictions saved to predicted_prices.csv")
+    #    except Exception as pred_error:
+           # print(f"Could not generate predictions: {str(pred_error)}")
         
         # Optional: Save model
-        try:
-            model.save_model()
-            print("Model saved to xgboost_model.json")
-        except Exception as save_error:
-            print(f"Could not save model: {str(save_error)}")
+      #  try:
+         #   model.save_model()
+         #   print("Model saved to xgboost_model.json")
+     #   except Exception as save_error:
+         #   print(f"Could not save model: {str(save_error)}")
         
-    except Exception as e:
-        print(f"Error: {str(e)}")
+   # except Exception as e:
+       # print(f"Error: {str(e)}")

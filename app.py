@@ -13,6 +13,7 @@ import joblib
 import os
 import sys
 
+
 # All model paths
 sys.path.append(os.path.join(os.path.dirname(__file__), 'models', 'xgboost'))
 sys.path.append(os.path.join(os.path.dirname(__file__), 'models', 'linearRegression'))  # If you modularize it
@@ -139,48 +140,36 @@ def run_xgboost_analysis(X_train_df, y_train_series, X_test_df, y_test_series, l
         st.error("XGBoostModel class could not be imported. XGBoost analysis cannot proceed.")
         return None, {}, None, None, None, None
 
-    # Initialize
-    # Pass None for data_path as we are providing data directly
-    # Ensure results_path is valid
+    # Initialize model instance
     xgb_model_instance = XGBoostModel(data_path=None, model_path=model_json_path,
                                       results_path='models/xgboost/visualizations_gui')
-    os.makedirs('models/xgboost/visualizations_gui', exist_ok=True)  # Ensure dir exists if used by class
+    os.makedirs('models/xgboost/visualizations_gui', exist_ok=True)
 
     if load_pretrained:
         if model_json_path and os.path.exists(model_json_path):
             st.write(f"Loading pre-trained XGBoost model from: {model_json_path}")
-            xgb_model_instance.load_model(model_json_path)  # Call your class's load_model method
+            xgb_model_instance.load_model(model_json_path)
             if xgb_model_instance.model is None:
                 st.error("Failed to load the pre-trained XGBoost model (model attribute is None).")
                 return None, {}, None, None, None, None
             st.success("Pre-trained XGBoost model loaded.")
-
-            xgb_model_instance.feature_names = list(X_test_df.columns)
         else:
             st.error(f"Pre-trained XGBoost model not found at: {model_json_path}")
             return None, {}, None, None, None, None
     else:
         st.write("Training new XGBoost model...")
-
-        xgb_model_instance.X_train = X_train_df
-        xgb_model_instance.y_train = y_train_series
-        xgb_model_instance.X_test = X_test_df
-        xgb_model_instance.y_test = y_test_series
-        xgb_model_instance.feature_names = list(X_train_df.columns)
-        xgb_model_instance.train_model(
-            params={'objective': 'reg:squarederror', 'eval_metric': 'rmse'})  # Pass any default params
+        xgb_model_instance.train(X_train_df, y_train_series)
         st.success("XGBoost training complete.")
 
-    # Evaluation
-    metrics = xgb_model_instance.evaluate(X_test_df, y_test_series)  # Ensure this uses X_test_df, y_test_series
-    y_pred_test = xgb_model_instance.predict(X_test_df)  # Ensure this uses X_test_df
+   
+    y_pred_test = xgb_model_instance.predict(X_test_df)
+    
+    metrics = xgb_model_instance.evaluate(X_test_df, y_test_series)[0]
 
-    # Plots
-    fig_actual_vs_pred = xgb_model_instance.plot_actual_vs_predicted(X_test_df, y_test_series, save_plot=False)
-    fig_residuals = xgb_model_instance.plot_residuals(X_test_df, y_test_series, save_plot=False)
-    fig_feat_imp = xgb_model_instance.plot_feature_importance(save_plot=False)
-
-    fig_shap = xgb_model_instance.plot_shap_summary(X_train_df, save_plot=False)
+    fig_actual_vs_pred = xgb_model_instance.plot_actual_vs_predicted(y_test_series, y_pred_test)
+    fig_residuals = xgb_model_instance.plot_residuals(y_test_series, y_pred_test)
+    fig_feat_imp = xgb_model_instance.plot_feature_importance()
+    fig_shap = xgb_model_instance.plot_shap_summary(X_train_df)
 
     return xgb_model_instance, metrics, fig_actual_vs_pred, fig_residuals, fig_feat_imp, fig_shap
 
@@ -278,10 +267,9 @@ with st.sidebar:
 
     load_pretrained_xgboost = False
     if model_choice == "XGBoost":
-        load_pretrained_xgboost = st.checkbox("Load Pre-trained XGBoost Model ('xgboost_model.json')",
-                                              key="load_xgb_check")
+        #load_pretrained_xgboost = st.checkbox("Load Pre-trained XGBoost Model ('xgboost_model.json')", key="load_xgb_check")
 
-    run_analysis_button = st.button("🚀 Run Analysis / Train Model", key="run_button")
+     run_analysis_button = st.button("🚀 Run Analysis / Train Model", key="run_button")
 
     st.sidebar.markdown("---")
     st.subheader("Prediction on New Data")
@@ -340,11 +328,13 @@ if run_analysis_button:
             with st.spinner(f"Processing {model_choice}... This may take a moment."):
                 if model_choice == "XGBoost":
                     model_path = os.path.join(os.path.dirname(__file__),
-                                              'xgboost_model.json') if load_pretrained_xgboost else None
+                                            'xgboost_model.json') if load_pretrained_xgboost else None
                     model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s = run_xgboost_analysis(
                         X_train_df, y_train_series, X_test_df, y_test_series,
                         load_pretrained=load_pretrained_xgboost, model_json_path=model_path
                     )
+
+
                 elif model_choice == "Random Forest":
                     model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s = run_random_forest_analysis(
                         X_train_df, y_train_series, X_test_df, y_test_series
