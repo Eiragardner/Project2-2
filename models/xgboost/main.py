@@ -34,6 +34,20 @@ def main(args):
         target_column=args.target_column,
         test_size=args.test_size
     )
+
+    # Tune hyperparameters
+    print("Tuning hyperparameters...")
+    best_params = model.hyperparameter_tuning(X_train, y_train)
+    if best_params:
+        print("Best parameters found:")
+
+        for key, val in best_params.items():
+            print(f"{key}: {val}")
+
+        # Re-initialize model with tuned parameters
+
+        model = XGBoostModel(random_state=args.random_state, model_params=best_params)
+        model.features = X_train.columns.tolist()
     
     # Train model
     print("Training XGBoost model...")

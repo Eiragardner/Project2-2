@@ -14,6 +14,11 @@ X = df.iloc[:, [0] + list(range(2, df.shape[1]))]
 y = df.iloc[:, 1] 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+##NE RABOTAET(((
+X_train = X_train.apply(pd.to_numeric, errors='coerce').fillna(0).astype(np.float64)
+X_test = X_test.apply(pd.to_numeric, errors='coerce').fillna(0)
+
+print(X_train.dtypes)  
 
 model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
@@ -73,6 +78,7 @@ plt.show()
 
 vis_folder = os.path.join("models", "randomForest", "visualizations")
 os.makedirs(vis_folder, exist_ok=True)
+
 
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X_train)

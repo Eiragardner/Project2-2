@@ -267,9 +267,9 @@ with st.sidebar:
 
     load_pretrained_xgboost = False
     if model_choice == "XGBoost":
-        #load_pretrained_xgboost = st.checkbox("Load Pre-trained XGBoost Model ('xgboost_model.json')", key="load_xgb_check")
+        load_pretrained_xgboost = st.checkbox("Load Pre-trained XGBoost Model ('xgboost_model.json')", key="load_xgb_check")
 
-     run_analysis_button = st.button("🚀 Run Analysis / Train Model", key="run_button")
+    run_analysis_button = st.button("🚀 Run Analysis / Train Model", key="run_button")
 
     st.sidebar.markdown("---")
     st.subheader("Prediction on New Data")
