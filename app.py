@@ -24,7 +24,7 @@ try:
 except ImportError as e:
     st.error(
         f"Failed to import XGBoost_core: {e}. Ensure the file is in 'models/xgboost/' and all its dependencies are installed.")
-    XGBoostModel = None  #
+    XGBoostModel = None
 
 # These functions return Matplotlib figure objects
 def plot_actual_vs_predicted(y_true, y_pred, model_name="Model"):
@@ -172,7 +172,7 @@ def run_xgboost_analysis(X_train_df, y_train_series, X_test_df, y_test_series, l
         st.success("XGBoost training complete.")
 
     # Evaluation
-    metrics = xgb_model_instance.evaluate_model(X_test_df, y_test_series)  # Ensure this uses X_test_df, y_test_series
+    metrics = xgb_model_instance.evaluate(X_test_df, y_test_series)  # Ensure this uses X_test_df, y_test_series
     y_pred_test = xgb_model_instance.predict(X_test_df)  # Ensure this uses X_test_df
 
     # Plots
@@ -274,7 +274,7 @@ with st.sidebar:
     else:
         st.info("Please upload a training CSV or select to use the default.")
 
-    target_column = st.text_input("Target Column Name:", "price", key="target_col_input")
+    target_column = st.text_input("Target Column Name:", "Price", key="target_col_input")
 
     load_pretrained_xgboost = False
     if model_choice == "XGBoost":

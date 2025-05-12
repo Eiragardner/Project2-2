@@ -39,8 +39,12 @@ class XGBoostModel:
     with fallback to sklearn's GradientBoostingRegressor if XGBoost is not available
     """
     
-    def __init__(self, random_state=42):
+    def __init__(self, data_path=None, model_path=None, results_path="results/xgboost", random_state=42):
         """Initialize the XGBoost model with default parameters"""
+        self.data_path = data_path
+        self.model_path = model_path
+        self.results_path = results_path
+
         self.random_state = random_state
         self.model = None
         self.feature_importance = None
