@@ -138,7 +138,7 @@ def run_xgboost_analysis(X_train_df, y_train_series, X_test_df, y_test_series, l
                          model_json_path=None):
     if XGBoostModel is None:
         st.error("XGBoostModel class could not be imported. XGBoost analysis cannot proceed.")
-        return None, {}, None, None, None, None
+        return None, {}, None, None, None, None, None, None
 
     # Initialize model instance
     xgb_model_instance = XGBoostModel(data_path=None, model_path=model_json_path,
@@ -151,27 +151,94 @@ def run_xgboost_analysis(X_train_df, y_train_series, X_test_df, y_test_series, l
             xgb_model_instance.load_model(model_json_path)
             if xgb_model_instance.model is None:
                 st.error("Failed to load the pre-trained XGBoost model (model attribute is None).")
-                return None, {}, None, None, None, None
+                return None, {}, None, None, None, None, None, None
             st.success("Pre-trained XGBoost model loaded.")
         else:
             st.error(f"Pre-trained XGBoost model not found at: {model_json_path}")
-            return None, {}, None, None, None, None
+            return None, {}, None, None, None, None, None, None
     else:
         st.write("Training new XGBoost model...")
         xgb_model_instance.train(X_train_df, y_train_series)
         st.success("XGBoost training complete.")
 
-   
     y_pred_test = xgb_model_instance.predict(X_test_df)
     
-    metrics = xgb_model_instance.evaluate(X_test_df, y_test_series)[0]
+    metrics, _ = xgb_model_instance.evaluate(X_test_df, y_test_series)
 
-    fig_actual_vs_pred = xgb_model_instance.plot_actual_vs_predicted(y_test_series, y_pred_test)
-    fig_residuals = xgb_model_instance.plot_residuals(y_test_series, y_pred_test)
-    fig_feat_imp = xgb_model_instance.plot_feature_importance()
-    fig_shap = xgb_model_instance.plot_shap_summary(X_train_df)
+    fig_actual_vs_pred = xgb_model_instance.plot_actual_vs_predicted(y_test_series, y_pred_test, 
+                         save_path='models/xgboost/visualizations_gui/actual_vs_pred.png')
+    fig_residuals = xgb_model_instance.plot_residuals(y_test_series, y_pred_test, 
+                    save_path='models/xgboost/visualizations_gui/residuals.png')
+    fig_feat_imp = xgb_model_instance.plot_feature_importance(top_n=20, 
+                   save_path='models/xgboost/visualizations_gui/feature_importance.png')
+    fig_shap = xgb_model_instance.plot_shap_summary(X_train_df, 
+               save_path='models/xgboost/visualizations_gui/shap_summary.png')
+    
+    # ENHANCED: Additional visualizations
+    # 1. SHAP dependence plots for top features
+    fig_shap_dependence_plots = []
+    top_features = []
+    
+    if xgb_model_instance.feature_importance:
+        # Get top 3 features for dependence plots
+        top_features = sorted(xgb_model_instance.feature_importance.items(), 
+                             key=lambda x: x[1], reverse=True)[:3]
+        
+        for i, (feature, _) in enumerate(top_features):
+            plot_path = f'models/xgboost/visualizations_gui/shap_dependence_{feature}.png'
+            fig_dependence = xgb_model_instance.plot_shap_dependence(
+                feature_idx=feature, 
+                save_path=plot_path
+            )
+            if fig_dependence:
+                fig_shap_dependence_plots.append((feature, fig_dependence))
+    
+    # 2. Create distribution of percentage errors visualization
+    if metrics and 'Mean Percentage Error' in metrics:
+        percentage_error = np.abs((y_test_series - y_pred_test) / y_test_series) * 100
+        
+        fig_pct_error = plt.figure(figsize=(10, 6))
+        plt.hist(percentage_error.clip(0, 100), bins=20, color='skyblue', edgecolor='black')
+        plt.axvline(metrics['Mean Percentage Error'], color='red', linestyle='--', 
+                   label=f'Mean: {metrics["Mean Percentage Error"]:.2f}%')
+        plt.axvline(metrics['Median Percentage Error'], color='green', linestyle='--', 
+                   label=f'Median: {metrics["Median Percentage Error"]:.2f}%')
+        plt.xlabel('Percentage Error (%)')
+        plt.ylabel('Frequency')
+        plt.title('Distribution of Percentage Errors')
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig('models/xgboost/visualizations_gui/percentage_error_dist.png')
+    else:
+        fig_pct_error = None
+    
+    # 3. Create price range accuracy visualization 
+    try:
+        # Group by price ranges to see error distribution across different price brackets
+        price_bins = pd.cut(y_test_series, bins=5)
+        price_groups = pd.DataFrame({
+            'Actual': y_test_series, 
+            'Predicted': y_pred_test, 
+            'PriceRange': price_bins
+        }).groupby('PriceRange')
+        
+        mean_errors = price_groups.apply(lambda g: np.mean(np.abs((g['Actual'] - g['Predicted']) / g['Actual'])) * 100)
+        
+        fig_price_accuracy = plt.figure(figsize=(10, 6))
+        mean_errors.plot(kind='bar', color='teal')
+        plt.title('Mean Percentage Error by Price Range')
+        plt.xlabel('Price Range')
+        plt.ylabel('Mean Percentage Error (%)')
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.savefig('models/xgboost/visualizations_gui/price_range_accuracy.png')
+    except Exception as e:
+        st.warning(f"Could not generate price range accuracy plot: {e}")
+        fig_price_accuracy = None
 
-    return xgb_model_instance, metrics, fig_actual_vs_pred, fig_residuals, fig_feat_imp, fig_shap
+    return (xgb_model_instance, metrics, fig_actual_vs_pred, fig_residuals, 
+            fig_feat_imp, fig_shap, fig_shap_dependence_plots, fig_pct_error, fig_price_accuracy)
 
 
 # Linear Regression
@@ -291,6 +358,7 @@ with st.sidebar:
 
     predict_button = st.button("🔮 Make Predictions", key="predict_action_button")
 
+# Initialize session state variables
 if 'model_trained' not in st.session_state:
     st.session_state.model_trained = None
 if 'metrics' not in st.session_state:
@@ -307,6 +375,13 @@ if 'trained_feature_names' not in st.session_state:
     st.session_state.trained_feature_names = None
 if 'imputation_values_trained' not in st.session_state:
     st.session_state.imputation_values_trained = None
+# NEW: Session state for additional XGBoost visualization
+if 'fig_shap_dependence_plots' not in st.session_state:
+    st.session_state.fig_shap_dependence_plots = []
+if 'fig_pct_error' not in st.session_state:
+    st.session_state.fig_pct_error = None
+if 'fig_price_accuracy' not in st.session_state:
+    st.session_state.fig_price_accuracy = None
 
 if run_analysis_button:
     if train_file_source and target_column:
@@ -329,11 +404,17 @@ if run_analysis_button:
                 if model_choice == "XGBoost":
                     model_path = os.path.join(os.path.dirname(__file__),
                                             'xgboost_model.json') if load_pretrained_xgboost else None
-                    model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s = run_xgboost_analysis(
+                    
+                    # Updated return values for the XGBoost function
+                    model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s, fig_dependence_plots, fig_pct_error, fig_price_accuracy = run_xgboost_analysis(
                         X_train_df, y_train_series, X_test_df, y_test_series,
                         load_pretrained=load_pretrained_xgboost, model_json_path=model_path
                     )
-
+                    
+                    # Store the additional visualizations in session state
+                    st.session_state.fig_shap_dependence_plots = fig_dependence_plots
+                    st.session_state.fig_pct_error = fig_pct_error
+                    st.session_state.fig_price_accuracy = fig_price_accuracy
 
                 elif model_choice == "Random Forest":
                     model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s = run_random_forest_analysis(
@@ -346,7 +427,6 @@ if run_analysis_button:
                 else:
                     st.error("Invalid model choice selected.")
                     st.stop()
-
 
                 st.session_state.model_trained = model_obj
                 st.session_state.metrics = metrics
@@ -364,7 +444,7 @@ if run_analysis_button:
 if st.session_state.model_trained is not None or st.session_state.metrics:
     st.header(f"📊 Analysis Results for {model_choice}")
 
-    tab_metrics, tab_plots = st.tabs(["Performance Metrics", "Visualizations"])
+    tab_metrics, tab_plots, tab_advanced = st.tabs(["Performance Metrics", "Basic Visualizations", "Advanced Visualizations"])
 
     with tab_metrics:
         if st.session_state.metrics:
@@ -378,7 +458,7 @@ if st.session_state.model_trained is not None or st.session_state.metrics:
             st.info("Metrics will be shown here after running an analysis.")
 
     with tab_plots:
-        st.subheader("Plots")
+        st.subheader("Standard Model Visualizations")
         col1, col2 = st.columns(2)
         with col1:
             if st.session_state.fig_actual_vs_pred:
@@ -401,6 +481,39 @@ if st.session_state.model_trained is not None or st.session_state.metrics:
                 st.pyplot(st.session_state.fig_shap)
             elif model_choice in ["Random Forest", "XGBoost"]:
                 st.caption("SHAP Summary plot will appear here (if applicable).")
+    
+    # NEW: Advanced visualizations tab for XGBoost only
+    with tab_advanced:
+        if model_choice == "XGBoost":
+            st.subheader("Advanced XGBoost Visualizations")
+            
+            # Percentage error distribution
+            if st.session_state.fig_pct_error:
+                st.subheader("Error Distribution")
+                st.pyplot(st.session_state.fig_pct_error)
+                st.write("This chart shows the distribution of percentage errors. The red line represents the mean percentage error, while green shows the median percentage error.")
+            
+            # Price range accuracy 
+            if st.session_state.fig_price_accuracy:
+                st.subheader("Error by Price Range")
+                st.pyplot(st.session_state.fig_price_accuracy)
+                st.write("This visualization shows how the model's accuracy varies across different price ranges. Lower values indicate better performance in that price bracket.")
+            
+            # SHAP dependence plots for individual features
+            if st.session_state.fig_shap_dependence_plots:
+                st.subheader("Feature Impact Analysis (SHAP Dependence Plots)")
+                st.write("""
+                These plots show how specific features impact the prediction. 
+                The Y-axis shows the SHAP value (impact on prediction), while the X-axis shows the feature value. 
+                Colors indicate interactions with another feature.
+                """)
+                
+                # Display each dependence plot with feature name as subheader
+                for feature_name, fig in st.session_state.fig_shap_dependence_plots:
+                    st.markdown(f"##### SHAP Dependence Plot for: {feature_name}")
+                    st.pyplot(fig)
+        else:
+            st.info("Advanced visualizations are only available for XGBoost models.")
 
 # Prediction Tab
 if predict_button:
@@ -474,6 +587,15 @@ if predict_button:
                             file_name=f"predicted_prices_{model_choice.lower().replace(' ', '_')}.csv",
                             mime="text/csv",
                         )
+                        
+                        # Create simplified dataframe with just index and predicted price
+                        st.subheader("Simplified Prediction Results")
+                        simplified_df = pd.DataFrame({
+                            'House Index': range(1, len(predictions_output) + 1),
+                            'Predicted Price': predictions_output
+                        })
+                        st.dataframe(simplified_df)
+                        
                         st.success("Predictions generated and available for download.")
                     else:
                         st.error("Could not generate predictions.")
