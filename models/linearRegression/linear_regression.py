@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split, KFold, cross_val_score
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 # GNU STP
 
@@ -33,7 +34,9 @@ Additional Operations:
     O(n * d) for train-test split
 '''
 
-df = pd.read_csv("data\without30.csv")
+
+
+df = pd.read_csv(Path(__file__).parent.parent.parent / "data" / "without30.csv")
 df = df.select_dtypes(include=[np.number])
 X = df.drop(columns=["Price"])
 y = df["Price"]
@@ -83,7 +86,7 @@ plt.grid(True)
 plt.tight_layout()
 #plt.show()
 
-user_data = pd.read_csv("to_predict.csv")
+user_data = pd.read_csv(Path(__file__).parent.parent.parent / "to_predict.csv")
 if "Price" in user_data.columns:
     user_data = user_data.drop(columns=["Price"])
 
@@ -92,5 +95,5 @@ user_data = user_data[X_train.columns]
 
 predicted_prices = model.predict(user_data)
 user_data["Predicted Price"] = np.round(predicted_prices,2)
-output_file = "predicted_prices.csv"
+output_file = Path(__file__).parent.parent.parent / "outputs" / "predicted_prices_LR.csv"
 user_data.to_csv(output_file, index=False)

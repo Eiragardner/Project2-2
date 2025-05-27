@@ -7,8 +7,9 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import shap
 import os
+from pathlib import Path
 
-df = pd.read_csv("data\without30.csv")
+df = pd.read_csv(Path(__file__).parent.parent.parent / "data" / "without30.csv")
 
 X = df.iloc[:, [0] + list(range(2, df.shape[1]))]  
 y = df.iloc[:, 1] 
@@ -76,7 +77,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 
-vis_folder = os.path.join("models", "randomForest", "visualizations")
+vis_folder = Path(__file__).parent.parent.parent / "outputs" / "visualisations" / "randomForest"
 os.makedirs(vis_folder, exist_ok=True)
 
 
@@ -108,13 +109,13 @@ for idx in top5_idx:
 print(f"SHAP plots saved to {vis_folder}")
 
 try:
-    user_data = pd.read_csv("to_predict.csv")
+    user_data = pd.read_csv(Path(__file__).parent.parent.parent / "to_predict.csv")
     user_data = user_data.iloc[:, [0] + list(range(2, user_data.shape[1]))]
 
     predicted_prices = model.predict(user_data)
     user_data["Predicted Price"] = predicted_prices
 
-    output_file = "predicted_prices_rf.csv"
+    output_file = Path(__file__).parent.parent.parent / "outputs" / "predicted_prices_rf.csv"
     user_data.to_csv(output_file, index=False)
     print(f"Predicted prices saved to {output_file}")
 except FileNotFoundError:
