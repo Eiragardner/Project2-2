@@ -5,7 +5,7 @@ from sklearn.ensemble import StackingRegressor, RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from pathlib import Path
-#from models.xgboost.XGBoost_core import XGBoostModel
+import matplotlib.pyplot as plt
 import xgboost as xgb
 
 df = pd.read_csv(Path(__file__).parent.parent.parent / "data" / "without30.csv")
@@ -57,3 +57,30 @@ print("\nFinal test set results:")
 print(f"Mean Absolute Error (MAE): {mae:,.2f}")
 print(f"Root Mean Squared Error (RMSE): {rmse:,.2f}")
 print(f"R-squared: {r2:.2f}")
+
+plt.figure(figsize=(8, 6))
+plt.scatter(y_test, y_pred)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
+plt.xlabel("Actual prices")
+plt.ylabel("Predicted prices")
+plt.title("Actual vs Predicted prices")
+plt.grid(True)
+plt.tight_layout()
+
+# Create output directory if it doesn't exist
+output_dir = Path(__file__).parent.parent.parent / "outputs" / "visualisations" / "stackedModel"
+output_dir.mkdir(parents=True, exist_ok=True)
+
+plt.savefig(output_dir / "actual_vs_predicted.png", dpi=300, bbox_inches='tight')
+
+user_data = pd.read_csv(Path(__file__).parent.parent.parent / "to_predict.csv")
+if "Price" in user_data.columns:
+    user_data = user_data.drop(columns=["Price"])
+
+user_data = user_data.select_dtypes(include=[np.number])
+user_data = user_data[X_train.columns]
+
+predicted_prices = model.predict(user_data)
+user_data["Predicted Price"] = np.round(predicted_prices,2)
+output_file = Path(__file__).parent.parent.parent / "outputs" / "predicted_prices_SM.csv"
+user_data.to_csv(output_file, index=False)
