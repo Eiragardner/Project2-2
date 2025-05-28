@@ -13,7 +13,8 @@ from sklearn.preprocessing import StandardScaler
 df = pd.read_csv(Path(__file__).parent.parent.parent / "data" / "without30.csv")
 df = df.select_dtypes(include=[np.number])
 X = df.drop(columns=["Price"])
-y = np.log1p(df["Price"])  # log(1 + price)
+#y = np.log1p(df["Price"])  # log(1 + price)
+y = df["Price"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -47,16 +48,16 @@ model = StackingRegressor(
 )
 
 model.fit(X_train, y_train)
-y_pred = np.expm1(model.predict(X_test))  # inverse transform
-y_test_original = np.expm1(y_test)
-
+#y_pred = np.expm1(model.predict(X_test))  # inverse transform
+#y_test_original = np.expm1(y_test)
+y_pred = model.predict(X_test)
 
 
 # Calculate final test set metrics
-mae = mean_absolute_error(y_test_original, y_pred)
-mse = mean_squared_error(y_test_original, y_pred)
+mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
 rmse = np.sqrt(mse)
-r2 = r2_score(y_test_original, y_pred)
+r2 = r2_score(y_test, y_pred)
 
 print("\nFinal test set results:")
 print(f"Mean Absolute Error (MAE): {mae:,.2f}")
@@ -64,8 +65,8 @@ print(f"Root Mean Squared Error (RMSE): {rmse:,.2f}")
 print(f"R-squared: {r2:.2f}")
 
 plt.figure(figsize=(8, 6))
-plt.scatter(y_test_original, y_pred)
-plt.plot([y_test_original.min(), y_test_original.max()], [y_test_original.min(), y_test_original.max()], 'r--')
+plt.scatter(y_test, y_pred)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')
 plt.xlabel("Actual prices")
 plt.ylabel("Predicted prices")
 plt.title("Actual vs Predicted prices")
@@ -80,7 +81,7 @@ output_dir.mkdir(parents=True, exist_ok=True)
 plt.savefig(output_dir / "actual_vs_predicted.png", dpi=300, bbox_inches='tight')
 plt.close()
 
-residuals = y_test_original - y_pred
+residuals = y_test - y_pred
 plt.scatter(y_pred, residuals)
 plt.axhline(0, color='red', linestyle='--')
 plt.xlabel("Predicted Price")

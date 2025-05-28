@@ -1,6 +1,13 @@
+Final test set results (without log):
+Mean Absolute Error (MAE): 122,884.60
+Root Mean Squared Error (RMSE): 188,582.69
+R-squared: 0.61
+
 Final test set results (with log(1+price)):
 Mean Absolute Error (MAE): 120,297.07
 Root Mean Squared Error (RMSE): 190,551.24
 R-squared: 0.60
 
 MAE better than without log but RMSE and R-squared slightly worse
+
+Ridge regression instead of LR doesn't show any improvement
