@@ -1,0 +1,6 @@
+2025-05-29 16:37:00,694 - MoETrainer - INFO - Using device: cpu
+2025-05-29 16:37:00,695 - MoETrainer - INFO - Starting Enhanced MoE Training Pipeline
+2025-05-29 16:37:00,696 - MoETrainer - INFO - Loading data...
+2025-05-29 16:37:01,594 - MoETrainer - INFO - Loaded dataset: 5555 samples, 744 features
+2025-05-29 16:37:01,594 - MoETrainer - INFO - Target range: [0.00, 1.00]
+2025-05-29 16:37:01,595 - MoETrainer - INFO - Preprocessing data...
