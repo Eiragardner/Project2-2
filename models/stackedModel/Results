@@ -11,3 +11,31 @@ R-squared: 0.60
 MAE better than without log but RMSE and R-squared slightly worse
 
 Ridge regression instead of LR doesn't show any improvement
+
+Stacked model with Ridge, RF, KNN, SVR, and XGBoost:
+Mean Absolute Error: 121704.0145
+Mean Squared Error: 35399264689.6933
+Root Mean Squared Error: 188146.9231
+R^2 Score: 0.6111
+
+Stacked model with Ridge, RF, KNN, SVR, and lightGGM:
+
+Normal Stacked Model with K Selection test with f_regression score function:
+Best parameters:
+{'feature_selection__k': 500}
+Best CV RMSE: 180,071.29
+
+Final test set results (best k):
+MAE: 117,202.32
+MSE: 32,389,233,354.61
+RMSE: 179,970.09
+R²: 0.64
+
+Normal Stacked Model with K Selection test with mutual_info_regression score function:
+
+
+Normal Stacked Model with K Selection test with SHAP score function at k=150:
+Mean Absolute Error (MAE): 116,127.80
+Mean Squared Error (MSE): 32,235,264,570.68
+Root Mean Squared Error (RMSE): 179,541.82
+R-squared: 0.65
