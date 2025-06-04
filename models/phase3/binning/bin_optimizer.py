@@ -135,4 +135,3 @@ class BinOptimizer:
             scores.append(homogeneity_score * 0.3)
         
         return sum(scores) if scores else 0.0
-
