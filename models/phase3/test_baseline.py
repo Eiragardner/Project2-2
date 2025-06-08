@@ -1,6 +1,8 @@
 # test_baseline.py - Quick verification of our baseline
+import datetime
 import sys
 import os
+import json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from models.phase3.baseline_model import BaselineModel
@@ -15,6 +17,24 @@ def test_baseline():
     
     baseline = BaselineModel()
     result = baseline.train()
+
+    dataset_path = sys.argv[1] if len(sys.argv) > 1 else "UNKNOWN_DATASET"
+    dataset_name = os.path.basename(dataset_path)
+
+    log_data = {
+        "timestamp": datetime.datetime.now().isoformat(),
+        "dataset": dataset_name,
+        "r2": result.get("r2"),
+        "rmse": result.get("rmse"),
+        "mae": result.get("mae"),
+        "full_evaluation": result.get("full_evaluation", {}),
+        "expert_info": result.get("expert_info", []),
+    }
+
+#Save to log file
+    with open("baseline_results_log.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(log_data) + "\n")
+
     
     print(f"\n🏆 FINAL RESULTS:")
     print(f"R²: {result['r2']:.4f} (Target: 0.8380)")

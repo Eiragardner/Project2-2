@@ -78,6 +78,9 @@ class dataOptimization:
         r2 = model.score(X_test_scaled, y_test)
         print(f"R² on current data: {r2:.4f}")
 
-    def save_without_top_outliers(self, count=30, filename="data_without_top30.csv"):
+    def save_without_top_outliers(self, count=30, filename="without30.csv"):
         data_cleaned = self.data.sort_values("Price", ascending=False).iloc[count:]
         data_cleaned.to_csv(filename, index=False)
+
+    
+

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from scipy import stats
 import seaborn as sns
 
 class dataPlots:
@@ -22,3 +23,17 @@ class dataPlots:
         plt.xlabel("Price")
         plt.tight_layout()
         plt.show()
+    
+    def qqPlot(self, column='Price'):
+        if column not in self.data.columns:
+            raise ValueError(f"Column '{column}' not found in dataset")
+        
+        values = self.data[column].dropna()
+
+        plt.figure(figsize=(6, 6))
+        stats.probplot(values, dist="norm", plot=plt)
+        plt.title(f"Q-Q Plot of {column}")
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show()
+
