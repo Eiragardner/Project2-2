@@ -38,7 +38,7 @@ class HybridDataManager:
         if self.config.data_path and os.path.exists(self.config.data_path):
             X, y = self._load_from_file_hybrid(self.config.data_path)
         else:
-            for path in ['../data/HousingPriceinBeijing.csv', 'data/HousingPriceinBeijing.csv', 'HousingPriceinBeijing.csv']:
+            for path in ['../data/California Dataset.csv', 'data/California Dataset.csv', 'California Dataset.csv']:
                 if os.path.exists(path):
                     X, y = self._load_from_file_hybrid(path)
                     break
