@@ -12525,3 +12525,989 @@ Per-bin Performance:
 2025-06-09 23:59:25,769 - MoETrainer - INFO - Final Performance: R² = 0.9594
 2025-06-09 23:59:25,770 - MoETrainer - INFO - Final RMSE: $20,808
 2025-06-09 23:59:25,770 - MoETrainer - INFO - Final MAE: $15,765
+2025-06-10 19:12:27,782 - MoETrainer - INFO - Loading data...
+2025-06-10 19:12:27,783 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:12:27,784 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:12:27,790 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:12:27,792 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:12:27,796 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:12:27,796 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:12:27,807 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:12:27,807 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:12:27,813 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:12:27,813 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:12:27,814 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:12:27,815 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:12:27,816 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:12:27,816 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:12:27,817 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:12:27,817 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:12:29,002 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:12:29,003 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:12:29,003 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:12:29,004 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:12:29,004 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:12:29,501 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:12:29,501 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:12:29,502 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:12:29,502 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:12:29,503 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:12:29,993 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:12:29,993 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:12:29,994 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:12:29,994 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:12:29,995 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:12:29,998 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:12:30,286 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:12:30,289 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:12:30,289 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:12:30,310 - MoETrainer - INFO - Training perfect routing neural gate...
+2025-06-10 19:12:30,311 - MoETrainer - INFO - Goal: Learn features → bin assignment (mimic hard routing)
+2025-06-10 19:12:30,317 - MoETrainer - INFO - Routing target analysis:
+2025-06-10 19:12:30,318 - MoETrainer - INFO -   Bin boundaries: ['$419,653', '$506,842']
+2025-06-10 19:12:30,318 - MoETrainer - INFO -   Train bin distribution: [np.int64(433), np.int64(433), np.int64(434)]
+2025-06-10 19:12:30,319 - MoETrainer - INFO -   Val bin distribution: [np.int64(97), np.int64(93), np.int64(110)]
+2025-06-10 19:12:35,367 - MoETrainer - INFO - Epoch   0: Loss=1.0984, Bin Acc=0.310, R²=0.2947, Temp=2.00
+2025-06-10 19:12:35,368 - MoETrainer - INFO -          Predicted bin counts: [np.int64(0), np.int64(300), np.int64(0)]
+2025-06-10 19:12:35,985 - MoETrainer - INFO - Epoch  25: Loss=0.9885, Bin Acc=0.687, R²=0.7980, Temp=1.75
+2025-06-10 19:12:36,497 - MoETrainer - INFO - Epoch  50: Loss=0.7418, Bin Acc=0.757, R²=0.8685, Temp=1.50
+2025-06-10 19:12:36,498 - MoETrainer - INFO -          Predicted bin counts: [np.int64(143), np.int64(37), np.int64(120)]
+2025-06-10 19:12:37,035 - MoETrainer - INFO - Epoch  75: Loss=0.5891, Bin Acc=0.763, R²=0.8708, Temp=1.25
+2025-06-10 19:12:37,516 - MoETrainer - INFO - Epoch 100: Loss=0.5006, Bin Acc=0.800, R²=0.8779, Temp=1.00
+2025-06-10 19:12:37,516 - MoETrainer - INFO -          Predicted bin counts: [np.int64(121), np.int64(58), np.int64(121)]
+2025-06-10 19:12:38,089 - MoETrainer - INFO - Epoch 125: Loss=0.4582, Bin Acc=0.827, R²=0.8852, Temp=0.75
+2025-06-10 19:12:38,573 - MoETrainer - INFO - Early stopping at epoch 149
+2025-06-10 19:12:38,574 - MoETrainer - INFO - Loaded best model: Bin Acc=0.827, R²=0.8852
+2025-06-10 19:20:49,289 - MoETrainer - INFO - === FIXED NEURAL GATE COMPARISON STARTING ===
+2025-06-10 19:20:49,289 - MoETrainer - INFO - Loading data with Hybrid DataManager...
+2025-06-10 19:20:49,290 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:20:49,290 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:20:49,292 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:20:49,293 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:20:49,293 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:20:49,294 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:20:49,299 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:20:49,299 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:20:49,301 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:20:49,302 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:20:49,302 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:20:49,304 - MoETrainer - INFO - 
+=== TESTING FEATURE-BASED BINNING ===
+2025-06-10 19:20:49,305 - MoETrainer - INFO - Testing feature-based expert assignment...
+2025-06-10 19:20:49,306 - MoETrainer - INFO - Created 1 feature-based binning rules
+2025-06-10 19:20:49,307 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:20:49,307 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:20:49,308 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:20:49,308 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:20:49,308 - MoETrainer - INFO - Bin 0: Small bin (429), using rule-based selection
+2025-06-10 19:20:50,099 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:20:50,100 - MoETrainer - INFO -   1. ridge_medium: Score=0.533, MAE=$24510, RMSE=$30814, R²=0.783 [SELECTED]
+2025-06-10 19:20:50,100 - MoETrainer - INFO -   2. rf_medium: Score=0.608, MAE=$28363, RMSE=$35084, R²=0.718
+2025-06-10 19:20:50,100 - MoETrainer - INFO -   3. rf_shallow: Score=0.615, MAE=$28814, RMSE=$35419, R²=0.713
+2025-06-10 19:20:50,101 - MoETrainer - INFO - Bin 1: Small bin (442), using rule-based selection
+2025-06-10 19:20:50,644 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:20:50,645 - MoETrainer - INFO -   1. ridge_medium: Score=0.672, MAE=$29105, RMSE=$35449, R²=0.628 [SELECTED]
+2025-06-10 19:20:50,648 - MoETrainer - INFO -   2. rf_medium: Score=0.706, MAE=$30337, RMSE=$37309, R²=0.588
+2025-06-10 19:20:50,654 - MoETrainer - INFO -   3. xgb_conservative: Score=0.717, MAE=$30706, RMSE=$37860, R²=0.576
+2025-06-10 19:20:50,655 - MoETrainer - INFO - Bin 2: Small bin (429), using rule-based selection
+2025-06-10 19:20:51,239 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:20:51,239 - MoETrainer - INFO -   1. ridge_medium: Score=0.520, MAE=$24890, RMSE=$32318, R²=0.774 [SELECTED]
+2025-06-10 19:20:51,239 - MoETrainer - INFO -   2. lgb_balanced: Score=0.545, MAE=$26666, RMSE=$33793, R²=0.752
+2025-06-10 19:20:51,240 - MoETrainer - INFO -   3. xgb_balanced: Score=0.587, MAE=$29222, RMSE=$36337, R²=0.714
+2025-06-10 19:20:51,240 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:20:51,242 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 429 samples
+2025-06-10 19:20:51,244 - MoETrainer - INFO - Successfully trained ridge_medium for bin 1: 442 samples
+2025-06-10 19:20:51,246 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 429 samples
+2025-06-10 19:20:51,248 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:20:51,259 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:20:51,259 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:20:51,260 - MoETrainer - INFO -   RMSE: $33,022
+2025-06-10 19:20:51,260 - MoETrainer - INFO -   MAE: $26,595 (5.7% of mean)
+2025-06-10 19:20:51,260 - MoETrainer - INFO -   R²: 0.8977
+2025-06-10 19:20:51,260 - MoETrainer - INFO -   MAPE: 6.2%
+2025-06-10 19:20:51,261 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:20:51,261 - MoETrainer - INFO -   Median APE: 5.0%
+2025-06-10 19:20:51,261 - MoETrainer - INFO -   Within 5%: 51.0% of predictions
+2025-06-10 19:20:51,262 - MoETrainer - INFO -   Within 10%: 83.8% of predictions
+2025-06-10 19:20:51,262 - MoETrainer - INFO -   Within 15%: 93.8% of predictions
+2025-06-10 19:20:51,262 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:20:51,263 - MoETrainer - INFO -   Bin 0: RMSE=$33,244, R²=0.7603, Samples=147
+2025-06-10 19:20:51,263 - MoETrainer - INFO -   Bin 1: RMSE=$36,294, R²=0.5007, Samples=119
+2025-06-10 19:20:51,263 - MoETrainer - INFO -   Bin 2: RMSE=$29,544, R²=0.8037, Samples=134
+2025-06-10 19:20:51,264 - MoETrainer - INFO - 
+=== TESTING FIXED NEURAL GATE ===
+2025-06-10 19:20:51,265 - MoETrainer - INFO - Testing fixed neural gate...
+2025-06-10 19:20:51,937 - MoETrainer - INFO - Using device: cpu
+2025-06-10 19:20:51,938 - MoETrainer - INFO - Training FIXED neural gating network...
+2025-06-10 19:20:54,764 - MoETrainer - INFO - Epoch   0: Train RMSE=    5465, Val RMSE=    7688
+2025-06-10 19:20:54,765 - MoETrainer - INFO -          Avg expert weights: [0.250, 0.250, 0.250, 0.250]
+2025-06-10 19:20:54,768 - MoETrainer - INFO - Epoch   1: Train RMSE=    5465, Val RMSE=    7688
+2025-06-10 19:20:54,772 - MoETrainer - INFO - Epoch   2: Train RMSE=    5465, Val RMSE=    7688
+2025-06-10 19:20:54,777 - MoETrainer - INFO - Epoch   3: Train RMSE=    5465, Val RMSE=    7688
+2025-06-10 19:20:54,780 - MoETrainer - INFO - Epoch   4: Train RMSE=    5465, Val RMSE=    7689
+2025-06-10 19:20:54,786 - MoETrainer - INFO - Epoch   5: Train RMSE=    5465, Val RMSE=    7689
+2025-06-10 19:20:54,789 - MoETrainer - INFO - Epoch   6: Train RMSE=    5465, Val RMSE=    7689
+2025-06-10 19:20:54,792 - MoETrainer - INFO - Epoch   7: Train RMSE=    5464, Val RMSE=    7689
+2025-06-10 19:20:54,796 - MoETrainer - INFO - Epoch   8: Train RMSE=    5464, Val RMSE=    7689
+2025-06-10 19:20:54,800 - MoETrainer - INFO - Epoch   9: Train RMSE=    5464, Val RMSE=    7689
+2025-06-10 19:20:54,820 - MoETrainer - INFO - Early stopping at epoch 15
+2025-06-10 19:20:54,820 - MoETrainer - INFO - Loaded best model with validation RMSE: 7688
+2025-06-10 19:20:54,825 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:20:54,825 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:20:54,825 - MoETrainer - INFO -   RMSE: $32,952
+2025-06-10 19:20:54,826 - MoETrainer - INFO -   MAE: $26,698 (5.7% of mean)
+2025-06-10 19:20:54,826 - MoETrainer - INFO -   R²: 0.8981
+2025-06-10 19:20:54,826 - MoETrainer - INFO -   MAPE: 6.3%
+2025-06-10 19:20:54,826 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:20:54,826 - MoETrainer - INFO -   Median APE: 4.8%
+2025-06-10 19:20:54,827 - MoETrainer - INFO -   Within 5%: 51.0% of predictions
+2025-06-10 19:20:54,827 - MoETrainer - INFO -   Within 10%: 82.2% of predictions
+2025-06-10 19:20:54,827 - MoETrainer - INFO -   Within 15%: 95.0% of predictions
+2025-06-10 19:20:54,827 - MoETrainer - INFO - Gate weight statistics:
+2025-06-10 19:20:54,827 - MoETrainer - INFO -   lgb_conservative: 0.250 average weight
+2025-06-10 19:20:54,828 - MoETrainer - INFO -   xgb_balanced: 0.250 average weight
+2025-06-10 19:20:54,828 - MoETrainer - INFO -   rf_medium: 0.250 average weight
+2025-06-10 19:20:54,828 - MoETrainer - INFO -   ridge_ensemble: 0.250 average weight
+2025-06-10 19:20:54,829 - MoETrainer - INFO - 
+=== TESTING SIMPLE BASELINE ===
+2025-06-10 19:20:54,829 - MoETrainer - INFO - Testing simple baseline...
+2025-06-10 19:20:55,590 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:20:55,613 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:20:55,653 - MoETrainer - INFO -   RMSE: $35,308
+2025-06-10 19:20:55,691 - MoETrainer - INFO -   MAE: $27,999 (6.0% of mean)
+2025-06-10 19:20:55,707 - MoETrainer - INFO -   R²: 0.8830
+2025-06-10 19:20:55,738 - MoETrainer - INFO -   MAPE: 6.6%
+2025-06-10 19:20:55,749 - MoETrainer - INFO -   MPE: +0.6% (bias: overprediction)
+2025-06-10 19:20:55,780 - MoETrainer - INFO -   Median APE: 5.2%
+2025-06-10 19:20:55,780 - MoETrainer - INFO -   Within 5%: 48.2% of predictions
+2025-06-10 19:20:55,780 - MoETrainer - INFO -   Within 10%: 80.0% of predictions
+2025-06-10 19:20:55,781 - MoETrainer - INFO -   Within 15%: 93.5% of predictions
+2025-06-10 19:21:48,828 - MoETrainer - INFO - Loading data...
+2025-06-10 19:21:48,828 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:21:48,829 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:21:48,831 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:21:48,831 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:21:48,831 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:21:48,832 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:21:48,836 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:21:48,836 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:21:48,838 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:21:48,839 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:21:48,839 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:21:48,841 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:21:48,841 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:21:48,842 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:21:48,842 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:21:48,843 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:21:49,583 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:21:49,584 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:21:49,584 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:21:49,585 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:21:49,585 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:21:50,060 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:21:50,060 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:21:50,060 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:21:50,061 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:21:50,061 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:21:50,544 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:21:50,544 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:21:50,545 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:21:50,545 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:21:50,545 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:21:50,547 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:21:50,804 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:21:50,806 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:21:50,806 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:21:50,820 - MoETrainer - INFO - Training perfect routing neural gate...
+2025-06-10 19:21:50,821 - MoETrainer - INFO - Goal: Learn features → bin assignment (mimic hard routing)
+2025-06-10 19:21:50,822 - MoETrainer - INFO - Routing target analysis:
+2025-06-10 19:21:50,823 - MoETrainer - INFO -   Bin boundaries: ['$419,653', '$506,842']
+2025-06-10 19:21:50,824 - MoETrainer - INFO -   Train bin distribution: [np.int64(433), np.int64(433), np.int64(434)]
+2025-06-10 19:21:50,824 - MoETrainer - INFO -   Val bin distribution: [np.int64(97), np.int64(93), np.int64(110)]
+2025-06-10 19:21:53,457 - MoETrainer - INFO - Epoch   0: Loss=1.0980, Bin Acc=0.367, R²=0.7316, Temp=2.00
+2025-06-10 19:21:53,457 - MoETrainer - INFO -          Predicted bin counts: [np.int64(0), np.int64(0), np.int64(300)]
+2025-06-10 19:21:53,917 - MoETrainer - INFO - Early stopping at epoch 25
+2025-06-10 19:21:53,918 - MoETrainer - INFO - Loaded best model: Bin Acc=0.367, R²=0.7316
+2025-06-10 19:22:13,512 - MoETrainer - INFO - Loading data...
+2025-06-10 19:22:13,513 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:22:13,513 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:22:13,514 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:22:13,515 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:22:13,516 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:22:13,516 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:22:13,520 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:22:13,520 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:22:13,523 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:22:13,523 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:22:13,524 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:22:13,525 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:22:13,526 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:22:13,527 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:22:13,528 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:22:13,529 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:22:14,294 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:22:14,295 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:22:14,295 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:22:14,295 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:22:14,296 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:22:14,784 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:22:14,785 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:22:14,785 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:22:14,785 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:22:14,786 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:22:15,286 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:22:15,287 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:22:15,287 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:22:15,287 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:22:15,288 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:22:15,289 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:22:15,567 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:22:15,569 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:22:15,569 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:22:15,581 - MoETrainer - INFO - Training perfect routing neural gate...
+2025-06-10 19:22:15,582 - MoETrainer - INFO - Goal: Learn features → bin assignment (mimic hard routing)
+2025-06-10 19:22:15,584 - MoETrainer - INFO - Routing target analysis:
+2025-06-10 19:22:15,586 - MoETrainer - INFO -   Bin boundaries: ['$419,653', '$506,842']
+2025-06-10 19:22:15,586 - MoETrainer - INFO -   Train bin distribution: [np.int64(433), np.int64(433), np.int64(434)]
+2025-06-10 19:22:15,587 - MoETrainer - INFO -   Val bin distribution: [np.int64(97), np.int64(93), np.int64(110)]
+2025-06-10 19:22:18,360 - MoETrainer - INFO - Epoch   0: Loss=1.0994, Bin Acc=0.310, R²=0.2947, Temp=2.00
+2025-06-10 19:22:18,360 - MoETrainer - INFO -          Predicted bin counts: [np.int64(0), np.int64(300), np.int64(0)]
+2025-06-10 19:22:18,921 - MoETrainer - INFO - Epoch  25: Loss=0.9850, Bin Acc=0.553, R²=0.5876, Temp=1.75
+2025-06-10 19:22:19,431 - MoETrainer - INFO - Epoch  50: Loss=0.7383, Bin Acc=0.747, R²=0.8648, Temp=1.50
+2025-06-10 19:22:19,432 - MoETrainer - INFO -          Predicted bin counts: [np.int64(139), np.int64(25), np.int64(136)]
+2025-06-10 19:22:19,615 - MoETrainer - INFO - Early stopping at epoch 59
+2025-06-10 19:22:19,616 - MoETrainer - INFO - Loaded best model: Bin Acc=0.833, R²=0.8847
+2025-06-10 19:22:33,529 - MoETrainer - INFO - Loading data...
+2025-06-10 19:22:33,529 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:22:33,530 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:22:33,532 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:22:33,533 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:22:33,533 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:22:33,533 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:22:33,537 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:22:33,538 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:22:33,540 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:22:33,541 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:22:33,541 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:22:33,543 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:22:33,543 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:22:33,543 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:22:33,544 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:22:33,544 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:22:34,315 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:22:34,315 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:22:34,316 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:22:34,316 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:22:34,317 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:22:34,816 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:22:34,816 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:22:34,817 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:22:34,817 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:22:34,817 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:22:35,319 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:22:35,319 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:22:35,320 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:22:35,320 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:22:35,320 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:22:35,322 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:22:35,592 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:22:35,594 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:22:35,594 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:22:35,606 - MoETrainer - INFO - Training perfect routing neural gate...
+2025-06-10 19:22:35,607 - MoETrainer - INFO - Goal: Learn features → bin assignment (mimic hard routing)
+2025-06-10 19:22:35,609 - MoETrainer - INFO - Routing target analysis:
+2025-06-10 19:22:35,610 - MoETrainer - INFO -   Bin boundaries: ['$419,653', '$506,842']
+2025-06-10 19:22:35,610 - MoETrainer - INFO -   Train bin distribution: [np.int64(433), np.int64(433), np.int64(434)]
+2025-06-10 19:22:35,611 - MoETrainer - INFO -   Val bin distribution: [np.int64(97), np.int64(93), np.int64(110)]
+2025-06-10 19:22:38,364 - MoETrainer - INFO - Epoch   0: Loss=1.0982, Bin Acc=0.367, R²=0.7316, Temp=2.00
+2025-06-10 19:22:38,364 - MoETrainer - INFO -          Predicted bin counts: [np.int64(0), np.int64(0), np.int64(300)]
+2025-06-10 19:22:38,759 - MoETrainer - INFO - Early stopping at epoch 25
+2025-06-10 19:22:38,760 - MoETrainer - INFO - Loaded best model: Bin Acc=0.367, R²=0.7316
+2025-06-10 19:22:48,625 - MoETrainer - INFO - Loading data...
+2025-06-10 19:22:48,625 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:22:48,626 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:22:48,627 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:22:48,628 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:22:48,629 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:22:48,629 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:22:48,633 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:22:48,633 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:22:48,635 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:22:48,636 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:22:48,637 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:22:48,638 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:22:48,639 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:22:48,639 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:22:48,640 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:22:48,641 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:22:49,415 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:22:49,415 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:22:49,416 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:22:49,416 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:22:49,417 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:22:49,911 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:22:49,912 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:22:49,912 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:22:49,913 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:22:49,913 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:22:50,399 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:22:50,399 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:22:50,400 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:22:50,400 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:22:50,401 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:22:50,403 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:22:50,666 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:22:50,668 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:22:50,668 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:22:50,684 - MoETrainer - INFO - Training perfect routing neural gate...
+2025-06-10 19:22:50,685 - MoETrainer - INFO - Goal: Learn features → bin assignment (mimic hard routing)
+2025-06-10 19:22:50,686 - MoETrainer - INFO - Routing target analysis:
+2025-06-10 19:22:50,686 - MoETrainer - INFO -   Bin boundaries: ['$419,653', '$506,842']
+2025-06-10 19:22:50,687 - MoETrainer - INFO -   Train bin distribution: [np.int64(433), np.int64(433), np.int64(434)]
+2025-06-10 19:22:50,687 - MoETrainer - INFO -   Val bin distribution: [np.int64(97), np.int64(93), np.int64(110)]
+2025-06-10 19:22:53,471 - MoETrainer - INFO - Epoch   0: Loss=1.0990, Bin Acc=0.367, R²=0.7316, Temp=2.00
+2025-06-10 19:22:53,472 - MoETrainer - INFO -          Predicted bin counts: [np.int64(0), np.int64(0), np.int64(300)]
+2025-06-10 19:22:53,962 - MoETrainer - INFO - Epoch  25: Loss=0.9859, Bin Acc=0.637, R²=0.7686, Temp=1.75
+2025-06-10 19:22:54,518 - MoETrainer - INFO - Epoch  50: Loss=0.7354, Bin Acc=0.753, R²=0.8690, Temp=1.50
+2025-06-10 19:22:54,519 - MoETrainer - INFO -          Predicted bin counts: [np.int64(144), np.int64(32), np.int64(124)]
+2025-06-10 19:22:55,013 - MoETrainer - INFO - Epoch  75: Loss=0.5798, Bin Acc=0.757, R²=0.8652, Temp=1.25
+2025-06-10 19:22:55,036 - MoETrainer - INFO - Early stopping at epoch 76
+2025-06-10 19:22:55,037 - MoETrainer - INFO - Loaded best model: Bin Acc=0.757, R²=0.8697
+2025-06-10 19:25:01,615 - MoETrainer - INFO - Loading data...
+2025-06-10 19:25:01,616 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:25:01,616 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:25:01,618 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:25:01,618 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:25:01,619 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:25:01,619 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:25:01,623 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:25:01,624 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:25:01,626 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:25:01,626 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:25:01,627 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:25:01,628 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:25:01,629 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:25:01,629 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:25:01,630 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:25:01,630 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:25:02,345 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:25:02,345 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:25:02,345 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:25:02,346 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:25:02,346 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:25:02,780 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:25:02,780 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:25:02,781 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:25:02,781 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:25:02,782 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:25:03,215 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:25:03,216 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:25:03,216 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:25:03,216 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:25:03,217 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:25:03,218 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:25:03,465 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:25:03,467 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:25:03,467 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:25:03,480 - MoETrainer - INFO - Training perfect routing neural gate...
+2025-06-10 19:25:03,481 - MoETrainer - INFO - Goal: Learn features → bin assignment (mimic hard routing)
+2025-06-10 19:25:03,483 - MoETrainer - INFO - Routing target analysis:
+2025-06-10 19:25:03,483 - MoETrainer - INFO -   Bin boundaries: ['$419,653', '$506,842']
+2025-06-10 19:25:03,484 - MoETrainer - INFO -   Train bin distribution: [np.int64(433), np.int64(433), np.int64(434)]
+2025-06-10 19:25:03,484 - MoETrainer - INFO -   Val bin distribution: [np.int64(97), np.int64(93), np.int64(110)]
+2025-06-10 19:25:06,203 - MoETrainer - INFO - Epoch   0: Loss=1.0985, Bin Acc=0.323, R²=0.6194, Temp=2.00
+2025-06-10 19:25:06,204 - MoETrainer - INFO -          Predicted bin counts: [np.int64(300), np.int64(0), np.int64(0)]
+2025-06-10 19:25:06,523 - MoETrainer - INFO - Epoch  25: Loss=1.0048, Bin Acc=0.413, R²=0.5038, Temp=1.75
+2025-06-10 19:25:06,568 - MoETrainer - INFO - Early stopping at epoch 27
+2025-06-10 19:25:06,569 - MoETrainer - INFO - Loaded best model: Bin Acc=0.530, R²=0.8120
+2025-06-10 19:27:21,357 - MoETrainer - INFO - === TRAINING BASELINE MODEL ===
+2025-06-10 19:27:21,358 - MoETrainer - INFO - Configuration: Hybrid DataManager + Enhanced Expert Factory
+2025-06-10 19:27:21,358 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:27:21,359 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:27:21,360 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:27:21,361 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:27:21,361 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:27:21,362 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:27:21,365 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:27:21,366 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:27:21,369 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:27:21,370 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:27:21,370 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:27:21,371 - MoETrainer - INFO - Finding optimal bin configuration...
+2025-06-10 19:27:21,373 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:27:21,374 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:27:21,375 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:27:21,375 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:27:21,376 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:27:22,076 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:27:22,076 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:27:22,077 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:27:22,077 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:27:22,078 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:27:22,509 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:27:22,510 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:27:22,510 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:27:22,511 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:27:22,511 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:27:22,950 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:27:22,950 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:27:22,950 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:27:22,951 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:27:22,951 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:27:22,953 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:27:23,227 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:27:23,230 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:27:23,230 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:27:23,251 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:27:23,251 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:27:23,251 - MoETrainer - INFO -   RMSE: $27,918
+2025-06-10 19:27:23,252 - MoETrainer - INFO -   MAE: $22,153 (4.7% of mean)
+2025-06-10 19:27:23,252 - MoETrainer - INFO -   R²: 0.9268
+2025-06-10 19:27:23,252 - MoETrainer - INFO -   MAPE: 5.3%
+2025-06-10 19:27:23,253 - MoETrainer - INFO -   MPE: +0.5% (bias: overprediction)
+2025-06-10 19:27:23,253 - MoETrainer - INFO -   Median APE: 3.9%
+2025-06-10 19:27:23,254 - MoETrainer - INFO -   Within 5%: 59.8% of predictions
+2025-06-10 19:27:23,254 - MoETrainer - INFO -   Within 10%: 89.8% of predictions
+2025-06-10 19:27:23,254 - MoETrainer - INFO -   Within 15%: 96.2% of predictions
+2025-06-10 19:27:23,255 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:27:23,255 - MoETrainer - INFO -   Bin 0: RMSE=$32,300, R²=0.6490, Samples=132
+2025-06-10 19:27:23,256 - MoETrainer - INFO -   Bin 1: RMSE=$22,868, R²=0.1699, Samples=130
+2025-06-10 19:27:23,258 - MoETrainer - INFO -   Bin 2: RMSE=$27,724, R²=0.7245, Samples=138
+2025-06-10 19:27:23,258 - MoETrainer - INFO -   3 bins: R²=0.9268, RMSE=$27,918
+2025-06-10 19:27:23,259 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:27:23,260 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:27:23,260 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:27:23,261 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:27:23,261 - MoETrainer - INFO - Bin 0: Small bin (325), using rule-based selection
+2025-06-10 19:27:23,399 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:27:23,399 - MoETrainer - INFO -   1. ridge_medium: Score=0.722, MAE=$22686, RMSE=$29813, R²=0.573 [SELECTED]
+2025-06-10 19:27:23,400 - MoETrainer - INFO -   2. xgb_conservative: Score=0.821, MAE=$26010, RMSE=$33876, R²=0.449
+2025-06-10 19:27:23,400 - MoETrainer - INFO -   3. rf_shallow: Score=0.823, MAE=$26253, RMSE=$33930, R²=0.447
+2025-06-10 19:27:23,401 - MoETrainer - INFO - Bin 1: Small bin (325), using rule-based selection
+2025-06-10 19:27:23,536 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:27:23,536 - MoETrainer - INFO -   1. ridge_medium: Score=0.875, MAE=$14693, RMSE=$16957, R²=0.293 [SELECTED]
+2025-06-10 19:27:23,537 - MoETrainer - INFO -   2. rf_shallow: Score=0.886, MAE=$14793, RMSE=$17177, R²=0.274
+2025-06-10 19:27:23,537 - MoETrainer - INFO -   3. lgb_conservative: Score=0.898, MAE=$14726, RMSE=$17410, R²=0.254
+2025-06-10 19:27:23,538 - MoETrainer - INFO - Bin 2: Small bin (325), using rule-based selection
+2025-06-10 19:27:23,689 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:27:23,690 - MoETrainer - INFO -   1. ridge_medium: Score=0.914, MAE=$15819, RMSE=$18279, R²=0.222 [SELECTED]
+2025-06-10 19:27:23,691 - MoETrainer - INFO -   2. rf_shallow: Score=0.945, MAE=$15926, RMSE=$18921, R²=0.167
+2025-06-10 19:27:23,691 - MoETrainer - INFO -   3. xgb_conservative: Score=0.952, MAE=$15850, RMSE=$19066, R²=0.154
+2025-06-10 19:27:23,692 - MoETrainer - INFO - Bin 3: Small bin (325), using rule-based selection
+2025-06-10 19:27:23,834 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:27:23,835 - MoETrainer - INFO -   1. ridge_medium: Score=0.615, MAE=$22836, RMSE=$29251, R²=0.667 [SELECTED]
+2025-06-10 19:27:23,835 - MoETrainer - INFO -   2. xgb_conservative: Score=0.697, MAE=$27000, RMSE=$33043, R²=0.575
+2025-06-10 19:27:23,835 - MoETrainer - INFO -   3. rf_shallow: Score=0.704, MAE=$25873, RMSE=$33524, R²=0.563
+2025-06-10 19:27:23,836 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:27:23,837 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 325 samples
+2025-06-10 19:27:23,839 - MoETrainer - INFO - Successfully trained ridge_medium for bin 1: 325 samples
+2025-06-10 19:27:23,840 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 325 samples
+2025-06-10 19:27:23,843 - MoETrainer - INFO - Successfully trained ridge_medium for bin 3: 325 samples
+2025-06-10 19:27:23,844 - MoETrainer - INFO - Training completed: 4 experts trained
+2025-06-10 19:27:23,854 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:27:23,854 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:27:23,855 - MoETrainer - INFO -   RMSE: $24,112
+2025-06-10 19:27:23,855 - MoETrainer - INFO -   MAE: $18,450 (3.9% of mean)
+2025-06-10 19:27:23,855 - MoETrainer - INFO -   R²: 0.9454
+2025-06-10 19:27:23,856 - MoETrainer - INFO -   MAPE: 4.5%
+2025-06-10 19:27:23,856 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:27:23,857 - MoETrainer - INFO -   Median APE: 3.3%
+2025-06-10 19:27:23,858 - MoETrainer - INFO -   Within 5%: 72.0% of predictions
+2025-06-10 19:27:23,858 - MoETrainer - INFO -   Within 10%: 92.5% of predictions
+2025-06-10 19:27:23,859 - MoETrainer - INFO -   Within 15%: 96.2% of predictions
+2025-06-10 19:27:23,860 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:27:23,860 - MoETrainer - INFO -   Bin 0: RMSE=$33,148, R²=0.5590, Samples=95
+2025-06-10 19:27:23,861 - MoETrainer - INFO -   Bin 1: RMSE=$17,375, R²=0.2550, Samples=97
+2025-06-10 19:27:23,861 - MoETrainer - INFO -   Bin 2: RMSE=$16,333, R²=0.2695, Samples=104
+2025-06-10 19:27:23,861 - MoETrainer - INFO -   Bin 3: RMSE=$26,154, R²=0.6891, Samples=104
+2025-06-10 19:27:23,862 - MoETrainer - INFO -   4 bins: R²=0.9454, RMSE=$24,112
+2025-06-10 19:27:23,863 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:27:23,863 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:27:23,863 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:27:23,864 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:27:23,864 - MoETrainer - INFO - Bin 0: Small bin (260), using rule-based selection
+2025-06-10 19:27:23,994 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:27:23,994 - MoETrainer - INFO -   1. xgb_conservative: Score=0.738, MAE=$19489, RMSE=$24559, R²=0.539 [SELECTED]
+2025-06-10 19:27:23,995 - MoETrainer - INFO -   2. ridge_medium: Score=0.741, MAE=$19033, RMSE=$24690, R²=0.534
+2025-06-10 19:27:23,995 - MoETrainer - INFO -   3. rf_shallow: Score=0.758, MAE=$19557, RMSE=$25270, R²=0.512
+2025-06-10 19:27:23,995 - MoETrainer - INFO - Bin 1: Small bin (260), using rule-based selection
+2025-06-10 19:27:24,138 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:27:24,138 - MoETrainer - INFO -   1. ridge_medium: Score=0.952, MAE=$13640, RMSE=$15963, R²=0.156 [SELECTED]
+2025-06-10 19:27:24,138 - MoETrainer - INFO -   2. lgb_conservative: Score=0.985, MAE=$13536, RMSE=$16537, R²=0.095
+2025-06-10 19:27:24,139 - MoETrainer - INFO -   3. rf_shallow: Score=0.989, MAE=$13518, RMSE=$16612, R²=0.086
+2025-06-10 19:27:24,140 - MoETrainer - INFO - Bin 2: Small bin (260), using rule-based selection
+2025-06-10 19:27:24,311 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:27:24,311 - MoETrainer - INFO -   1. ridge_medium: Score=0.959, MAE=$11353, RMSE=$13509, R²=0.127 [SELECTED]
+2025-06-10 19:27:24,312 - MoETrainer - INFO -   2. lgb_conservative: Score=0.995, MAE=$11905, RMSE=$14024, R²=0.060
+2025-06-10 19:27:24,313 - MoETrainer - INFO -   3. xgb_conservative: Score=0.999, MAE=$11751, RMSE=$14085, R²=0.051
+2025-06-10 19:27:24,313 - MoETrainer - INFO - Bin 3: Small bin (260), using rule-based selection
+2025-06-10 19:27:24,567 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:27:24,567 - MoETrainer - INFO -   1. rf_shallow: Score=0.859, MAE=$13079, RMSE=$15177, R²=0.304 [SELECTED]
+2025-06-10 19:27:24,567 - MoETrainer - INFO -   2. lgb_conservative: Score=0.870, MAE=$13192, RMSE=$15363, R²=0.287
+2025-06-10 19:27:24,568 - MoETrainer - INFO -   3. xgb_conservative: Score=0.879, MAE=$13011, RMSE=$15543, R²=0.270
+2025-06-10 19:27:24,568 - MoETrainer - INFO - Bin 4: Small bin (260), using rule-based selection
+2025-06-10 19:27:24,703 - MoETrainer - INFO - Bin 4: Rule-based selection results:
+2025-06-10 19:27:24,703 - MoETrainer - INFO -   1. ridge_medium: Score=0.640, MAE=$23184, RMSE=$28966, R²=0.638 [SELECTED]
+2025-06-10 19:27:24,704 - MoETrainer - INFO -   2. xgb_conservative: Score=0.716, MAE=$27054, RMSE=$32309, R²=0.549
+2025-06-10 19:27:24,704 - MoETrainer - INFO -   3. rf_shallow: Score=0.736, MAE=$27307, RMSE=$33250, R²=0.523
+2025-06-10 19:27:24,704 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:27:24,728 - MoETrainer - INFO - Successfully trained xgb_conservative for bin 0: 260 samples
+2025-06-10 19:27:24,732 - MoETrainer - INFO - Successfully trained ridge_medium for bin 1: 260 samples
+2025-06-10 19:27:24,734 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 260 samples
+2025-06-10 19:27:24,824 - MoETrainer - INFO - Successfully trained rf_shallow for bin 3: 260 samples
+2025-06-10 19:27:24,826 - MoETrainer - INFO - Successfully trained ridge_medium for bin 4: 260 samples
+2025-06-10 19:27:24,826 - MoETrainer - INFO - Training completed: 5 experts trained
+2025-06-10 19:27:24,845 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:27:24,845 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:27:24,846 - MoETrainer - INFO -   RMSE: $21,997
+2025-06-10 19:27:24,846 - MoETrainer - INFO -   MAE: $16,611 (3.6% of mean)
+2025-06-10 19:27:24,846 - MoETrainer - INFO -   R²: 0.9546
+2025-06-10 19:27:24,846 - MoETrainer - INFO -   MAPE: 4.1%
+2025-06-10 19:27:24,847 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:27:24,847 - MoETrainer - INFO -   Median APE: 2.8%
+2025-06-10 19:27:24,847 - MoETrainer - INFO -   Within 5%: 77.0% of predictions
+2025-06-10 19:27:24,848 - MoETrainer - INFO -   Within 10%: 95.0% of predictions
+2025-06-10 19:27:24,848 - MoETrainer - INFO -   Within 15%: 97.0% of predictions
+2025-06-10 19:27:24,849 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:27:24,849 - MoETrainer - INFO -   Bin 0: RMSE=$33,812, R²=0.4603, Samples=75
+2025-06-10 19:27:24,850 - MoETrainer - INFO -   Bin 1: RMSE=$15,070, R²=0.1720, Samples=82
+2025-06-10 19:27:24,850 - MoETrainer - INFO -   Bin 2: RMSE=$14,555, R²=0.0691, Samples=77
+2025-06-10 19:27:24,850 - MoETrainer - INFO -   Bin 3: RMSE=$15,881, R²=0.2028, Samples=79
+2025-06-10 19:27:24,851 - MoETrainer - INFO -   Bin 4: RMSE=$24,668, R²=0.6859, Samples=87
+2025-06-10 19:27:24,851 - MoETrainer - INFO -   5 bins: R²=0.9546, RMSE=$21,997
+2025-06-10 19:27:24,852 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:27:24,853 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:27:24,853 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:27:24,853 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:27:24,854 - MoETrainer - INFO - Bin 0: Small bin (217), using rule-based selection
+2025-06-10 19:27:24,996 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:27:24,996 - MoETrainer - INFO -   1. ridge_medium: Score=0.810, MAE=$23026, RMSE=$30602, R²=0.457 [SELECTED]
+2025-06-10 19:27:24,996 - MoETrainer - INFO -   2. lgb_conservative: Score=0.818, MAE=$23260, RMSE=$30936, R²=0.445
+2025-06-10 19:27:24,997 - MoETrainer - INFO -   3. rf_shallow: Score=0.819, MAE=$23340, RMSE=$30952, R²=0.445
+2025-06-10 19:27:24,997 - MoETrainer - INFO - Bin 1: Small bin (216), using rule-based selection
+2025-06-10 19:27:25,116 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:27:25,117 - MoETrainer - INFO -   1. rf_shallow: Score=0.938, MAE=$12983, RMSE=$15086, R²=0.182 [SELECTED]
+2025-06-10 19:27:25,117 - MoETrainer - INFO -   2. xgb_conservative: Score=0.944, MAE=$13119, RMSE=$15187, R²=0.171
+2025-06-10 19:27:25,118 - MoETrainer - INFO -   3. lgb_conservative: Score=0.967, MAE=$13676, RMSE=$15553, R²=0.131
+2025-06-10 19:27:25,118 - MoETrainer - INFO - Bin 2: Small bin (217), using rule-based selection
+2025-06-10 19:27:25,238 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:27:25,239 - MoETrainer - INFO -   1. ridge_medium: Score=1.019, MAE=$11724, RMSE=$13256, R²=0.014 [SELECTED]
+2025-06-10 19:27:25,240 - MoETrainer - INFO -   2. rf_shallow: Score=1.023, MAE=$11751, RMSE=$13300, R²=0.008
+2025-06-10 19:27:25,240 - MoETrainer - INFO -   3. xgb_conservative: Score=1.058, MAE=$11783, RMSE=$13435, R²=-0.013
+2025-06-10 19:27:25,240 - MoETrainer - INFO - Bin 3: Small bin (216), using rule-based selection
+2025-06-10 19:27:25,372 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:27:25,372 - MoETrainer - INFO -   1. lgb_conservative: Score=0.941, MAE=$10900, RMSE=$12570, R²=0.156 [SELECTED]
+2025-06-10 19:27:25,373 - MoETrainer - INFO -   2. rf_shallow: Score=0.956, MAE=$11194, RMSE=$12770, R²=0.129
+2025-06-10 19:27:25,373 - MoETrainer - INFO -   3. xgb_conservative: Score=0.960, MAE=$11133, RMSE=$12828, R²=0.121
+2025-06-10 19:27:25,373 - MoETrainer - INFO - Bin 4: Small bin (217), using rule-based selection
+2025-06-10 19:27:25,484 - MoETrainer - INFO - Bin 4: Rule-based selection results:
+2025-06-10 19:27:25,485 - MoETrainer - INFO -   1. xgb_conservative: Score=0.896, MAE=$12613, RMSE=$15047, R²=0.239 [SELECTED]
+2025-06-10 19:27:25,485 - MoETrainer - INFO -   2. ridge_medium: Score=0.918, MAE=$13043, RMSE=$15410, R²=0.202
+2025-06-10 19:27:25,485 - MoETrainer - INFO -   3. rf_shallow: Score=0.936, MAE=$12718, RMSE=$15737, R²=0.167
+2025-06-10 19:27:25,486 - MoETrainer - INFO - Bin 5: Small bin (217), using rule-based selection
+2025-06-10 19:27:25,595 - MoETrainer - INFO - Bin 5: Rule-based selection results:
+2025-06-10 19:27:25,595 - MoETrainer - INFO -   1. ridge_medium: Score=0.695, MAE=$25362, RMSE=$31017, R²=0.572 [SELECTED]
+2025-06-10 19:27:25,595 - MoETrainer - INFO -   2. rf_shallow: Score=0.696, MAE=$25262, RMSE=$31034, R²=0.571
+2025-06-10 19:27:25,596 - MoETrainer - INFO -   3. lgb_conservative: Score=0.718, MAE=$25063, RMSE=$32107, R²=0.541
+2025-06-10 19:27:25,596 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:27:25,598 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 217 samples
+2025-06-10 19:27:25,681 - MoETrainer - INFO - Successfully trained rf_shallow for bin 1: 216 samples
+2025-06-10 19:27:25,683 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 217 samples
+2025-06-10 19:27:25,692 - MoETrainer - INFO - Successfully trained lgb_conservative for bin 3: 216 samples
+2025-06-10 19:27:25,713 - MoETrainer - INFO - Successfully trained xgb_conservative for bin 4: 217 samples
+2025-06-10 19:27:25,715 - MoETrainer - INFO - Successfully trained ridge_medium for bin 5: 217 samples
+2025-06-10 19:27:25,715 - MoETrainer - INFO - Training completed: 6 experts trained
+2025-06-10 19:27:25,736 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:27:25,736 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:27:25,736 - MoETrainer - INFO -   RMSE: $20,818
+2025-06-10 19:27:25,737 - MoETrainer - INFO -   MAE: $15,792 (3.4% of mean)
+2025-06-10 19:27:25,737 - MoETrainer - INFO -   R²: 0.9593
+2025-06-10 19:27:25,737 - MoETrainer - INFO -   MAPE: 3.9%
+2025-06-10 19:27:25,738 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:27:25,738 - MoETrainer - INFO -   Median APE: 2.7%
+2025-06-10 19:27:25,738 - MoETrainer - INFO -   Within 5%: 78.5% of predictions
+2025-06-10 19:27:25,738 - MoETrainer - INFO -   Within 10%: 94.8% of predictions
+2025-06-10 19:27:25,738 - MoETrainer - INFO -   Within 15%: 97.5% of predictions
+2025-06-10 19:27:25,739 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:27:25,739 - MoETrainer - INFO -   Bin 0: RMSE=$33,641, R²=0.3913, Samples=61
+2025-06-10 19:27:25,739 - MoETrainer - INFO -   Bin 1: RMSE=$16,714, R²=0.0131, Samples=71
+2025-06-10 19:27:25,739 - MoETrainer - INFO -   Bin 2: RMSE=$13,295, R²=-0.0186, Samples=60
+2025-06-10 19:27:25,739 - MoETrainer - INFO -   Bin 3: RMSE=$12,095, R²=-0.0541, Samples=70
+2025-06-10 19:27:25,740 - MoETrainer - INFO -   Bin 4: RMSE=$17,058, R²=0.1041, Samples=68
+2025-06-10 19:27:25,740 - MoETrainer - INFO -   Bin 5: RMSE=$25,029, R²=0.6323, Samples=70
+2025-06-10 19:27:25,740 - MoETrainer - INFO -   6 bins: R²=0.9593, RMSE=$20,818
+2025-06-10 19:27:25,740 - MoETrainer - INFO - Optimal configuration: 6 bins
+2025-06-10 19:27:25,741 - MoETrainer - INFO - Training final model with 6 bins...
+2025-06-10 19:27:25,741 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:27:25,743 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:27:25,743 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:27:25,744 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:27:25,744 - MoETrainer - INFO - Bin 0: Small bin (217), using rule-based selection
+2025-06-10 19:27:25,871 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:27:25,871 - MoETrainer - INFO -   1. ridge_medium: Score=0.810, MAE=$23026, RMSE=$30602, R²=0.457 [SELECTED]
+2025-06-10 19:27:25,872 - MoETrainer - INFO -   2. lgb_conservative: Score=0.818, MAE=$23260, RMSE=$30936, R²=0.445
+2025-06-10 19:27:25,872 - MoETrainer - INFO -   3. rf_shallow: Score=0.819, MAE=$23340, RMSE=$30952, R²=0.445
+2025-06-10 19:27:25,873 - MoETrainer - INFO - Bin 1: Small bin (216), using rule-based selection
+2025-06-10 19:27:25,986 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:27:25,986 - MoETrainer - INFO -   1. rf_shallow: Score=0.938, MAE=$12983, RMSE=$15086, R²=0.182 [SELECTED]
+2025-06-10 19:27:25,987 - MoETrainer - INFO -   2. xgb_conservative: Score=0.944, MAE=$13119, RMSE=$15187, R²=0.171
+2025-06-10 19:27:25,987 - MoETrainer - INFO -   3. lgb_conservative: Score=0.967, MAE=$13676, RMSE=$15553, R²=0.131
+2025-06-10 19:27:25,988 - MoETrainer - INFO - Bin 2: Small bin (217), using rule-based selection
+2025-06-10 19:27:26,106 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:27:26,106 - MoETrainer - INFO -   1. ridge_medium: Score=1.019, MAE=$11724, RMSE=$13256, R²=0.014 [SELECTED]
+2025-06-10 19:27:26,107 - MoETrainer - INFO -   2. rf_shallow: Score=1.023, MAE=$11751, RMSE=$13300, R²=0.008
+2025-06-10 19:27:26,107 - MoETrainer - INFO -   3. xgb_conservative: Score=1.058, MAE=$11783, RMSE=$13435, R²=-0.013
+2025-06-10 19:27:26,108 - MoETrainer - INFO - Bin 3: Small bin (216), using rule-based selection
+2025-06-10 19:27:26,240 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:27:26,240 - MoETrainer - INFO -   1. lgb_conservative: Score=0.941, MAE=$10900, RMSE=$12570, R²=0.156 [SELECTED]
+2025-06-10 19:27:26,241 - MoETrainer - INFO -   2. rf_shallow: Score=0.956, MAE=$11194, RMSE=$12770, R²=0.129
+2025-06-10 19:27:26,241 - MoETrainer - INFO -   3. xgb_conservative: Score=0.960, MAE=$11133, RMSE=$12828, R²=0.121
+2025-06-10 19:27:26,242 - MoETrainer - INFO - Bin 4: Small bin (217), using rule-based selection
+2025-06-10 19:27:26,351 - MoETrainer - INFO - Bin 4: Rule-based selection results:
+2025-06-10 19:27:26,352 - MoETrainer - INFO -   1. xgb_conservative: Score=0.896, MAE=$12613, RMSE=$15047, R²=0.239 [SELECTED]
+2025-06-10 19:27:26,352 - MoETrainer - INFO -   2. ridge_medium: Score=0.918, MAE=$13043, RMSE=$15410, R²=0.202
+2025-06-10 19:27:26,353 - MoETrainer - INFO -   3. rf_shallow: Score=0.936, MAE=$12718, RMSE=$15737, R²=0.167
+2025-06-10 19:27:26,353 - MoETrainer - INFO - Bin 5: Small bin (217), using rule-based selection
+2025-06-10 19:27:26,471 - MoETrainer - INFO - Bin 5: Rule-based selection results:
+2025-06-10 19:27:26,472 - MoETrainer - INFO -   1. ridge_medium: Score=0.695, MAE=$25362, RMSE=$31017, R²=0.572 [SELECTED]
+2025-06-10 19:27:26,472 - MoETrainer - INFO -   2. rf_shallow: Score=0.696, MAE=$25262, RMSE=$31034, R²=0.571
+2025-06-10 19:27:26,473 - MoETrainer - INFO -   3. lgb_conservative: Score=0.718, MAE=$25063, RMSE=$32107, R²=0.541
+2025-06-10 19:27:26,473 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:27:26,476 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 217 samples
+2025-06-10 19:27:26,561 - MoETrainer - INFO - Successfully trained rf_shallow for bin 1: 216 samples
+2025-06-10 19:27:26,563 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 217 samples
+2025-06-10 19:27:26,580 - MoETrainer - INFO - Successfully trained lgb_conservative for bin 3: 216 samples
+2025-06-10 19:27:26,601 - MoETrainer - INFO - Successfully trained xgb_conservative for bin 4: 217 samples
+2025-06-10 19:27:26,602 - MoETrainer - INFO - Successfully trained ridge_medium for bin 5: 217 samples
+2025-06-10 19:27:26,603 - MoETrainer - INFO - Training completed: 6 experts trained
+2025-06-10 19:27:26,623 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:27:26,623 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:27:26,624 - MoETrainer - INFO -   RMSE: $20,818
+2025-06-10 19:27:26,624 - MoETrainer - INFO -   MAE: $15,792 (3.4% of mean)
+2025-06-10 19:27:26,624 - MoETrainer - INFO -   R²: 0.9593
+2025-06-10 19:27:26,624 - MoETrainer - INFO -   MAPE: 3.9%
+2025-06-10 19:27:26,624 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:27:26,625 - MoETrainer - INFO -   Median APE: 2.7%
+2025-06-10 19:27:26,625 - MoETrainer - INFO -   Within 5%: 78.5% of predictions
+2025-06-10 19:27:26,625 - MoETrainer - INFO -   Within 10%: 94.8% of predictions
+2025-06-10 19:27:26,625 - MoETrainer - INFO -   Within 15%: 97.5% of predictions
+2025-06-10 19:27:26,625 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:27:26,626 - MoETrainer - INFO -   Bin 0: RMSE=$33,641, R²=0.3913, Samples=61
+2025-06-10 19:27:26,627 - MoETrainer - INFO -   Bin 1: RMSE=$16,714, R²=0.0131, Samples=71
+2025-06-10 19:27:26,627 - MoETrainer - INFO -   Bin 2: RMSE=$13,295, R²=-0.0186, Samples=60
+2025-06-10 19:27:26,627 - MoETrainer - INFO -   Bin 3: RMSE=$12,095, R²=-0.0541, Samples=70
+2025-06-10 19:27:26,628 - MoETrainer - INFO -   Bin 4: RMSE=$17,058, R²=0.1041, Samples=68
+2025-06-10 19:27:26,628 - MoETrainer - INFO -   Bin 5: RMSE=$25,029, R²=0.6323, Samples=70
+2025-06-10 19:27:26,628 - MoETrainer - INFO - Final Expert Configuration:
+2025-06-10 19:27:26,629 - MoETrainer - INFO -   Bin 0: ridge_medium
+2025-06-10 19:27:26,629 - MoETrainer - INFO -   Bin 1: rf_shallow
+2025-06-10 19:27:26,629 - MoETrainer - INFO -   Bin 2: ridge_medium
+2025-06-10 19:27:26,629 - MoETrainer - INFO -   Bin 3: lgb_conservative
+2025-06-10 19:27:26,630 - MoETrainer - INFO -   Bin 4: xgb_conservative
+2025-06-10 19:27:26,630 - MoETrainer - INFO -   Bin 5: ridge_medium
+2025-06-10 19:27:26,630 - MoETrainer - INFO - === COMPREHENSIVE BASELINE EVALUATION ===
+2025-06-10 19:27:26,631 - MoETrainer - INFO - === BASELINE MODEL TRAINING COMPLETE ===
+2025-06-10 19:27:26,632 - MoETrainer - INFO - Final Performance: R² = 0.9593
+2025-06-10 19:27:26,632 - MoETrainer - INFO - Final RMSE: $20,818
+2025-06-10 19:27:26,632 - MoETrainer - INFO - Final MAE: $15,792
+2025-06-10 19:28:34,645 - MoETrainer - INFO - === TRAINING BASELINE MODEL ===
+2025-06-10 19:28:34,645 - MoETrainer - INFO - Configuration: Hybrid DataManager + Enhanced Expert Factory
+2025-06-10 19:28:34,646 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:28:34,646 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:28:34,648 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:28:34,648 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:28:34,649 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:28:34,649 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:28:34,653 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:28:34,654 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:28:34,656 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:28:34,657 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:28:34,657 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:28:34,658 - MoETrainer - INFO - Finding optimal bin configuration...
+2025-06-10 19:28:34,658 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:28:34,659 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:28:34,660 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:28:34,661 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:28:34,662 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:28:35,414 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:28:35,414 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:28:35,414 - MoETrainer - INFO -   2. lgb_conservative: Score=0.716, MAE=$23708, RMSE=$30793, R²=0.577
+2025-06-10 19:28:35,415 - MoETrainer - INFO -   3. lgb_balanced: Score=0.717, MAE=$24528, RMSE=$30703, R²=0.580
+2025-06-10 19:28:35,416 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:28:35,895 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:28:35,895 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:28:35,896 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:28:35,896 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:28:35,897 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:28:36,332 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:28:36,333 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:28:36,333 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:28:36,334 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:28:36,334 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:28:36,336 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:28:36,580 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:28:36,582 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:28:36,582 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:28:36,601 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:28:36,602 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:28:36,603 - MoETrainer - INFO -   RMSE: $27,918
+2025-06-10 19:28:36,604 - MoETrainer - INFO -   MAE: $22,153 (4.7% of mean)
+2025-06-10 19:28:36,604 - MoETrainer - INFO -   R²: 0.9268
+2025-06-10 19:28:36,605 - MoETrainer - INFO -   MAPE: 5.3%
+2025-06-10 19:28:36,605 - MoETrainer - INFO -   MPE: +0.5% (bias: overprediction)
+2025-06-10 19:28:36,605 - MoETrainer - INFO -   Median APE: 3.9%
+2025-06-10 19:28:36,606 - MoETrainer - INFO -   Within 5%: 59.8% of predictions
+2025-06-10 19:28:36,606 - MoETrainer - INFO -   Within 10%: 89.8% of predictions
+2025-06-10 19:28:36,607 - MoETrainer - INFO -   Within 15%: 96.2% of predictions
+2025-06-10 19:28:36,607 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:28:36,607 - MoETrainer - INFO -   Bin 0: RMSE=$32,300, R²=0.6490, Samples=132
+2025-06-10 19:28:36,608 - MoETrainer - INFO -   Bin 1: RMSE=$22,868, R²=0.1699, Samples=130
+2025-06-10 19:28:36,608 - MoETrainer - INFO -   Bin 2: RMSE=$27,724, R²=0.7245, Samples=138
+2025-06-10 19:28:36,608 - MoETrainer - INFO -   3 bins: R²=0.9268, RMSE=$27,918
+2025-06-10 19:28:36,609 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:28:36,610 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:28:36,610 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:28:36,611 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:28:36,611 - MoETrainer - INFO - Bin 0: Small bin (325), using rule-based selection
+2025-06-10 19:28:36,737 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:28:36,738 - MoETrainer - INFO -   1. ridge_medium: Score=0.722, MAE=$22686, RMSE=$29813, R²=0.573 [SELECTED]
+2025-06-10 19:28:36,738 - MoETrainer - INFO -   2. xgb_conservative: Score=0.821, MAE=$26010, RMSE=$33876, R²=0.449
+2025-06-10 19:28:36,738 - MoETrainer - INFO -   3. rf_shallow: Score=0.823, MAE=$26253, RMSE=$33930, R²=0.447
+2025-06-10 19:28:36,739 - MoETrainer - INFO - Bin 1: Small bin (325), using rule-based selection
+2025-06-10 19:28:36,863 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:28:36,863 - MoETrainer - INFO -   1. ridge_medium: Score=0.875, MAE=$14693, RMSE=$16957, R²=0.293 [SELECTED]
+2025-06-10 19:28:36,864 - MoETrainer - INFO -   2. rf_shallow: Score=0.886, MAE=$14793, RMSE=$17177, R²=0.274
+2025-06-10 19:28:36,864 - MoETrainer - INFO -   3. lgb_conservative: Score=0.898, MAE=$14726, RMSE=$17410, R²=0.254
+2025-06-10 19:28:36,865 - MoETrainer - INFO - Bin 2: Small bin (325), using rule-based selection
+2025-06-10 19:28:36,992 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:28:36,993 - MoETrainer - INFO -   1. ridge_medium: Score=0.914, MAE=$15819, RMSE=$18279, R²=0.222 [SELECTED]
+2025-06-10 19:28:36,993 - MoETrainer - INFO -   2. rf_shallow: Score=0.945, MAE=$15926, RMSE=$18921, R²=0.167
+2025-06-10 19:28:36,994 - MoETrainer - INFO -   3. xgb_conservative: Score=0.952, MAE=$15850, RMSE=$19066, R²=0.154
+2025-06-10 19:28:36,994 - MoETrainer - INFO - Bin 3: Small bin (325), using rule-based selection
+2025-06-10 19:28:37,117 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:28:37,118 - MoETrainer - INFO -   1. ridge_medium: Score=0.615, MAE=$22836, RMSE=$29251, R²=0.667 [SELECTED]
+2025-06-10 19:28:37,118 - MoETrainer - INFO -   2. xgb_conservative: Score=0.697, MAE=$27000, RMSE=$33043, R²=0.575
+2025-06-10 19:28:37,119 - MoETrainer - INFO -   3. rf_shallow: Score=0.704, MAE=$25873, RMSE=$33524, R²=0.563
+2025-06-10 19:28:37,119 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:28:37,121 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 325 samples
+2025-06-10 19:28:37,122 - MoETrainer - INFO - Successfully trained ridge_medium for bin 1: 325 samples
+2025-06-10 19:28:37,124 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 325 samples
+2025-06-10 19:28:37,126 - MoETrainer - INFO - Successfully trained ridge_medium for bin 3: 325 samples
+2025-06-10 19:28:37,126 - MoETrainer - INFO - Training completed: 4 experts trained
+2025-06-10 19:28:37,139 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:28:37,139 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:28:37,140 - MoETrainer - INFO -   RMSE: $24,112
+2025-06-10 19:28:37,140 - MoETrainer - INFO -   MAE: $18,450 (3.9% of mean)
+2025-06-10 19:28:37,140 - MoETrainer - INFO -   R²: 0.9454
+2025-06-10 19:28:37,141 - MoETrainer - INFO -   MAPE: 4.5%
+2025-06-10 19:28:37,141 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:28:37,141 - MoETrainer - INFO -   Median APE: 3.3%
+2025-06-10 19:28:37,142 - MoETrainer - INFO -   Within 5%: 72.0% of predictions
+2025-06-10 19:28:37,142 - MoETrainer - INFO -   Within 10%: 92.5% of predictions
+2025-06-10 19:28:37,142 - MoETrainer - INFO -   Within 15%: 96.2% of predictions
+2025-06-10 19:28:37,143 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:28:37,143 - MoETrainer - INFO -   Bin 0: RMSE=$33,148, R²=0.5590, Samples=95
+2025-06-10 19:28:37,143 - MoETrainer - INFO -   Bin 1: RMSE=$17,375, R²=0.2550, Samples=97
+2025-06-10 19:28:37,144 - MoETrainer - INFO -   Bin 2: RMSE=$16,333, R²=0.2695, Samples=104
+2025-06-10 19:28:37,144 - MoETrainer - INFO -   Bin 3: RMSE=$26,154, R²=0.6891, Samples=104
+2025-06-10 19:28:37,145 - MoETrainer - INFO -   4 bins: R²=0.9454, RMSE=$24,112
+2025-06-10 19:28:37,146 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:28:37,146 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:28:37,147 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:28:37,147 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:28:37,147 - MoETrainer - INFO - Bin 0: Small bin (260), using rule-based selection
+2025-06-10 19:28:37,269 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:28:37,270 - MoETrainer - INFO -   1. xgb_conservative: Score=0.738, MAE=$19489, RMSE=$24559, R²=0.539 [SELECTED]
+2025-06-10 19:28:37,270 - MoETrainer - INFO -   2. ridge_medium: Score=0.741, MAE=$19033, RMSE=$24690, R²=0.534
+2025-06-10 19:28:37,270 - MoETrainer - INFO -   3. rf_shallow: Score=0.758, MAE=$19557, RMSE=$25270, R²=0.512
+2025-06-10 19:28:37,271 - MoETrainer - INFO - Bin 1: Small bin (260), using rule-based selection
+2025-06-10 19:28:37,389 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:28:37,389 - MoETrainer - INFO -   1. ridge_medium: Score=0.952, MAE=$13640, RMSE=$15963, R²=0.156 [SELECTED]
+2025-06-10 19:28:37,390 - MoETrainer - INFO -   2. lgb_conservative: Score=0.985, MAE=$13536, RMSE=$16537, R²=0.095
+2025-06-10 19:28:37,390 - MoETrainer - INFO -   3. rf_shallow: Score=0.989, MAE=$13518, RMSE=$16612, R²=0.086
+2025-06-10 19:28:37,391 - MoETrainer - INFO - Bin 2: Small bin (260), using rule-based selection
+2025-06-10 19:28:37,507 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:28:37,508 - MoETrainer - INFO -   1. ridge_medium: Score=0.959, MAE=$11353, RMSE=$13509, R²=0.127 [SELECTED]
+2025-06-10 19:28:37,508 - MoETrainer - INFO -   2. lgb_conservative: Score=0.995, MAE=$11905, RMSE=$14024, R²=0.060
+2025-06-10 19:28:37,509 - MoETrainer - INFO -   3. xgb_conservative: Score=0.999, MAE=$11751, RMSE=$14085, R²=0.051
+2025-06-10 19:28:37,509 - MoETrainer - INFO - Bin 3: Small bin (260), using rule-based selection
+2025-06-10 19:28:37,628 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:28:37,628 - MoETrainer - INFO -   1. rf_shallow: Score=0.859, MAE=$13079, RMSE=$15177, R²=0.304 [SELECTED]
+2025-06-10 19:28:37,629 - MoETrainer - INFO -   2. lgb_conservative: Score=0.870, MAE=$13192, RMSE=$15363, R²=0.287
+2025-06-10 19:28:37,629 - MoETrainer - INFO -   3. xgb_conservative: Score=0.879, MAE=$13011, RMSE=$15543, R²=0.270
+2025-06-10 19:28:37,630 - MoETrainer - INFO - Bin 4: Small bin (260), using rule-based selection
+2025-06-10 19:28:37,745 - MoETrainer - INFO - Bin 4: Rule-based selection results:
+2025-06-10 19:28:37,745 - MoETrainer - INFO -   1. ridge_medium: Score=0.640, MAE=$23184, RMSE=$28966, R²=0.638 [SELECTED]
+2025-06-10 19:28:37,746 - MoETrainer - INFO -   2. xgb_conservative: Score=0.716, MAE=$27054, RMSE=$32309, R²=0.549
+2025-06-10 19:28:37,746 - MoETrainer - INFO -   3. rf_shallow: Score=0.736, MAE=$27307, RMSE=$33250, R²=0.523
+2025-06-10 19:28:37,747 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:28:37,768 - MoETrainer - INFO - Successfully trained xgb_conservative for bin 0: 260 samples
+2025-06-10 19:28:37,770 - MoETrainer - INFO - Successfully trained ridge_medium for bin 1: 260 samples
+2025-06-10 19:28:37,773 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 260 samples
+2025-06-10 19:28:37,861 - MoETrainer - INFO - Successfully trained rf_shallow for bin 3: 260 samples
+2025-06-10 19:28:37,863 - MoETrainer - INFO - Successfully trained ridge_medium for bin 4: 260 samples
+2025-06-10 19:28:37,863 - MoETrainer - INFO - Training completed: 5 experts trained
+2025-06-10 19:28:37,883 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:28:37,883 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:28:37,883 - MoETrainer - INFO -   RMSE: $21,997
+2025-06-10 19:28:37,884 - MoETrainer - INFO -   MAE: $16,611 (3.6% of mean)
+2025-06-10 19:28:37,884 - MoETrainer - INFO -   R²: 0.9546
+2025-06-10 19:28:37,885 - MoETrainer - INFO -   MAPE: 4.1%
+2025-06-10 19:28:37,885 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:28:37,886 - MoETrainer - INFO -   Median APE: 2.8%
+2025-06-10 19:28:37,886 - MoETrainer - INFO -   Within 5%: 77.0% of predictions
+2025-06-10 19:28:37,887 - MoETrainer - INFO -   Within 10%: 95.0% of predictions
+2025-06-10 19:28:37,887 - MoETrainer - INFO -   Within 15%: 97.0% of predictions
+2025-06-10 19:28:37,888 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:28:37,889 - MoETrainer - INFO -   Bin 0: RMSE=$33,812, R²=0.4603, Samples=75
+2025-06-10 19:28:37,890 - MoETrainer - INFO -   Bin 1: RMSE=$15,070, R²=0.1720, Samples=82
+2025-06-10 19:28:37,890 - MoETrainer - INFO -   Bin 2: RMSE=$14,555, R²=0.0691, Samples=77
+2025-06-10 19:28:37,891 - MoETrainer - INFO -   Bin 3: RMSE=$15,881, R²=0.2028, Samples=79
+2025-06-10 19:28:37,891 - MoETrainer - INFO -   Bin 4: RMSE=$24,668, R²=0.6859, Samples=87
+2025-06-10 19:28:37,892 - MoETrainer - INFO -   5 bins: R²=0.9546, RMSE=$21,997
+2025-06-10 19:28:37,893 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:28:37,893 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:28:37,894 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:28:37,894 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:28:37,894 - MoETrainer - INFO - Bin 0: Small bin (217), using rule-based selection
+2025-06-10 19:28:38,008 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:28:38,008 - MoETrainer - INFO -   1. ridge_medium: Score=0.810, MAE=$23026, RMSE=$30602, R²=0.457 [SELECTED]
+2025-06-10 19:28:38,009 - MoETrainer - INFO -   2. lgb_conservative: Score=0.818, MAE=$23260, RMSE=$30936, R²=0.445
+2025-06-10 19:28:38,009 - MoETrainer - INFO -   3. rf_shallow: Score=0.819, MAE=$23340, RMSE=$30952, R²=0.445
+2025-06-10 19:28:38,010 - MoETrainer - INFO - Bin 1: Small bin (216), using rule-based selection
+2025-06-10 19:28:38,127 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:28:38,127 - MoETrainer - INFO -   1. rf_shallow: Score=0.938, MAE=$12983, RMSE=$15086, R²=0.182 [SELECTED]
+2025-06-10 19:28:38,128 - MoETrainer - INFO -   2. xgb_conservative: Score=0.944, MAE=$13119, RMSE=$15187, R²=0.171
+2025-06-10 19:28:38,128 - MoETrainer - INFO -   3. lgb_conservative: Score=0.967, MAE=$13676, RMSE=$15553, R²=0.131
+2025-06-10 19:28:38,128 - MoETrainer - INFO - Bin 2: Small bin (217), using rule-based selection
+2025-06-10 19:28:38,240 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:28:38,241 - MoETrainer - INFO -   1. ridge_medium: Score=1.019, MAE=$11724, RMSE=$13256, R²=0.014 [SELECTED]
+2025-06-10 19:28:38,241 - MoETrainer - INFO -   2. rf_shallow: Score=1.023, MAE=$11751, RMSE=$13300, R²=0.008
+2025-06-10 19:28:38,241 - MoETrainer - INFO -   3. xgb_conservative: Score=1.058, MAE=$11783, RMSE=$13435, R²=-0.013
+2025-06-10 19:28:38,242 - MoETrainer - INFO - Bin 3: Small bin (216), using rule-based selection
+2025-06-10 19:28:38,354 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:28:38,355 - MoETrainer - INFO -   1. lgb_conservative: Score=0.941, MAE=$10900, RMSE=$12570, R²=0.156 [SELECTED]
+2025-06-10 19:28:38,355 - MoETrainer - INFO -   2. rf_shallow: Score=0.956, MAE=$11194, RMSE=$12770, R²=0.129
+2025-06-10 19:28:38,355 - MoETrainer - INFO -   3. xgb_conservative: Score=0.960, MAE=$11133, RMSE=$12828, R²=0.121
+2025-06-10 19:28:38,356 - MoETrainer - INFO - Bin 4: Small bin (217), using rule-based selection
+2025-06-10 19:28:38,472 - MoETrainer - INFO - Bin 4: Rule-based selection results:
+2025-06-10 19:28:38,473 - MoETrainer - INFO -   1. xgb_conservative: Score=0.896, MAE=$12613, RMSE=$15047, R²=0.239 [SELECTED]
+2025-06-10 19:28:38,473 - MoETrainer - INFO -   2. ridge_medium: Score=0.918, MAE=$13043, RMSE=$15410, R²=0.202
+2025-06-10 19:28:38,473 - MoETrainer - INFO -   3. rf_shallow: Score=0.936, MAE=$12718, RMSE=$15737, R²=0.167
+2025-06-10 19:28:38,474 - MoETrainer - INFO - Bin 5: Small bin (217), using rule-based selection
+2025-06-10 19:28:38,587 - MoETrainer - INFO - Bin 5: Rule-based selection results:
+2025-06-10 19:28:38,587 - MoETrainer - INFO -   1. ridge_medium: Score=0.695, MAE=$25362, RMSE=$31017, R²=0.572 [SELECTED]
+2025-06-10 19:28:38,587 - MoETrainer - INFO -   2. rf_shallow: Score=0.696, MAE=$25262, RMSE=$31034, R²=0.571
+2025-06-10 19:28:38,588 - MoETrainer - INFO -   3. lgb_conservative: Score=0.718, MAE=$25063, RMSE=$32107, R²=0.541
+2025-06-10 19:28:38,589 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:28:38,590 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 217 samples
+2025-06-10 19:28:38,669 - MoETrainer - INFO - Successfully trained rf_shallow for bin 1: 216 samples
+2025-06-10 19:28:38,671 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 217 samples
+2025-06-10 19:28:38,681 - MoETrainer - INFO - Successfully trained lgb_conservative for bin 3: 216 samples
+2025-06-10 19:28:38,702 - MoETrainer - INFO - Successfully trained xgb_conservative for bin 4: 217 samples
+2025-06-10 19:28:38,705 - MoETrainer - INFO - Successfully trained ridge_medium for bin 5: 217 samples
+2025-06-10 19:28:38,706 - MoETrainer - INFO - Training completed: 6 experts trained
+2025-06-10 19:28:38,727 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:28:38,727 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:28:38,727 - MoETrainer - INFO -   RMSE: $20,818
+2025-06-10 19:28:38,728 - MoETrainer - INFO -   MAE: $15,792 (3.4% of mean)
+2025-06-10 19:28:38,728 - MoETrainer - INFO -   R²: 0.9593
+2025-06-10 19:28:38,728 - MoETrainer - INFO -   MAPE: 3.9%
+2025-06-10 19:28:38,729 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:28:38,729 - MoETrainer - INFO -   Median APE: 2.7%
+2025-06-10 19:28:38,729 - MoETrainer - INFO -   Within 5%: 78.5% of predictions
+2025-06-10 19:28:38,729 - MoETrainer - INFO -   Within 10%: 94.8% of predictions
+2025-06-10 19:28:38,729 - MoETrainer - INFO -   Within 15%: 97.5% of predictions
+2025-06-10 19:28:38,730 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:28:38,730 - MoETrainer - INFO -   Bin 0: RMSE=$33,641, R²=0.3913, Samples=61
+2025-06-10 19:28:38,730 - MoETrainer - INFO -   Bin 1: RMSE=$16,714, R²=0.0131, Samples=71
+2025-06-10 19:28:38,730 - MoETrainer - INFO -   Bin 2: RMSE=$13,295, R²=-0.0186, Samples=60
+2025-06-10 19:28:38,730 - MoETrainer - INFO -   Bin 3: RMSE=$12,095, R²=-0.0541, Samples=70
+2025-06-10 19:28:38,731 - MoETrainer - INFO -   Bin 4: RMSE=$17,058, R²=0.1041, Samples=68
+2025-06-10 19:28:38,731 - MoETrainer - INFO -   Bin 5: RMSE=$25,029, R²=0.6323, Samples=70
+2025-06-10 19:28:38,731 - MoETrainer - INFO -   6 bins: R²=0.9593, RMSE=$20,818
+2025-06-10 19:28:38,732 - MoETrainer - INFO - Optimal configuration: 6 bins
+2025-06-10 19:28:38,732 - MoETrainer - INFO - Training final model with 6 bins...
+2025-06-10 19:28:38,733 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:28:38,733 - MoETrainer - INFO - Created expert pool with 12 models
+2025-06-10 19:28:38,733 - MoETrainer - INFO - LightGBM models available for high-quality selection
+2025-06-10 19:28:38,733 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:28:38,734 - MoETrainer - INFO - Bin 0: Small bin (217), using rule-based selection
+2025-06-10 19:28:38,848 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:28:38,849 - MoETrainer - INFO -   1. ridge_medium: Score=0.810, MAE=$23026, RMSE=$30602, R²=0.457 [SELECTED]
+2025-06-10 19:28:38,849 - MoETrainer - INFO -   2. lgb_conservative: Score=0.818, MAE=$23260, RMSE=$30936, R²=0.445
+2025-06-10 19:28:38,849 - MoETrainer - INFO -   3. rf_shallow: Score=0.819, MAE=$23340, RMSE=$30952, R²=0.445
+2025-06-10 19:28:38,850 - MoETrainer - INFO - Bin 1: Small bin (216), using rule-based selection
+2025-06-10 19:28:38,962 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:28:38,962 - MoETrainer - INFO -   1. rf_shallow: Score=0.938, MAE=$12983, RMSE=$15086, R²=0.182 [SELECTED]
+2025-06-10 19:28:38,963 - MoETrainer - INFO -   2. xgb_conservative: Score=0.944, MAE=$13119, RMSE=$15187, R²=0.171
+2025-06-10 19:28:38,963 - MoETrainer - INFO -   3. lgb_conservative: Score=0.967, MAE=$13676, RMSE=$15553, R²=0.131
+2025-06-10 19:28:38,964 - MoETrainer - INFO - Bin 2: Small bin (217), using rule-based selection
+2025-06-10 19:28:39,076 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:28:39,076 - MoETrainer - INFO -   1. ridge_medium: Score=1.019, MAE=$11724, RMSE=$13256, R²=0.014 [SELECTED]
+2025-06-10 19:28:39,077 - MoETrainer - INFO -   2. rf_shallow: Score=1.023, MAE=$11751, RMSE=$13300, R²=0.008
+2025-06-10 19:28:39,077 - MoETrainer - INFO -   3. xgb_conservative: Score=1.058, MAE=$11783, RMSE=$13435, R²=-0.013
+2025-06-10 19:28:39,077 - MoETrainer - INFO - Bin 3: Small bin (216), using rule-based selection
+2025-06-10 19:28:39,191 - MoETrainer - INFO - Bin 3: Rule-based selection results:
+2025-06-10 19:28:39,191 - MoETrainer - INFO -   1. lgb_conservative: Score=0.941, MAE=$10900, RMSE=$12570, R²=0.156 [SELECTED]
+2025-06-10 19:28:39,192 - MoETrainer - INFO -   2. rf_shallow: Score=0.956, MAE=$11194, RMSE=$12770, R²=0.129
+2025-06-10 19:28:39,192 - MoETrainer - INFO -   3. xgb_conservative: Score=0.960, MAE=$11133, RMSE=$12828, R²=0.121
+2025-06-10 19:28:39,193 - MoETrainer - INFO - Bin 4: Small bin (217), using rule-based selection
+2025-06-10 19:28:39,304 - MoETrainer - INFO - Bin 4: Rule-based selection results:
+2025-06-10 19:28:39,304 - MoETrainer - INFO -   1. xgb_conservative: Score=0.896, MAE=$12613, RMSE=$15047, R²=0.239 [SELECTED]
+2025-06-10 19:28:39,305 - MoETrainer - INFO -   2. ridge_medium: Score=0.918, MAE=$13043, RMSE=$15410, R²=0.202
+2025-06-10 19:28:39,305 - MoETrainer - INFO -   3. rf_shallow: Score=0.936, MAE=$12718, RMSE=$15737, R²=0.167
+2025-06-10 19:28:39,306 - MoETrainer - INFO - Bin 5: Small bin (217), using rule-based selection
+2025-06-10 19:28:39,421 - MoETrainer - INFO - Bin 5: Rule-based selection results:
+2025-06-10 19:28:39,421 - MoETrainer - INFO -   1. ridge_medium: Score=0.695, MAE=$25362, RMSE=$31017, R²=0.572 [SELECTED]
+2025-06-10 19:28:39,422 - MoETrainer - INFO -   2. rf_shallow: Score=0.696, MAE=$25262, RMSE=$31034, R²=0.571
+2025-06-10 19:28:39,422 - MoETrainer - INFO -   3. lgb_conservative: Score=0.718, MAE=$25063, RMSE=$32107, R²=0.541
+2025-06-10 19:28:39,422 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:28:39,424 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 217 samples
+2025-06-10 19:28:39,506 - MoETrainer - INFO - Successfully trained rf_shallow for bin 1: 216 samples
+2025-06-10 19:28:39,507 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 217 samples
+2025-06-10 19:28:39,518 - MoETrainer - INFO - Successfully trained lgb_conservative for bin 3: 216 samples
+2025-06-10 19:28:39,541 - MoETrainer - INFO - Successfully trained xgb_conservative for bin 4: 217 samples
+2025-06-10 19:28:39,542 - MoETrainer - INFO - Successfully trained ridge_medium for bin 5: 217 samples
+2025-06-10 19:28:39,543 - MoETrainer - INFO - Training completed: 6 experts trained
+2025-06-10 19:28:39,565 - MoETrainer - INFO - === Model Evaluation Results ===
+2025-06-10 19:28:39,565 - MoETrainer - INFO - Overall Performance:
+2025-06-10 19:28:39,566 - MoETrainer - INFO -   RMSE: $20,818
+2025-06-10 19:28:39,566 - MoETrainer - INFO -   MAE: $15,792 (3.4% of mean)
+2025-06-10 19:28:39,566 - MoETrainer - INFO -   R²: 0.9593
+2025-06-10 19:28:39,566 - MoETrainer - INFO -   MAPE: 3.9%
+2025-06-10 19:28:39,566 - MoETrainer - INFO -   MPE: +0.8% (bias: overprediction)
+2025-06-10 19:28:39,567 - MoETrainer - INFO -   Median APE: 2.7%
+2025-06-10 19:28:39,567 - MoETrainer - INFO -   Within 5%: 78.5% of predictions
+2025-06-10 19:28:39,567 - MoETrainer - INFO -   Within 10%: 94.8% of predictions
+2025-06-10 19:28:39,567 - MoETrainer - INFO -   Within 15%: 97.5% of predictions
+2025-06-10 19:28:39,567 - MoETrainer - INFO - 
+Per-bin Performance:
+2025-06-10 19:28:39,568 - MoETrainer - INFO -   Bin 0: RMSE=$33,641, R²=0.3913, Samples=61
+2025-06-10 19:28:39,568 - MoETrainer - INFO -   Bin 1: RMSE=$16,714, R²=0.0131, Samples=71
+2025-06-10 19:28:39,568 - MoETrainer - INFO -   Bin 2: RMSE=$13,295, R²=-0.0186, Samples=60
+2025-06-10 19:28:39,568 - MoETrainer - INFO -   Bin 3: RMSE=$12,095, R²=-0.0541, Samples=70
+2025-06-10 19:28:39,569 - MoETrainer - INFO -   Bin 4: RMSE=$17,058, R²=0.1041, Samples=68
+2025-06-10 19:28:39,569 - MoETrainer - INFO -   Bin 5: RMSE=$25,029, R²=0.6323, Samples=70
+2025-06-10 19:28:39,569 - MoETrainer - INFO - Final Expert Configuration:
+2025-06-10 19:28:39,569 - MoETrainer - INFO -   Bin 0: ridge_medium
+2025-06-10 19:28:39,570 - MoETrainer - INFO -   Bin 1: rf_shallow
+2025-06-10 19:28:39,571 - MoETrainer - INFO -   Bin 2: ridge_medium
+2025-06-10 19:28:39,571 - MoETrainer - INFO -   Bin 3: lgb_conservative
+2025-06-10 19:28:39,572 - MoETrainer - INFO -   Bin 4: xgb_conservative
+2025-06-10 19:28:39,572 - MoETrainer - INFO -   Bin 5: ridge_medium
+2025-06-10 19:28:39,573 - MoETrainer - INFO - === COMPREHENSIVE BASELINE EVALUATION ===
+2025-06-10 19:28:39,574 - MoETrainer - INFO - === BASELINE MODEL TRAINING COMPLETE ===
+2025-06-10 19:28:39,574 - MoETrainer - INFO - Final Performance: R² = 0.9593
+2025-06-10 19:28:39,574 - MoETrainer - INFO - Final RMSE: $20,818
+2025-06-10 19:28:39,575 - MoETrainer - INFO - Final MAE: $15,792
