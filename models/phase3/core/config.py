@@ -41,7 +41,7 @@ class MoEConfig:
     model_dir: str = 'models_enhanced'
     log_file: str = 'training.log'
     ROOT = Path(__file__).resolve().parents[2]
-    data_path: str = str(ROOT / "data" / "California Dataset.csv")
+    data_path: str = str(ROOT / "data" / "without30.csv")
     
     @classmethod
     def from_dict(cls, config_dict: Dict[str, Any]) -> 'MoEConfig':

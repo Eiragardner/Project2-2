@@ -37,5 +37,7 @@ We evaluate and compare the following ML models:
 * **Linear Regression** *(Baseline model)*
 * **Random Forest**
 * **XGBoost**
+* **Stacked Model**
+
 
 We also apply SHAP (SHapley Additive exPlanations) to interpret feature importance.
