@@ -13511,3 +13511,49 @@ Per-bin Performance:
 2025-06-10 19:28:39,574 - MoETrainer - INFO - Final Performance: R² = 0.9593
 2025-06-10 19:28:39,574 - MoETrainer - INFO - Final RMSE: $20,818
 2025-06-10 19:28:39,575 - MoETrainer - INFO - Final MAE: $15,792
+2025-06-10 19:48:42,324 - MoETrainer - INFO - Loading data...
+2025-06-10 19:48:42,324 - MoETrainer - INFO - Loading data with hybrid processing...
+2025-06-10 19:48:42,325 - MoETrainer - WARNING - No data file found. Generating sample data.
+2025-06-10 19:48:42,326 - MoETrainer - INFO - Loaded dataset: 2000 samples, 7 features
+2025-06-10 19:48:42,327 - MoETrainer - INFO - Target statistics: mean=$466,218, std=$102,122
+2025-06-10 19:48:42,327 - MoETrainer - INFO - Target range: [$135,933, $809,379]
+2025-06-10 19:48:42,328 - MoETrainer - INFO - Preprocessing data with hybrid approach...
+2025-06-10 19:48:42,333 - MoETrainer - INFO - Applied robust scaling
+2025-06-10 19:48:42,334 - MoETrainer - INFO - Splitting data...
+2025-06-10 19:48:42,338 - MoETrainer - INFO - Data split - Train: 1300, Val: 300, Test: 400
+2025-06-10 19:48:42,338 - MoETrainer - INFO - Train target: mean=$465,711, std=$101,303
+2025-06-10 19:48:42,339 - MoETrainer - INFO - Test target: mean=$467,709, std=$103,219
+2025-06-10 19:48:42,341 - MoETrainer - INFO - Selecting optimal experts with size-aware strategy...
+2025-06-10 19:48:42,342 - MoETrainer - INFO - Created expert pool with 9 models
+2025-06-10 19:48:42,342 - MoETrainer - INFO - XGBoost models available for high-quality selection
+2025-06-10 19:48:42,343 - MoETrainer - INFO - Bin 0: Small bin (433), using rule-based selection
+2025-06-10 19:48:42,914 - MoETrainer - INFO - Bin 0: Rule-based selection results:
+2025-06-10 19:48:42,915 - MoETrainer - INFO -   1. ridge_medium: Score=0.693, MAE=$23726, RMSE=$29680, R²=0.607 [SELECTED]
+2025-06-10 19:48:42,915 - MoETrainer - INFO -   2. rf_shallow: Score=0.718, MAE=$23801, RMSE=$30844, R²=0.576
+2025-06-10 19:48:42,916 - MoETrainer - INFO -   3. rf_medium: Score=0.720, MAE=$24118, RMSE=$30921, R²=0.574
+2025-06-10 19:48:42,916 - MoETrainer - INFO - Bin 1: Small bin (433), using rule-based selection
+2025-06-10 19:48:43,518 - MoETrainer - INFO - Bin 1: Rule-based selection results:
+2025-06-10 19:48:43,518 - MoETrainer - INFO -   1. rf_medium: Score=0.801, MAE=$16363, RMSE=$19372, R²=0.413 [SELECTED]
+2025-06-10 19:48:43,520 - MoETrainer - INFO -   2. xgb_balanced: Score=0.801, MAE=$15689, RMSE=$19414, R²=0.411
+2025-06-10 19:48:43,521 - MoETrainer - INFO -   3. rf_shallow: Score=0.804, MAE=$16532, RMSE=$19432, R²=0.410
+2025-06-10 19:48:43,521 - MoETrainer - INFO - Bin 2: Small bin (434), using rule-based selection
+2025-06-10 19:48:44,101 - MoETrainer - INFO - Bin 2: Rule-based selection results:
+2025-06-10 19:48:44,117 - MoETrainer - INFO -   1. ridge_medium: Score=0.542, MAE=$22792, RMSE=$28912, R²=0.748 [SELECTED]
+2025-06-10 19:48:44,118 - MoETrainer - INFO -   2. rf_medium: Score=0.616, MAE=$25644, RMSE=$32926, R²=0.673
+2025-06-10 19:48:44,118 - MoETrainer - INFO -   3. xgb_conservative: Score=0.620, MAE=$26294, RMSE=$33040, R²=0.671
+2025-06-10 19:48:44,118 - MoETrainer - INFO - Training selected expert models...
+2025-06-10 19:48:44,120 - MoETrainer - INFO - Successfully trained ridge_medium for bin 0: 433 samples
+2025-06-10 19:48:44,462 - MoETrainer - INFO - Successfully trained rf_medium for bin 1: 433 samples
+2025-06-10 19:48:44,465 - MoETrainer - INFO - Successfully trained ridge_medium for bin 2: 434 samples
+2025-06-10 19:48:44,465 - MoETrainer - INFO - Training completed: 3 experts trained
+2025-06-10 19:48:44,482 - MoETrainer - INFO - Training perfect routing neural gate...
+2025-06-10 19:48:44,482 - MoETrainer - INFO - Goal: Learn features → bin assignment (mimic hard routing)
+2025-06-10 19:48:44,486 - MoETrainer - INFO - Routing target analysis:
+2025-06-10 19:48:44,486 - MoETrainer - INFO -   Bin boundaries: ['$419,653', '$506,842']
+2025-06-10 19:48:44,488 - MoETrainer - INFO -   Train bin distribution: [433, 433, 434]
+2025-06-10 19:48:44,488 - MoETrainer - INFO -   Val bin distribution: [97, 93, 110]
+2025-06-10 19:48:47,676 - MoETrainer - INFO - Epoch   0: Loss=1.0995, Bin Acc=0.323, R²=0.6194, Temp=2.00
+2025-06-10 19:48:47,676 - MoETrainer - INFO -          Predicted bin counts: [300, 0, 0]
+2025-06-10 19:48:48,166 - MoETrainer - INFO - Epoch  25: Loss=0.9882, Bin Acc=0.823, R²=0.8777, Temp=1.75
+2025-06-10 19:48:48,820 - MoETrainer - INFO - Early stopping at epoch 49
+2025-06-10 19:48:48,821 - MoETrainer - INFO - Loaded best model: Bin Acc=0.853, R²=0.8876
