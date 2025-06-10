@@ -63,7 +63,7 @@ class ImprovedMoEConfig:
     model_dir: str = 'models_enhanced'
     log_file: str = 'training_improved.log'
     ROOT = Path(__file__).resolve().parents[2]
-    data_path: str = str(ROOT / "data" / "California Dataset.csv")
+    data_path: str = str(ROOT / "data" / "without30.csv")
     
     def get_optimal_bins(self, n_samples: int, n_features: int) -> int:
         """Calculate optimal number of bins based on data characteristics"""
