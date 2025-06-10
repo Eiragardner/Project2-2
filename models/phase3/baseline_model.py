@@ -4,10 +4,17 @@ Baseline Model: Hybrid DataManager + Enhanced Expert Factory
 Performance: R² = 0.8380, RMSE = $111,248
 
 This is our production-ready baseline model.
+
+Usage:
+  python -m models.phase3.baseline_model                                   # Use config default
+  python -m models.phase3.baseline_model "California Dataset.csv"          # Override dataset
+  python -m models.phase3.baseline_model "prepared_data.csv"               # Use prepared data
+  python -m models.phase3.baseline_model "without30.csv"                   # Use different dataset
 """
 import os
 import sys
 import numpy as np
+import argparse
 from typing import Dict, Any, Tuple
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
@@ -29,7 +36,7 @@ class BaselineModel:
     Use this as the benchmark for any new approaches.
     """
     
-    def __init__(self, config: MoEConfig = None):
+    def __init__(self, config: MoEConfig = None, dataset_path: str = None):
         if config is None:
             config = MoEConfig(
                 min_bin_size=30,
@@ -38,6 +45,10 @@ class BaselineModel:
                 scaling_method='robust',
                 random_state=42
             )
+        
+        # Override data_path if specified
+        if dataset_path:
+            config.data_path = dataset_path
         
         self.config = config
         self.logger = MoELogger(config.log_file)
@@ -50,10 +61,21 @@ class BaselineModel:
         self.bin_boundaries = None
         self.is_trained = False
         
+        # Reduce logging verbosity for cleaner output
+        import logging
+        self.logger.logger.setLevel(logging.WARNING)
+        
+        # Simple dataset info
+        if dataset_path:
+            print(f"📊 Dataset specified: {dataset_path}")
+        else:
+            print(f"📊 Using config default")
+        print(f"📍 Data path: {self.config.data_path}")
+        
     def train(self) -> Dict[str, Any]:
         """Train the baseline model"""
-        self.logger.info("=== TRAINING BASELINE MODEL ===")
-        self.logger.info("Configuration: Hybrid DataManager + Enhanced Expert Factory")
+        print("🚀 Training Baseline Model...")
+        print("Configuration: Hybrid DataManager + Enhanced Expert Factory")
         
         # Initialize data manager
         self.data_manager = HybridDataManager(self.config, self.logger)
@@ -65,6 +87,10 @@ class BaselineModel:
         
         # Store test data for final evaluation
         self.X_test, self.y_test = X_test, y_test
+        
+        print(f"   Data: {len(X)} samples, {X.shape[1]} features")
+        print(f"   Split: {len(X_train)} train, {len(X_val)} val, {len(X_test)} test")
+        print(f"   Target range: ${y.min():,.0f} - ${y.max():,.0f}")
         
         # Find optimal number of bins (we know it's 6, but let's confirm)
         best_result = self._find_optimal_configuration(
@@ -78,21 +104,24 @@ class BaselineModel:
         
         self.is_trained = True
         
-        self.logger.info("=== BASELINE MODEL TRAINING COMPLETE ===")
-        self.logger.info(f"Final Performance: R² = {final_result['r2']:.4f}")
-        self.logger.info(f"Final RMSE: ${final_result['rmse']:,.0f}")
-        self.logger.info(f"Final MAE: ${final_result['mae']:,.0f}")
+        print(f"✅ Baseline training complete")
+        print(f"   Final R²: {final_result['r2']:.4f}")
+        print(f"   Final RMSE: ${final_result['rmse']:,.0f}")
+        print(f"   Final MAE: ${final_result['mae']:,.0f}")
+        print(f"   Final MAPE: {final_result['mape']:.1f}%")
         
         return final_result
     
     def _find_optimal_configuration(self, X_train, y_train, X_val, y_val, X_test, y_test):
         """Find optimal bin configuration"""
-        self.logger.info("Finding optimal bin configuration...")
+        print("🔍 Finding optimal configuration...")
         
         best_result = None
         best_score = -np.inf
         
         for n_bins in [3, 4, 5, 6]:  # Test different bin configurations
+            print(f"   Testing {n_bins} bins...")
+            
             try:
                 result = self._train_with_n_bins(
                     n_bins, X_train, y_train, X_val, y_val, X_test, y_test
@@ -103,35 +132,44 @@ class BaselineModel:
                     best_result = result
                     best_result['n_bins'] = n_bins
                     
-                self.logger.info(f"  {n_bins} bins: R²={result['r2']:.4f}, RMSE=${result['rmse']:,.0f}")
+                print(f"      R²: {result['r2']:.4f}, RMSE: ${result['rmse']:,.0f}, MAE: ${result['mae']:,.0f}, MAPE: {result['mape']:.1f}%")
                     
             except Exception as e:
-                self.logger.warning(f"Failed with {n_bins} bins: {e}")
+                print(f"      ❌ Failed: {str(e)[:50]}...")
                 continue
         
-        self.logger.info(f"Optimal configuration: {best_result['n_bins']} bins")
+        print(f"   ✅ Optimal: {best_result['n_bins']} bins (R² = {best_result['r2']:.4f}, MAPE = {best_result['mape']:.1f}%)")
         return best_result
     
     def _train_with_n_bins(self, n_bins, X_train, y_train, X_val, y_val, X_test, y_test):
         """Train model with specific number of bins"""
         
-        # Create bins based on target values
+        # Auto-detect California dataset and apply scaling
+        is_california = self._is_california_dataset()
+        price_scale = 100000 if is_california else 1
+        
+        if is_california:
+            print(f"      📊 California dataset detected: Converting to actual prices (*{price_scale:,})")
+        
+        # Create bins
         boundaries = np.percentile(y_train, np.linspace(0, 100, n_bins + 1))[1:-1]
         train_bins = np.digitize(y_train, boundaries)
         test_bins = np.digitize(y_test, boundaries)
         
-        # Initialize enhanced expert factory
-        expert_factory = EnhancedExpertFactory(self.config, self.logger)
+        # Check bin distribution
+        bin_counts = [np.sum(test_bins == i) for i in range(n_bins)]
+        print(f"      📊 Test bin sizes: {bin_counts}")
         
-        # Select optimal experts for each bin
+        # Initialize and train experts
+        expert_factory = EnhancedExpertFactory(self.config, self.logger)
         selected_experts = expert_factory.select_experts_for_bins(
             X_train, y_train, train_bins, n_bins
         )
-        
-        # Train experts
         trained_experts = expert_factory.train_experts(
             X_train, y_train, train_bins, selected_experts
         )
+        
+        print(f"      🔧 Experts trained: {len(trained_experts)}")
         
         # Make predictions
         predictions = np.zeros(len(y_test))
@@ -140,40 +178,78 @@ class BaselineModel:
         for bin_idx in range(n_bins):
             test_mask = test_bins == bin_idx
             if test_mask.sum() > 0 and bin_idx < len(trained_experts):
-                bin_pred = trained_experts[bin_idx].predict(X_test[test_mask])
+                bin_X = X_test[test_mask]
+                bin_y_actual = y_test[test_mask]
+                
+                bin_pred = trained_experts[bin_idx].predict(bin_X)
                 predictions[test_mask] = bin_pred
                 
+                # Calculate bin metrics with proper scaling
+                if len(bin_y_actual) > 0:
+                    bin_r2 = r2_score(bin_y_actual, bin_pred) if len(bin_y_actual) > 1 else 0
+                    bin_rmse = np.sqrt(mean_squared_error(bin_y_actual, bin_pred)) * price_scale
+                    bin_mae = mean_absolute_error(bin_y_actual, bin_pred) * price_scale
+                    
+                    # Calculate MAPE (Mean Absolute Percentage Error)
+                    bin_mape = np.mean(np.abs((bin_y_actual - bin_pred) / bin_y_actual)) * 100
+                    
+                    print(f"      📊 Bin {bin_idx}: {test_mask.sum()} samples, R²={bin_r2:.4f}, RMSE=${bin_rmse:,.0f}, MAE=${bin_mae:,.0f}, MAPE={bin_mape:.1f}%")
+                
                 # Get expert name
-                if bin_idx < len(selected_experts):
-                    expert_name = selected_experts[bin_idx][0]
-                else:
-                    expert_name = "unknown"
+                expert_name = selected_experts[bin_idx][0] if bin_idx < len(selected_experts) else "unknown"
                 expert_info.append(f"Bin {bin_idx}: {expert_name}")
+            else:
+                print(f"      ⚠️  Bin {bin_idx}: {test_mask.sum()} samples (no expert or empty)")
         
-        # Calculate metrics using the enhanced evaluator
-        evaluation_metrics = self.evaluator.evaluate(y_test, predictions, test_bins)
+        # Calculate overall metrics
+        r2 = r2_score(y_test, predictions)
+        rmse_display = np.sqrt(mean_squared_error(y_test, predictions)) * price_scale
+        mae_display = mean_absolute_error(y_test, predictions) * price_scale
+        mape_display = np.mean(np.abs((y_test - predictions) / y_test)) * 100
         
-        # Extract basic metrics for compatibility
-        overall = evaluation_metrics['overall']
-        rmse = overall['rmse']
-        mae = overall['mae']
-        r2 = overall['r2']
+        # Use enhanced evaluator
+        try:
+            evaluation_metrics = self.evaluator.evaluate(y_test, predictions, test_bins)
+            overall = evaluation_metrics['overall']
+        except Exception as e:
+            print(f"      ⚠️  Evaluator failed: {e}")
+            overall = {'rmse': rmse_display, 'mae': mae_display, 'mape': mape_display, 'r2': r2}
+            evaluation_metrics = {'overall': overall}
         
         return {
-            'rmse': rmse,
-            'mae': mae,
+            'rmse': rmse_display,
+            'mae': mae_display,
+            'mape': mape_display,
             'r2': r2,
-            'predictions': predictions,
+            'predictions': predictions * price_scale,
             'expert_info': expert_info,
             'boundaries': boundaries,
             'selected_experts': selected_experts,
             'trained_experts': trained_experts,
-            'full_evaluation': evaluation_metrics  # Include full metrics
+            'full_evaluation': evaluation_metrics,
+            'price_scale': price_scale
         }
+    
+    def _is_california_dataset(self) -> bool:
+        """Auto-detect California housing dataset"""
+        if not hasattr(self, 'data_manager') or not self.data_manager:
+            return False
+        
+        # Check if we have California-specific features and price range
+        if hasattr(self.data_manager, 'feature_names') and self.data_manager.feature_names:
+            features = [str(f).lower() for f in self.data_manager.feature_names]
+            has_california_features = any(f in features for f in ['latitude', 'longitude', 'medinc'])
+            
+            # Check target range (California dataset has prices 0.15-5.0)
+            if hasattr(self, 'y_test'):
+                has_california_range = self.y_test.min() > 0.1 and self.y_test.max() < 6.0
+                return has_california_features and has_california_range
+        
+        return False
     
     def _train_final_model(self, X_train, y_train, X_test, y_test, optimal_bins):
         """Train the final model with optimal configuration"""
-        self.logger.info(f"Training final model with {optimal_bins} bins...")
+        print(f"🔧 Training final model with {optimal_bins} bins...")
         
         # Train with optimal configuration
         result = self._train_with_n_bins(
@@ -185,14 +261,7 @@ class BaselineModel:
         self.trained_experts = result['trained_experts']
         
         # Log expert configuration
-        self.logger.info("Final Expert Configuration:")
-        for info in result['expert_info']:
-            self.logger.info(f"  {info}")
-        
-        # Log comprehensive evaluation if available
-        if 'full_evaluation' in result:
-            self.logger.info("=== COMPREHENSIVE BASELINE EVALUATION ===")
-            # The evaluator will log the detailed metrics automatically
+        print(f"   Expert config: {', '.join([info.split(': ')[1] for info in result['expert_info']])}")
         
         return result
     
@@ -210,7 +279,7 @@ class BaselineModel:
         
         # This is a limitation of target-based binning - in production, 
         # you'd need feature-based binning or a neural gate
-        self.logger.warning("Target-based binning requires price estimates for prediction")
+        print("⚠️  Target-based binning requires price estimates for prediction")
         
         return predictions
     
@@ -218,9 +287,6 @@ class BaselineModel:
         """Comprehensive evaluation on test set"""
         if not self.is_trained:
             raise ValueError("Model must be trained before evaluation")
-        
-        # We already have test predictions from training
-        # In practice, you'd run prediction on test set here
         
         return {
             'status': 'baseline_model_ready',
@@ -233,41 +299,103 @@ class BaselineComparison:
     """Quick comparison tool to verify baseline performance"""
     
     @staticmethod
-    def quick_test():
+    def quick_test(dataset_path=None):
         """Quick test to verify baseline still works"""
-        print("🚀 Testing Baseline Model")
+        print("🚀 BASELINE MODEL TEST")
+        print("="*50)
+        print("Testing: Hybrid DataManager + Enhanced Expert Factory")
+        print("Expected: R² ≈ 0.8380")
+        if dataset_path:
+            print(f"Dataset: {dataset_path}")
         print("="*50)
         
         try:
-            baseline = BaselineModel()
+            baseline = BaselineModel(dataset_path=dataset_path)
             result = baseline.train()
             
-            print(f"\n✅ Baseline Model Performance:")
+            print(f"\n🏆 RESULTS:")
+            dataset_name = os.path.basename(baseline.config.data_path) if baseline.config.data_path else "Generated Data"
+            print(f"   Dataset: {dataset_name}")
             print(f"   R²: {result['r2']:.4f}")
             print(f"   RMSE: ${result['rmse']:,.0f}")
             print(f"   MAE: ${result['mae']:,.0f}")
+            print(f"   MAPE: {result['mape']:.1f}%")
             
+            # Status assessment
             if result['r2'] > 0.83:
-                print(f"   🎉 Excellent! Matches expected performance")
+                status = "EXCELLENT"
+                print(f"\n🎉 EXCELLENT: Matches expected performance!")
             elif result['r2'] > 0.75:
-                print(f"   👍 Good performance")
+                status = "GOOD"
+                print(f"\n✅ GOOD: Strong baseline performance")
             else:
-                print(f"   ⚠️  Performance below expectations")
+                status = "NEEDS_WORK"
+                print(f"\n⚠️  NEEDS WORK: Performance below expectations")
             
-            print(f"\n📋 Expert Configuration:")
-            for info in result['expert_info']:
-                print(f"   {info}")
+            print(f"\n🔧 EXPERTS: {', '.join([info.split(': ')[1] for info in result['expert_info']])}")
+            
+            # Test prediction capability
+            print(f"\n🔮 TESTING PREDICTIONS:")
+            try:
+                test_preds = baseline.predict(baseline.X_test[:5])
+                print(f"   ⚠️  Target-based routing limitation noted")
+                print(f"   💡 Consider neural gate for production deployment")
+            except Exception as e:
+                print(f"   ⚠️  Prediction test: {str(e)[:50]}...")
             
             return result
             
         except Exception as e:
             print(f"❌ Baseline test failed: {e}")
+            import traceback
+            traceback.print_exc()
             return None
 
 
+def parse_arguments():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(
+        description='Baseline Model Training - Hybrid DataManager + Enhanced Expert Factory',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python -m models.phase3.baseline_model                                   # Use config default
+  python -m models.phase3.baseline_model "California Dataset.csv"          # Override dataset
+  python -m models.phase3.baseline_model "prepared_data.csv"               # Use prepared data
+  python -m models.phase3.baseline_model "without30.csv"                   # Use different dataset
+        """
+    )
+    
+    parser.add_argument(
+        'dataset',
+        nargs='?',  # Optional argument
+        help='Path to the dataset file (e.g., "California Dataset.csv")'
+    )
+    
+    parser.add_argument(
+        '--bins',
+        type=int,
+        choices=[3, 4, 5, 6, 7, 8],
+        help='Maximum number of bins to test (default: 6)'
+    )
+    
+    return parser.parse_args()
+
+
 def main():
-    """Test the baseline model"""
-    return BaselineComparison.quick_test()
+    """Main function with command line argument support"""
+    # Parse command line arguments
+    args = parse_arguments()
+    
+    # Print usage info
+    print("🚀 Baseline Model")
+    if args.dataset:
+        print(f"📊 Dataset: {args.dataset}")
+    else:
+        print("📊 Using config default...")
+    
+    # Run baseline test with specified dataset
+    return BaselineComparison.quick_test(args.dataset)
 
 
 if __name__ == "__main__":
