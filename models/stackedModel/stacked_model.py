@@ -99,7 +99,7 @@ def shap_score(X, y):
 
 pipeline = Pipeline([
     ('preprocessor', preprocessor),
-    ('feature_selection', SelectKBest(score_func=shap_score, k=150)),
+    ('feature_selection', SelectKBest(score_func=shap_score, k=67)),
     ('model', model)
 ])
 

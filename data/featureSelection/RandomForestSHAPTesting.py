@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import numpy as np
 from sklearn.compose import ColumnTransformer
@@ -42,48 +44,12 @@ preprocessor = ColumnTransformer(
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
-estimators = [
-    ("LR", LinearRegression()), # Possibly change the LinReg model to Ridge?
-    ("RF", RandomForestRegressor(
-        n_estimators=300,
-        max_depth=20,
-        min_samples_split=5,
-        max_features='sqrt',
-        random_state=42
-    ))
-]
-
-params = {
-    'objective': 'reg:squarederror',
-    'eval_metric': 'rmse',
-    'device': 'cpu',
-    'tree_method': 'hist',
-    'max_depth': 4,
-    'learning_rate': 0.05385798747478051,
-    'subsample': 0.9803117165700693,
-    'colsample_bytree': 0.6582418428502539,
-    'gamma': 0.9556870921340661,
-    'reg_alpha': 0.4103966675466072,
-    'reg_lambda': 0.5467280896406721,
-    'n_estimators': 459
-}
-'''
-    'max_depth': 6,
-    'learning_rate': 0.04641482025331578,
-    'subsample': 0.9174351376290615,
-    'colsample_bytree': 0.7144730708753544,
-    'gamma': 2.9463736411349157,
-    'reg_alpha': 0.44507462797741115,
-    'reg_lambda': 1.2744197467583638,
-    'n_estimators': 499
-'''
-
-model = StackingRegressor(
-    estimators=estimators,
-    final_estimator= xgb.XGBRegressor(**params),
-    cv=5,
-    n_jobs=-1,
-    verbose=0
+model = RandomForestRegressor(
+    n_estimators=300,
+    max_depth=20,
+    min_samples_split=5,
+    max_features='sqrt',
+    random_state=42
 )
 
 # Use inverse RMSE on the original price scale
@@ -110,14 +76,13 @@ rmse_scorer = make_scorer(inverse_rmse, greater_is_better=False)
 # Define pipeline without fixed k
 pipeline = Pipeline([
     ('preprocessor', preprocessor),
-    ('feature_selection', SelectKBest()),  # default k, overridden by grid
+    ('feature_selection', SelectKBest(shap_score)),  # default k, overridden by grid
     ('model', model)
 ])
 
 # Grid search over k values
 param_grid = {
-    'feature_selection__score_func': [shap_score],
-    'feature_selection__k': list(range(145, 156, 1))
+    'feature_selection__k': list(range(20, 41, 1))
 }
 
 grid_search = GridSearchCV(
@@ -130,6 +95,29 @@ grid_search = GridSearchCV(
 )
 
 grid_search.fit(X_train, y_train)
+
+# Extract k values and corresponding (negative) RMSE scores
+k_values = grid_search.cv_results_['param_feature_selection__k'].data
+mean_test_scores = -grid_search.cv_results_['mean_test_score']  # Make RMSE positive
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.xticks(np.arange(20, 41, 1))
+plt.plot(k_values, mean_test_scores, marker='o', linestyle='-')
+plt.xlabel("Number of Selected Features (k)")
+plt.ylabel("Cross-Validated RMSE")
+plt.title("SelectKBest Performance vs. Number of Features")
+plt.grid(True)
+plt.tight_layout()
+
+
+output_path = Path(__file__).parent.parent.parent / "outputs" / "visualisations" / "featureSelection"
+
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
+
+plt.savefig(output_path / "featureSelectionRFPrecise.png")
+#plt.show()
 
 print("\nBest parameters:")
 print(grid_search.best_params_)

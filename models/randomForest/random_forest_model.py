@@ -21,7 +21,13 @@ X_test = X_test.apply(pd.to_numeric, errors='coerce').fillna(0)
 
 print(X_train.dtypes)  
 
-model = RandomForestRegressor(n_estimators=100, random_state=42)
+model = RandomForestRegressor(
+    n_estimators=300,
+    max_depth=20,
+    min_samples_split=5,
+    max_features='sqrt',
+    random_state=42
+)
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)

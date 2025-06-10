@@ -39,3 +39,97 @@ Mean Absolute Error (MAE): 116,127.80
 Mean Squared Error (MSE): 32,235,264,570.68
 Root Mean Squared Error (RMSE): 179,541.82
 R-squared: 0.65
+
+
+SHAP TESTING:
+STACKED MODEL:
+Testing at 10-701 interval 10:
+Best parameters:
+{'feature_selection__k': 70}
+Best CV RMSE: 177,941.78
+
+Final test set results (best k):
+MAE: 115,136.14
+MSE: 31,499,509,566.62
+RMSE: 177,481.01
+R²: 0.65
+
+Testing at 60-81 interval 1:
+Best parameters:
+{'feature_selection__k': 67}
+Best CV RMSE: 177,909.04
+
+Final test set results (best k):
+MAE: 114,778.07
+MSE: 31,358,833,043.63
+RMSE: 177,084.25
+R²: 0.66
+
+Linear Regression:
+Testing at 10-701 interval 10:
+Best parameters:
+{'feature_selection__k': 50}
+Best CV RMSE: 198,841.45
+
+Final test set results (best k):
+MAE: 124,126.77
+MSE: 37,389,816,816.76
+RMSE: 193,364.47
+R²: 0.59
+
+Testing at 40-61 interval 1:
+Best parameters:
+{'feature_selection__k': 52}
+Best CV RMSE: 198,595.03
+
+Final test set results (best k):
+MAE: 123,333.63
+MSE: 36,567,688,080.14
+RMSE: 191,226.80
+R²: 0.60
+
+Random Forest:
+Testing at 10-701 interval 10:
+Best parameters:
+{'feature_selection__k': 30}
+Best CV RMSE: 181,019.90
+
+Final test set results (best k):
+MAE: 112,455.42
+MSE: 31,185,321,980.31
+RMSE: 176,593.66
+R²: 0.66
+
+Testing at 20-41 Interval 1:
+Best parameters:
+{'feature_selection__k': 37}
+Best CV RMSE: 180,366.11
+
+Final test set results (best k):
+MAE: 111,847.68
+MSE: 30,663,782,785.03
+RMSE: 175,110.77
+R²: 0.66
+
+XGBoost:
+Testing at 10-701 at interval 10:
+Best parameters:
+{'feature_selection__k': 220}
+Best CV RMSE: 182,606.13
+
+Final test set results (best k):
+MAE: 114,605.51
+MSE: 31,346,940,856.98
+RMSE: 177,050.67
+R²: 0.66
+
+Testing at 210-231 interval 1:
+Best parameters:
+{'feature_selection__k': 218}
+Best CV RMSE: 182,488.56
+
+Final test set results (best k):
+MAE: 114,092.74
+MSE: 31,309,951,187.81
+RMSE: 176,946.18
+R²: 0.66
