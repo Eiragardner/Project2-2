@@ -26,7 +26,7 @@ class RandomForestModel:
         mse = mean_squared_error(y_test, y_pred)
         rmse = np.sqrt(mse)
         r2 = r2_score(y_test, y_pred)
-        return {"MAE": mae, "MSE": mse, "RMSE": rmse, "R2": r2}
+        return {"MAE": mae, "RMSE": rmse, "R2": r2}
 
     def save_model(self, path):
         saved_object = {
