@@ -59,10 +59,16 @@ def inverse_rmse(y_true_log, y_pred_log):
     return np.sqrt(mean_squared_error(y_true, y_pred))
 
 def shap_score(X, y):
-    modelscore = XGBRegressor(n_estimators=100, max_depth=4, random_state=42)
+    modelscore = RandomForestRegressor(
+        n_estimators=100,
+        max_depth=10,
+        min_samples_split=5,
+        max_features='sqrt',
+        random_state=42
+    )
     modelscore.fit(X, y)
 
-    explainer = shap.Explainer(modelscore)
+    explainer = shap.TreeExplainer(modelscore)
     shap_values = explainer(X)  # returns a matrix of shap values (samples × features)
 
     # Aggregate absolute SHAP values per feature (mean absolute)
@@ -82,7 +88,7 @@ pipeline = Pipeline([
 
 # Grid search over k values
 param_grid = {
-    'feature_selection__k': list(range(20, 41, 1))
+    'feature_selection__k': list(range(10, 31, 1))
 }
 
 grid_search = GridSearchCV(
@@ -102,7 +108,7 @@ mean_test_scores = -grid_search.cv_results_['mean_test_score']  # Make RMSE posi
 
 # Plotting
 plt.figure(figsize=(10, 6))
-plt.xticks(np.arange(20, 41, 1))
+plt.xticks(np.arange(0, 31, 1))
 plt.plot(k_values, mean_test_scores, marker='o', linestyle='-')
 plt.xlabel("Number of Selected Features (k)")
 plt.ylabel("Cross-Validated RMSE")

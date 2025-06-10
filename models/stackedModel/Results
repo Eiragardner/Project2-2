@@ -91,45 +91,45 @@ R²: 0.60
 Random Forest:
 Testing at 10-701 interval 10:
 Best parameters:
-{'feature_selection__k': 30}
-Best CV RMSE: 181,019.90
+{'feature_selection__k': 20}
+Best CV RMSE: 180,611.55
 
 Final test set results (best k):
-MAE: 112,455.42
-MSE: 31,185,321,980.31
-RMSE: 176,593.66
-R²: 0.66
+MAE: 111,642.08
+MSE: 30,196,441,439.03
+RMSE: 173,771.23
+R²: 0.67
 
-Testing at 20-41 Interval 1:
+Testing at 10-31 Interval 1:
 Best parameters:
-{'feature_selection__k': 37}
-Best CV RMSE: 180,366.11
+{'feature_selection__k': 26}
+Best CV RMSE: 180,525.53
 
 Final test set results (best k):
-MAE: 111,847.68
-MSE: 30,663,782,785.03
-RMSE: 175,110.77
+MAE: 112,093.44
+MSE: 30,532,065,073.65
+RMSE: 174,734.27
 R²: 0.66
 
 XGBoost:
 Testing at 10-701 at interval 10:
 Best parameters:
-{'feature_selection__k': 220}
-Best CV RMSE: 182,606.13
+{'feature_selection__k': 130}
+Best CV RMSE: 182,472.08
 
 Final test set results (best k):
-MAE: 114,605.51
-MSE: 31,346,940,856.98
-RMSE: 177,050.67
+MAE: 114,299.70
+MSE: 31,195,003,121.36
+RMSE: 176,621.07
 R²: 0.66
 
-Testing at 210-231 interval 1:
+Testing at 120-141 interval 1:
 Best parameters:
-{'feature_selection__k': 218}
-Best CV RMSE: 182,488.56
+{'feature_selection__k': 130}
+Best CV RMSE: 182,472.08
 
 Final test set results (best k):
-MAE: 114,092.74
-MSE: 31,309,951,187.81
-RMSE: 176,946.18
+MAE: 114,299.70
+MSE: 31,195,003,121.36
+RMSE: 176,621.07
 R²: 0.66

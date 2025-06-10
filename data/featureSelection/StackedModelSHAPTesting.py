@@ -118,7 +118,7 @@ pipeline = Pipeline([
 
 # Grid search over k values
 param_grid = {
-    'feature_selection__k': list(range(10, 701, 10))
+    'feature_selection__k': list(range(60, 81, 1))
 }
 
 grid_search = GridSearchCV(
@@ -138,7 +138,7 @@ mean_test_scores = -grid_search.cv_results_['mean_test_score']  # Make RMSE posi
 
 # Plotting
 plt.figure(figsize=(10, 6))
-plt.xticks(np.arange(0, 701, 100))
+plt.xticks(np.arange(60, 81, 1))
 plt.plot(k_values, mean_test_scores, marker='o', linestyle='-')
 plt.xlabel("Number of Selected Features (k)")
 plt.ylabel("Cross-Validated RMSE")
@@ -152,7 +152,7 @@ output_path = Path(__file__).parent.parent.parent / "outputs" / "visualisations"
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
-plt.savefig(output_path / "featureSelectionSM.png")
+plt.savefig(output_path / "featureSelectionSMPrecise.png")
 #plt.show()
 
 print("\nBest parameters:")

@@ -67,7 +67,22 @@ def inverse_rmse(y_true_log, y_pred_log):
     return np.sqrt(mean_squared_error(y_true, y_pred))
 
 def shap_score(X, y):
-    modelscore = XGBRegressor(n_estimators=100, max_depth=4, random_state=42)
+    paramaters = {
+        'objective': 'reg:squarederror',
+        'eval_metric': 'rmse',
+        'device': 'cuda',
+        'tree_method': 'hist',
+        'max_depth': 4,
+        'learning_rate': 0.05385798747478051,
+        'subsample': 0.9803117165700693,
+        'colsample_bytree': 0.6582418428502539,
+        'gamma': 0.9556870921340661,
+        'reg_alpha': 0.4103966675466072,
+        'reg_lambda': 0.5467280896406721,
+        'n_estimators': 459
+    }
+
+    modelscore = XGBRegressor(**paramaters)
     modelscore.fit(X, y)
 
     explainer = shap.Explainer(modelscore)
@@ -90,7 +105,7 @@ pipeline = Pipeline([
 
 # Grid search over k values
 param_grid = {
-    'feature_selection__k': list(range(210, 231, 1))
+    'feature_selection__k': list(range(120, 141, 1))
 }
 
 grid_search = GridSearchCV(
@@ -110,7 +125,7 @@ mean_test_scores = -grid_search.cv_results_['mean_test_score']  # Make RMSE posi
 
 # Plotting
 plt.figure(figsize=(10, 6))
-plt.xticks(np.arange(210, 231, 1))
+plt.xticks(np.arange(120, 141, 1))
 plt.plot(k_values, mean_test_scores, marker='o', linestyle='-')
 plt.xlabel("Number of Selected Features (k)")
 plt.ylabel("Cross-Validated RMSE")
