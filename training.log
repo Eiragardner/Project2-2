@@ -45,15 +45,15 @@
 2025-05-29 17:02:28,259 - MoETrainer - INFO - Overall Performance:
 2025-05-29 17:02:28,260 - MoETrainer - INFO -   RMSE: 157771.3430
 2025-05-29 17:02:28,261 - MoETrainer - INFO -   MAE: 111012.4190
-2025-05-29 17:02:28,261 - MoETrainer - INFO -   R²: 0.6009
+2025-05-29 17:02:28,261 - MoETrainer - INFO -   Rï¿½: 0.6009
 2025-05-29 17:02:28,262 - MoETrainer - INFO -   MAPE: 22.35%
 2025-05-29 17:02:28,262 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 17:02:28,262 - MoETrainer - INFO -   Bin 0: RMSE=110995.0439, R²=-6.1904, Samples=180
-2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 1: RMSE=102989.5401, R²=-23.4776, Samples=167
-2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 2: RMSE=121495.7022, R²=-19.0561, Samples=161
-2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 3: RMSE=150514.9098, R²=-8.0221, Samples=151
-2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 4: RMSE=257391.2002, R²=-0.3461, Samples=160
+2025-05-29 17:02:28,262 - MoETrainer - INFO -   Bin 0: RMSE=110995.0439, Rï¿½=-6.1904, Samples=180
+2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 1: RMSE=102989.5401, Rï¿½=-23.4776, Samples=167
+2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 2: RMSE=121495.7022, Rï¿½=-19.0561, Samples=161
+2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 3: RMSE=150514.9098, Rï¿½=-8.0221, Samples=151
+2025-05-29 17:02:28,263 - MoETrainer - INFO -   Bin 4: RMSE=257391.2002, Rï¿½=-0.3461, Samples=160
 2025-05-29 17:02:28,264 - MoETrainer - WARNING - Stacking ensemble failed: Found input variables with inconsistent numbers of samples: [819, 3821]. Using voting instead.
 2025-05-29 17:02:28,265 - MoETrainer - INFO - 
 === VOTING Ensemble Results ===
@@ -61,30 +61,30 @@ Per-bin Performance:
 2025-05-29 17:02:28,279 - MoETrainer - INFO - Overall Performance:
 2025-05-29 17:02:28,279 - MoETrainer - INFO -   RMSE: 193800.5831
 2025-05-29 17:02:28,280 - MoETrainer - INFO -   MAE: 160487.2652
-2025-05-29 17:02:28,280 - MoETrainer - INFO -   R²: 0.3979
+2025-05-29 17:02:28,280 - MoETrainer - INFO -   Rï¿½: 0.3979
 2025-05-29 17:02:28,280 - MoETrainer - INFO -   MAPE: 39.37%
 2025-05-29 17:02:28,280 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 17:02:28,281 - MoETrainer - INFO -   Bin 0: RMSE=239365.1437, R²=-32.4399, Samples=180
-2025-05-29 17:02:28,282 - MoETrainer - INFO -   Bin 1: RMSE=178292.6736, R²=-72.3585, Samples=167
-2025-05-29 17:02:28,282 - MoETrainer - INFO -   Bin 2: RMSE=142901.2259, R²=-26.7457, Samples=161
-2025-05-29 17:02:28,282 - MoETrainer - INFO -   Bin 3: RMSE=121774.7272, R²=-4.9056, Samples=151
-2025-05-29 17:02:28,283 - MoETrainer - INFO -   Bin 4: RMSE=245098.8324, R²=-0.2206, Samples=160
+2025-05-29 17:02:28,281 - MoETrainer - INFO -   Bin 0: RMSE=239365.1437, Rï¿½=-32.4399, Samples=180
+2025-05-29 17:02:28,282 - MoETrainer - INFO -   Bin 1: RMSE=178292.6736, Rï¿½=-72.3585, Samples=167
+2025-05-29 17:02:28,282 - MoETrainer - INFO -   Bin 2: RMSE=142901.2259, Rï¿½=-26.7457, Samples=161
+2025-05-29 17:02:28,282 - MoETrainer - INFO -   Bin 3: RMSE=121774.7272, Rï¿½=-4.9056, Samples=151
+2025-05-29 17:02:28,283 - MoETrainer - INFO -   Bin 4: RMSE=245098.8324, Rï¿½=-0.2206, Samples=160
 2025-05-29 17:02:28,283 - MoETrainer - INFO - 
 === STACKING Ensemble Results ===
 2025-05-29 17:02:28,299 - MoETrainer - INFO - === Model Evaluation Results ===
 2025-05-29 17:02:28,300 - MoETrainer - INFO - Overall Performance:
 2025-05-29 17:02:28,300 - MoETrainer - INFO -   RMSE: 193800.5831
 2025-05-29 17:02:28,300 - MoETrainer - INFO -   MAE: 160487.2652
-2025-05-29 17:02:28,301 - MoETrainer - INFO -   R²: 0.3979
+2025-05-29 17:02:28,301 - MoETrainer - INFO -   Rï¿½: 0.3979
 2025-05-29 17:02:28,301 - MoETrainer - INFO -   MAPE: 39.37%
 2025-05-29 17:02:28,301 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 17:02:28,302 - MoETrainer - INFO -   Bin 0: RMSE=239365.1437, R²=-32.4399, Samples=180
-2025-05-29 17:02:28,303 - MoETrainer - INFO -   Bin 1: RMSE=178292.6736, R²=-72.3585, Samples=167
-2025-05-29 17:02:28,305 - MoETrainer - INFO -   Bin 2: RMSE=142901.2259, R²=-26.7457, Samples=161
-2025-05-29 17:02:28,306 - MoETrainer - INFO -   Bin 3: RMSE=121774.7272, R²=-4.9056, Samples=151
-2025-05-29 17:02:28,306 - MoETrainer - INFO -   Bin 4: RMSE=245098.8324, R²=-0.2206, Samples=160
+2025-05-29 17:02:28,302 - MoETrainer - INFO -   Bin 0: RMSE=239365.1437, Rï¿½=-32.4399, Samples=180
+2025-05-29 17:02:28,303 - MoETrainer - INFO -   Bin 1: RMSE=178292.6736, Rï¿½=-72.3585, Samples=167
+2025-05-29 17:02:28,305 - MoETrainer - INFO -   Bin 2: RMSE=142901.2259, Rï¿½=-26.7457, Samples=161
+2025-05-29 17:02:28,306 - MoETrainer - INFO -   Bin 3: RMSE=121774.7272, Rï¿½=-4.9056, Samples=151
+2025-05-29 17:02:28,306 - MoETrainer - INFO -   Bin 4: RMSE=245098.8324, Rï¿½=-0.2206, Samples=160
 2025-05-29 17:02:28,349 - MoETrainer - INFO - Model saved to models_enhanced
 2025-05-29 17:02:28,349 - MoETrainer - INFO - Training completed successfully!
 2025-05-29 17:16:41,803 - MoETrainer - INFO - Using device: cpu
@@ -226,42 +226,42 @@ Per-bin Performance:
 2025-05-29 17:44:50,534 - MoETrainer - INFO - Overall Performance:
 2025-05-29 17:44:50,535 - MoETrainer - INFO -   RMSE: 186130.5080
 2025-05-29 17:44:50,535 - MoETrainer - INFO -   MAE: 161826.7031
-2025-05-29 17:44:50,536 - MoETrainer - INFO -   R²: -0.0639
+2025-05-29 17:44:50,536 - MoETrainer - INFO -   Rï¿½: -0.0639
 2025-05-29 17:44:50,536 - MoETrainer - INFO -   MAPE: 43.34%
 2025-05-29 17:44:50,536 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 17:44:50,536 - MoETrainer - INFO -   Bin 0: RMSE=274107.4499, R²=-39.0931, Samples=240
-2025-05-29 17:44:50,536 - MoETrainer - INFO -   Bin 1: RMSE=181587.3490, R²=-41.4017, Samples=271
-2025-05-29 17:44:50,536 - MoETrainer - INFO -   Bin 2: RMSE=102883.2447, R²=-5.2446, Samples=277
-2025-05-29 17:44:50,537 - MoETrainer - INFO -   Bin 3: RMSE=156481.9763, R²=-0.7000, Samples=256
+2025-05-29 17:44:50,536 - MoETrainer - INFO -   Bin 0: RMSE=274107.4499, Rï¿½=-39.0931, Samples=240
+2025-05-29 17:44:50,536 - MoETrainer - INFO -   Bin 1: RMSE=181587.3490, Rï¿½=-41.4017, Samples=271
+2025-05-29 17:44:50,536 - MoETrainer - INFO -   Bin 2: RMSE=102883.2447, Rï¿½=-5.2446, Samples=277
+2025-05-29 17:44:50,537 - MoETrainer - INFO -   Bin 3: RMSE=156481.9763, Rï¿½=-0.7000, Samples=256
 2025-05-29 17:44:50,537 - MoETrainer - INFO - 
 === VOTING Ensemble Results ===
 2025-05-29 17:44:50,548 - MoETrainer - INFO - === Model Evaluation Results ===
 2025-05-29 17:44:50,548 - MoETrainer - INFO - Overall Performance:
 2025-05-29 17:44:50,549 - MoETrainer - INFO -   RMSE: 191069.7728
 2025-05-29 17:44:50,549 - MoETrainer - INFO -   MAE: 166222.9326
-2025-05-29 17:44:50,549 - MoETrainer - INFO -   R²: -0.1211
+2025-05-29 17:44:50,549 - MoETrainer - INFO -   Rï¿½: -0.1211
 2025-05-29 17:44:50,550 - MoETrainer - INFO -   MAPE: 44.71%
 2025-05-29 17:44:50,551 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 17:44:50,552 - MoETrainer - INFO -   Bin 0: RMSE=284331.8535, R²=-42.1399, Samples=240
-2025-05-29 17:44:50,552 - MoETrainer - INFO -   Bin 1: RMSE=187643.6351, R²=-44.2772, Samples=271
-2025-05-29 17:44:50,553 - MoETrainer - INFO -   Bin 2: RMSE=102633.7796, R²=-5.2143, Samples=277
-2025-05-29 17:44:50,553 - MoETrainer - INFO -   Bin 3: RMSE=156268.8887, R²=-0.6954, Samples=256
+2025-05-29 17:44:50,552 - MoETrainer - INFO -   Bin 0: RMSE=284331.8535, Rï¿½=-42.1399, Samples=240
+2025-05-29 17:44:50,552 - MoETrainer - INFO -   Bin 1: RMSE=187643.6351, Rï¿½=-44.2772, Samples=271
+2025-05-29 17:44:50,553 - MoETrainer - INFO -   Bin 2: RMSE=102633.7796, Rï¿½=-5.2143, Samples=277
+2025-05-29 17:44:50,553 - MoETrainer - INFO -   Bin 3: RMSE=156268.8887, Rï¿½=-0.6954, Samples=256
 2025-05-29 17:44:50,553 - MoETrainer - INFO - 
 === STACKING Ensemble Results ===
 2025-05-29 17:44:50,569 - MoETrainer - INFO - === Model Evaluation Results ===
 2025-05-29 17:44:50,571 - MoETrainer - INFO - Overall Performance:
 2025-05-29 17:44:50,571 - MoETrainer - INFO -   RMSE: 191069.7728
 2025-05-29 17:44:50,573 - MoETrainer - INFO -   MAE: 166222.9326
-2025-05-29 17:44:50,575 - MoETrainer - INFO -   R²: -0.1211
+2025-05-29 17:44:50,575 - MoETrainer - INFO -   Rï¿½: -0.1211
 2025-05-29 17:44:50,582 - MoETrainer - INFO -   MAPE: 44.71%
 2025-05-29 17:44:50,586 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 17:44:50,587 - MoETrainer - INFO -   Bin 0: RMSE=284331.8535, R²=-42.1399, Samples=240
-2025-05-29 17:44:50,587 - MoETrainer - INFO -   Bin 1: RMSE=187643.6351, R²=-44.2772, Samples=271
-2025-05-29 17:44:50,588 - MoETrainer - INFO -   Bin 2: RMSE=102633.7796, R²=-5.2143, Samples=277
-2025-05-29 17:44:50,588 - MoETrainer - INFO -   Bin 3: RMSE=156268.8887, R²=-0.6954, Samples=256
+2025-05-29 17:44:50,587 - MoETrainer - INFO -   Bin 0: RMSE=284331.8535, Rï¿½=-42.1399, Samples=240
+2025-05-29 17:44:50,587 - MoETrainer - INFO -   Bin 1: RMSE=187643.6351, Rï¿½=-44.2772, Samples=271
+2025-05-29 17:44:50,588 - MoETrainer - INFO -   Bin 2: RMSE=102633.7796, Rï¿½=-5.2143, Samples=277
+2025-05-29 17:44:50,588 - MoETrainer - INFO -   Bin 3: RMSE=156268.8887, Rï¿½=-0.6954, Samples=256
 2025-05-29 17:44:50,609 - MoETrainer - INFO - Model saved to models_enhanced
 2025-05-29 17:44:50,611 - MoETrainer - INFO - Training completed successfully!
 2025-05-29 17:51:13,227 - MoETrainer - INFO - Using device: cpu
@@ -315,48 +315,48 @@ Per-bin Performance:
 2025-05-29 18:17:23,925 - MoETrainer - INFO - Overall Performance:
 2025-05-29 18:17:23,926 - MoETrainer - INFO -   RMSE: 253006.7084
 2025-05-29 18:17:23,926 - MoETrainer - INFO -   MAE: 194243.9844
-2025-05-29 18:17:23,926 - MoETrainer - INFO -   R²: 0.1622
+2025-05-29 18:17:23,926 - MoETrainer - INFO -   Rï¿½: 0.1622
 2025-05-29 18:17:23,927 - MoETrainer - INFO -   MAPE: 44.06%
 2025-05-29 18:17:23,927 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 18:17:23,927 - MoETrainer - INFO -   Bin 0: RMSE=294474.1055, R²=-58.4565, Samples=178
-2025-05-29 18:17:23,927 - MoETrainer - INFO -   Bin 1: RMSE=207767.9543, R²=-93.1900, Samples=195
-2025-05-29 18:17:23,928 - MoETrainer - INFO -   Bin 2: RMSE=148519.1397, R²=-49.2594, Samples=180
-2025-05-29 18:17:23,928 - MoETrainer - INFO -   Bin 3: RMSE=81669.1566, R²=-7.3156, Samples=179
-2025-05-29 18:17:23,928 - MoETrainer - INFO -   Bin 4: RMSE=58387.2709, R²=-0.6353, Samples=172
-2025-05-29 18:17:23,929 - MoETrainer - INFO -   Bin 5: RMSE=455502.2395, R²=-1.7123, Samples=197
+2025-05-29 18:17:23,927 - MoETrainer - INFO -   Bin 0: RMSE=294474.1055, Rï¿½=-58.4565, Samples=178
+2025-05-29 18:17:23,927 - MoETrainer - INFO -   Bin 1: RMSE=207767.9543, Rï¿½=-93.1900, Samples=195
+2025-05-29 18:17:23,928 - MoETrainer - INFO -   Bin 2: RMSE=148519.1397, Rï¿½=-49.2594, Samples=180
+2025-05-29 18:17:23,928 - MoETrainer - INFO -   Bin 3: RMSE=81669.1566, Rï¿½=-7.3156, Samples=179
+2025-05-29 18:17:23,928 - MoETrainer - INFO -   Bin 4: RMSE=58387.2709, Rï¿½=-0.6353, Samples=172
+2025-05-29 18:17:23,929 - MoETrainer - INFO -   Bin 5: RMSE=455502.2395, Rï¿½=-1.7123, Samples=197
 2025-05-29 18:17:23,929 - MoETrainer - INFO - 
 === VOTING Ensemble Results ===
 2025-05-29 18:17:23,945 - MoETrainer - INFO - === Model Evaluation Results ===
 2025-05-29 18:17:23,946 - MoETrainer - INFO - Overall Performance:
 2025-05-29 18:17:23,946 - MoETrainer - INFO -   RMSE: 258190.5294
 2025-05-29 18:17:23,947 - MoETrainer - INFO -   MAE: 197674.3845
-2025-05-29 18:17:23,947 - MoETrainer - INFO -   R²: 0.1275
+2025-05-29 18:17:23,947 - MoETrainer - INFO -   Rï¿½: 0.1275
 2025-05-29 18:17:23,948 - MoETrainer - INFO -   MAPE: 44.66%
 2025-05-29 18:17:23,948 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 18:17:23,950 - MoETrainer - INFO -   Bin 0: RMSE=298610.7548, R²=-60.1387, Samples=178
-2025-05-29 18:17:23,951 - MoETrainer - INFO -   Bin 1: RMSE=209440.8462, R²=-94.7129, Samples=195
-2025-05-29 18:17:23,952 - MoETrainer - INFO -   Bin 2: RMSE=148643.8062, R²=-49.3438, Samples=180
-2025-05-29 18:17:23,953 - MoETrainer - INFO -   Bin 3: RMSE=80302.3986, R²=-7.0396, Samples=179
-2025-05-29 18:17:23,954 - MoETrainer - INFO -   Bin 4: RMSE=58539.3574, R²=-0.6438, Samples=172
-2025-05-29 18:17:23,956 - MoETrainer - INFO -   Bin 5: RMSE=468547.3577, R²=-1.8699, Samples=197
+2025-05-29 18:17:23,950 - MoETrainer - INFO -   Bin 0: RMSE=298610.7548, Rï¿½=-60.1387, Samples=178
+2025-05-29 18:17:23,951 - MoETrainer - INFO -   Bin 1: RMSE=209440.8462, Rï¿½=-94.7129, Samples=195
+2025-05-29 18:17:23,952 - MoETrainer - INFO -   Bin 2: RMSE=148643.8062, Rï¿½=-49.3438, Samples=180
+2025-05-29 18:17:23,953 - MoETrainer - INFO -   Bin 3: RMSE=80302.3986, Rï¿½=-7.0396, Samples=179
+2025-05-29 18:17:23,954 - MoETrainer - INFO -   Bin 4: RMSE=58539.3574, Rï¿½=-0.6438, Samples=172
+2025-05-29 18:17:23,956 - MoETrainer - INFO -   Bin 5: RMSE=468547.3577, Rï¿½=-1.8699, Samples=197
 2025-05-29 18:17:23,957 - MoETrainer - INFO - 
 === STACKING Ensemble Results ===
 2025-05-29 18:17:23,979 - MoETrainer - INFO - === Model Evaluation Results ===
 2025-05-29 18:17:23,980 - MoETrainer - INFO - Overall Performance:
 2025-05-29 18:17:23,980 - MoETrainer - INFO -   RMSE: 258190.5294
 2025-05-29 18:17:23,980 - MoETrainer - INFO -   MAE: 197674.3845
-2025-05-29 18:17:23,981 - MoETrainer - INFO -   R²: 0.1275
+2025-05-29 18:17:23,981 - MoETrainer - INFO -   Rï¿½: 0.1275
 2025-05-29 18:17:23,981 - MoETrainer - INFO -   MAPE: 44.66%
 2025-05-29 18:17:23,981 - MoETrainer - INFO - 
 Per-bin Performance:
-2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 0: RMSE=298610.7548, R²=-60.1387, Samples=178
-2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 1: RMSE=209440.8462, R²=-94.7129, Samples=195
-2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 2: RMSE=148643.8062, R²=-49.3438, Samples=180
-2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 3: RMSE=80302.3986, R²=-7.0396, Samples=179
-2025-05-29 18:17:23,983 - MoETrainer - INFO -   Bin 4: RMSE=58539.3574, R²=-0.6438, Samples=172
-2025-05-29 18:17:23,983 - MoETrainer - INFO -   Bin 5: RMSE=468547.3577, R²=-1.8699, Samples=197
+2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 0: RMSE=298610.7548, Rï¿½=-60.1387, Samples=178
+2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 1: RMSE=209440.8462, Rï¿½=-94.7129, Samples=195
+2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 2: RMSE=148643.8062, Rï¿½=-49.3438, Samples=180
+2025-05-29 18:17:23,982 - MoETrainer - INFO -   Bin 3: RMSE=80302.3986, Rï¿½=-7.0396, Samples=179
+2025-05-29 18:17:23,983 - MoETrainer - INFO -   Bin 4: RMSE=58539.3574, Rï¿½=-0.6438, Samples=172
+2025-05-29 18:17:23,983 - MoETrainer - INFO -   Bin 5: RMSE=468547.3577, Rï¿½=-1.8699, Samples=197
 2025-05-29 18:17:23,996 - MoETrainer - INFO - Model saved to models_enhanced
 2025-05-29 18:17:23,997 - MoETrainer - INFO - Training completed successfully!
 2025-05-29 18:25:25,704 - MoETrainer - INFO - Starting IMPROVED MoE Training Pipeline
@@ -371,25 +371,25 @@ Per-bin Performance:
 2025-05-29 18:25:29,986 - MoETrainer - INFO - Splitting data...
 2025-05-29 18:25:29,991 - MoETrainer - INFO - Data split - Train: 3576, Val: 826, Test: 1101
 2025-05-29 18:25:29,992 - MoETrainer - INFO - === Training Baseline Models ===
-2025-05-29 18:25:30,753 - MoETrainer - INFO - RIDGE: RMSE=193206, R²=0.5114
-2025-05-29 18:25:30,753 - MoETrainer - INFO - RANDOM_FOREST: RMSE=178453, R²=0.5832
-2025-05-29 18:25:30,754 - MoETrainer - INFO - ENSEMBLE: RMSE=179655, R²=0.5776
+2025-05-29 18:25:30,753 - MoETrainer - INFO - RIDGE: RMSE=193206, Rï¿½=0.5114
+2025-05-29 18:25:30,753 - MoETrainer - INFO - RANDOM_FOREST: RMSE=178453, Rï¿½=0.5832
+2025-05-29 18:25:30,754 - MoETrainer - INFO - ENSEMBLE: RMSE=179655, Rï¿½=0.5776
 2025-05-29 18:25:30,754 - MoETrainer - INFO - === Training Improved MoE ===
-2025-05-29 18:25:31,702 - MoETrainer - INFO - MoE 2 bins: RMSE=159608, R²=0.6666
-2025-05-29 18:25:32,856 - MoETrainer - INFO - MoE 3 bins: RMSE=141470, R²=0.7381
-2025-05-29 18:25:34,163 - MoETrainer - INFO - MoE 4 bins: RMSE=128755, R²=0.7830
-2025-05-29 18:25:35,745 - MoETrainer - INFO - MoE 5 bins: RMSE=118052, R²=0.8176
+2025-05-29 18:25:31,702 - MoETrainer - INFO - MoE 2 bins: RMSE=159608, Rï¿½=0.6666
+2025-05-29 18:25:32,856 - MoETrainer - INFO - MoE 3 bins: RMSE=141470, Rï¿½=0.7381
+2025-05-29 18:25:34,163 - MoETrainer - INFO - MoE 4 bins: RMSE=128755, Rï¿½=0.7830
+2025-05-29 18:25:35,745 - MoETrainer - INFO - MoE 5 bins: RMSE=118052, Rï¿½=0.8176
 2025-05-29 18:25:35,746 - MoETrainer - INFO - === Model Selection Results ===
 2025-05-29 18:25:35,747 - MoETrainer - INFO - === FINAL COMPARISON ===
-2025-05-29 18:25:35,747 - MoETrainer - INFO - moe_5_bins          : RMSE=  118052, R²= 0.8176 *** BEST ***
-2025-05-29 18:25:35,748 - MoETrainer - INFO - random_forest       : RMSE=  178453, R²= 0.5832
-2025-05-29 18:25:35,748 - MoETrainer - INFO - ensemble            : RMSE=  179655, R²= 0.5776
-2025-05-29 18:25:35,748 - MoETrainer - INFO - ridge               : RMSE=  193206, R²= 0.5114
+2025-05-29 18:25:35,747 - MoETrainer - INFO - moe_5_bins          : RMSE=  118052, Rï¿½= 0.8176 *** BEST ***
+2025-05-29 18:25:35,748 - MoETrainer - INFO - random_forest       : RMSE=  178453, Rï¿½= 0.5832
+2025-05-29 18:25:35,748 - MoETrainer - INFO - ensemble            : RMSE=  179655, Rï¿½= 0.5776
+2025-05-29 18:25:35,748 - MoETrainer - INFO - ridge               : RMSE=  193206, Rï¿½= 0.5114
 2025-05-29 18:25:35,756 - MoETrainer - INFO - === Model Evaluation Results ===
 2025-05-29 18:25:35,756 - MoETrainer - INFO - Overall Performance:
 2025-05-29 18:25:35,756 - MoETrainer - INFO -   RMSE: 118052.4312
 2025-05-29 18:25:35,757 - MoETrainer - INFO -   MAE: 59677.6118
-2025-05-29 18:25:35,757 - MoETrainer - INFO -   R²: 0.8176
+2025-05-29 18:25:35,757 - MoETrainer - INFO -   Rï¿½: 0.8176
 2025-05-29 18:25:35,758 - MoETrainer - INFO -   MAPE: 9.51%
 2025-05-29 18:39:01,633 - MoETrainer - INFO - Starting DETAILED IMPROVED MoE Training Pipeline
 2025-05-29 18:39:01,634 - MoETrainer - INFO - Loading data with improved processing...
@@ -408,69 +408,69 @@ Per-bin Performance:
 2025-05-29 18:39:06,212 - MoETrainer - INFO - Train target: mean=$550,360, std=$320,917
 2025-05-29 18:39:06,213 - MoETrainer - INFO - Test target: mean=$560,582, std=$331,767
 2025-05-29 18:39:06,214 - MoETrainer - INFO - === Training Baseline Models ===
-2025-05-29 18:39:07,877 - MoETrainer - INFO -   RIDGE          : RMSE=  234367, MAE=  136233, R²= 0.5010
-2025-05-29 18:39:07,878 - MoETrainer - INFO -   RANDOM_FOREST  : RMSE=  237346, MAE=  136969, R²= 0.4882
-2025-05-29 18:39:07,878 - MoETrainer - INFO -   ENSEMBLE       : RMSE=  232989, MAE=  134808, R²= 0.5068
+2025-05-29 18:39:07,877 - MoETrainer - INFO -   RIDGE          : RMSE=  234367, MAE=  136233, Rï¿½= 0.5010
+2025-05-29 18:39:07,878 - MoETrainer - INFO -   RANDOM_FOREST  : RMSE=  237346, MAE=  136969, Rï¿½= 0.4882
+2025-05-29 18:39:07,878 - MoETrainer - INFO -   ENSEMBLE       : RMSE=  232989, MAE=  134808, Rï¿½= 0.5068
 2025-05-29 18:39:07,880 - MoETrainer - INFO - === Training DETAILED MoE ===
 2025-05-29 18:39:07,916 - MoETrainer - INFO -   Bin 0: Train=1796, Test=523, Range=$150,000 - $459,000, Mean=$353,968
 2025-05-29 18:39:07,916 - MoETrainer - INFO -   Bin 1: Train=1809, Test=587, Range=$460,000 - $3,475,000, Mean=$745,341
-2025-05-29 18:39:08,749 - MoETrainer - INFO -   Bin 0: Selected RandomForest (val_R²=0.223)
-2025-05-29 18:39:09,532 - MoETrainer - INFO -   Bin 1: Selected RandomForest (val_R²=0.476)
-2025-05-29 18:39:09,577 - MoETrainer - INFO -   Bin 0: RMSE=   59810, MAE=   49053, R²= 0.2201 (523 samples)
-2025-05-29 18:39:09,581 - MoETrainer - INFO -   Bin 1: RMSE=  306230, MAE=  174634, R²= 0.2927 (587 samples)
+2025-05-29 18:39:08,749 - MoETrainer - INFO -   Bin 0: Selected RandomForest (val_Rï¿½=0.223)
+2025-05-29 18:39:09,532 - MoETrainer - INFO -   Bin 1: Selected RandomForest (val_Rï¿½=0.476)
+2025-05-29 18:39:09,577 - MoETrainer - INFO -   Bin 0: RMSE=   59810, MAE=   49053, Rï¿½= 0.2201 (523 samples)
+2025-05-29 18:39:09,581 - MoETrainer - INFO -   Bin 1: RMSE=  306230, MAE=  174634, Rï¿½= 0.2927 (587 samples)
 2025-05-29 18:39:09,630 - MoETrainer - INFO -   Bin 0: Train=1202, Test=330, Range=$150,000 - $390,000, Mean=$319,322
 2025-05-29 18:39:09,631 - MoETrainer - INFO -   Bin 1: Train=1195, Test=404, Range=$393,000 - $560,000, Mean=$465,767
 2025-05-29 18:39:09,632 - MoETrainer - INFO -   Bin 2: Train=1208, Test=376, Range=$565,000 - $3,475,000, Mean=$863,935
-2025-05-29 18:39:10,247 - MoETrainer - INFO -   Bin 0: Selected RandomForest (val_R²=0.112)
-2025-05-29 18:39:11,849 - MoETrainer - INFO -   Bin 2: Selected RandomForest (val_R²=0.297)
-2025-05-29 18:39:12,065 - MoETrainer - INFO -   Bin 0: RMSE=   47135, MAE=   37812, R²= 0.1287 (330 samples)
-2025-05-29 18:39:12,066 - MoETrainer - INFO -   Bin 1: RMSE=   47044, MAE=   39924, R²= 0.0886 (404 samples)
-2025-05-29 18:39:12,068 - MoETrainer - INFO -   Bin 2: RMSE=  346305, MAE=  204231, R²= 0.2407 (376 samples)
+2025-05-29 18:39:10,247 - MoETrainer - INFO -   Bin 0: Selected RandomForest (val_Rï¿½=0.112)
+2025-05-29 18:39:11,849 - MoETrainer - INFO -   Bin 2: Selected RandomForest (val_Rï¿½=0.297)
+2025-05-29 18:39:12,065 - MoETrainer - INFO -   Bin 0: RMSE=   47135, MAE=   37812, Rï¿½= 0.1287 (330 samples)
+2025-05-29 18:39:12,066 - MoETrainer - INFO -   Bin 1: RMSE=   47044, MAE=   39924, Rï¿½= 0.0886 (404 samples)
+2025-05-29 18:39:12,068 - MoETrainer - INFO -   Bin 2: RMSE=  346305, MAE=  204231, Rï¿½= 0.2407 (376 samples)
 2025-05-29 18:39:12,122 - MoETrainer - INFO -   Bin 0: Train= 900, Test=263, Range=$150,000 - $364,000, Mean=$299,697
 2025-05-29 18:39:12,127 - MoETrainer - INFO -   Bin 1: Train= 896, Test=260, Range=$365,000 - $459,000, Mean=$408,482
 2025-05-29 18:39:12,128 - MoETrainer - INFO -   Bin 2: Train= 907, Test=292, Range=$460,000 - $629,000, Mean=$535,681
 2025-05-29 18:39:12,130 - MoETrainer - INFO -   Bin 3: Train= 902, Test=295, Range=$630,000 - $3,475,000, Mean=$956,164
-2025-05-29 18:39:13,699 - MoETrainer - INFO -   Bin 1: Selected RandomForest (val_R²=0.033)
-2025-05-29 18:39:14,723 - MoETrainer - INFO -   Bin 0: RMSE=   41171, MAE=   33166, R²= 0.1177 (263 samples)
-2025-05-29 18:39:14,727 - MoETrainer - INFO -   Bin 1: RMSE=   27660, MAE=   23506, R²=-0.0233 (260 samples)
-2025-05-29 18:39:14,728 - MoETrainer - INFO -   Bin 2: RMSE=   45519, MAE=   38758, R²= 0.0827 (292 samples)
-2025-05-29 18:39:14,728 - MoETrainer - INFO -   Bin 3: RMSE=  363984, MAE=  212254, R²= 0.2376 (295 samples)
+2025-05-29 18:39:13,699 - MoETrainer - INFO -   Bin 1: Selected RandomForest (val_Rï¿½=0.033)
+2025-05-29 18:39:14,723 - MoETrainer - INFO -   Bin 0: RMSE=   41171, MAE=   33166, Rï¿½= 0.1177 (263 samples)
+2025-05-29 18:39:14,727 - MoETrainer - INFO -   Bin 1: RMSE=   27660, MAE=   23506, Rï¿½=-0.0233 (260 samples)
+2025-05-29 18:39:14,728 - MoETrainer - INFO -   Bin 2: RMSE=   45519, MAE=   38758, Rï¿½= 0.0827 (292 samples)
+2025-05-29 18:39:14,728 - MoETrainer - INFO -   Bin 3: RMSE=  363984, MAE=  212254, Rï¿½= 0.2376 (295 samples)
 2025-05-29 18:39:14,771 - MoETrainer - INFO -   Bin 0: Train= 702, Test=215, Range=$150,000 - $342,000, Mean=$285,272
 2025-05-29 18:39:14,772 - MoETrainer - INFO -   Bin 1: Train= 735, Test=191, Range=$345,000 - $419,500, Mean=$378,130
 2025-05-29 18:39:14,773 - MoETrainer - INFO -   Bin 2: Train= 725, Test=244, Range=$420,000 - $519,000, Mean=$463,044
 2025-05-29 18:39:14,774 - MoETrainer - INFO -   Bin 3: Train= 722, Test=213, Range=$520,000 - $690,000, Mean=$591,883
 2025-05-29 18:39:14,775 - MoETrainer - INFO -   Bin 4: Train= 721, Test=247, Range=$695,000 - $3,475,000, Mean=$1,030,259
-2025-05-29 18:39:15,646 - MoETrainer - INFO -   Bin 1: Selected RandomForest (val_R²=0.021)
-2025-05-29 18:39:16,641 - MoETrainer - INFO -   Bin 3: Selected RandomForest (val_R²=0.011)
-2025-05-29 18:39:17,083 - MoETrainer - INFO -   Bin 4: Selected RandomForest (val_R²=0.226)
-2025-05-29 18:39:17,091 - MoETrainer - INFO -   Bin 0: RMSE=   38623, MAE=   31264, R²= 0.0540 (215 samples)
-2025-05-29 18:39:17,091 - MoETrainer - INFO -   Bin 1: RMSE=   22166, MAE=   19044, R²=-0.0608 (191 samples)
-2025-05-29 18:39:17,092 - MoETrainer - INFO -   Bin 2: RMSE=   27225, MAE=   24010, R²= 0.0203 (244 samples)
-2025-05-29 18:39:17,092 - MoETrainer - INFO -   Bin 3: RMSE=   47705, MAE=   40378, R²= 0.0676 (213 samples)
-2025-05-29 18:39:17,093 - MoETrainer - INFO -   Bin 4: RMSE=  404803, MAE=  245764, R²= 0.1287 (247 samples)
+2025-05-29 18:39:15,646 - MoETrainer - INFO -   Bin 1: Selected RandomForest (val_Rï¿½=0.021)
+2025-05-29 18:39:16,641 - MoETrainer - INFO -   Bin 3: Selected RandomForest (val_Rï¿½=0.011)
+2025-05-29 18:39:17,083 - MoETrainer - INFO -   Bin 4: Selected RandomForest (val_Rï¿½=0.226)
+2025-05-29 18:39:17,091 - MoETrainer - INFO -   Bin 0: RMSE=   38623, MAE=   31264, Rï¿½= 0.0540 (215 samples)
+2025-05-29 18:39:17,091 - MoETrainer - INFO -   Bin 1: RMSE=   22166, MAE=   19044, Rï¿½=-0.0608 (191 samples)
+2025-05-29 18:39:17,092 - MoETrainer - INFO -   Bin 2: RMSE=   27225, MAE=   24010, Rï¿½= 0.0203 (244 samples)
+2025-05-29 18:39:17,092 - MoETrainer - INFO -   Bin 3: RMSE=   47705, MAE=   40378, Rï¿½= 0.0676 (213 samples)
+2025-05-29 18:39:17,093 - MoETrainer - INFO -   Bin 4: RMSE=  404803, MAE=  245764, Rï¿½= 0.1287 (247 samples)
 2025-05-29 18:39:17,136 - MoETrainer - INFO -   Bin 0: Train= 529, Test=161, Range=$150,000 - $324,500, Mean=$270,793
 2025-05-29 18:39:17,136 - MoETrainer - INFO -   Bin 1: Train= 673, Test=169, Range=$325,000 - $390,000, Mean=$357,467
 2025-05-29 18:39:17,137 - MoETrainer - INFO -   Bin 2: Train= 594, Test=193, Range=$393,000 - $459,000, Mean=$424,077
 2025-05-29 18:39:17,138 - MoETrainer - INFO -   Bin 3: Train= 601, Test=211, Range=$460,000 - $560,000, Mean=$506,971
 2025-05-29 18:39:17,139 - MoETrainer - INFO -   Bin 4: Train= 607, Test=173, Range=$565,000 - $727,000, Mean=$634,661
 2025-05-29 18:39:17,140 - MoETrainer - INFO -   Bin 5: Train= 601, Test=203, Range=$729,000 - $3,475,000, Mean=$1,095,498
-2025-05-29 18:39:20,436 - MoETrainer - INFO -   Bin 0: RMSE=   34655, MAE=   27937, R²= 0.0672 (161 samples)
-2025-05-29 18:39:20,436 - MoETrainer - INFO -   Bin 1: RMSE=   21465, MAE=   18804, R²=-0.0201 (169 samples)
-2025-05-29 18:39:20,437 - MoETrainer - INFO -   Bin 2: RMSE=   20417, MAE=   17421, R²=-0.0065 (193 samples)
-2025-05-29 18:39:20,438 - MoETrainer - INFO -   Bin 3: RMSE=   29133, MAE=   25216, R²= 0.0066 (211 samples)
-2025-05-29 18:39:20,438 - MoETrainer - INFO -   Bin 4: RMSE=   50592, MAE=   44054, R²=-0.0503 (173 samples)
-2025-05-29 18:39:20,439 - MoETrainer - INFO -   Bin 5: RMSE=  413778, MAE=  254760, R²= 0.1628 (203 samples)
-2025-05-29 18:39:20,455 - MoETrainer - INFO -   2 bins: RMSE=  226445, MAE=  115464, R²= 0.5341
-2025-05-29 18:39:20,457 - MoETrainer - INFO -   3 bins: RMSE=  205158, MAE=   94953, R²= 0.6176
-2025-05-29 18:39:20,458 - MoETrainer - INFO -   4 bins: RMSE=  190619, MAE=   79970, R²= 0.6699
-2025-05-29 18:39:20,459 - MoETrainer - INFO -   5 bins: RMSE=  193486, MAE=   77047, R²= 0.6599
+2025-05-29 18:39:20,436 - MoETrainer - INFO -   Bin 0: RMSE=   34655, MAE=   27937, Rï¿½= 0.0672 (161 samples)
+2025-05-29 18:39:20,436 - MoETrainer - INFO -   Bin 1: RMSE=   21465, MAE=   18804, Rï¿½=-0.0201 (169 samples)
+2025-05-29 18:39:20,437 - MoETrainer - INFO -   Bin 2: RMSE=   20417, MAE=   17421, Rï¿½=-0.0065 (193 samples)
+2025-05-29 18:39:20,438 - MoETrainer - INFO -   Bin 3: RMSE=   29133, MAE=   25216, Rï¿½= 0.0066 (211 samples)
+2025-05-29 18:39:20,438 - MoETrainer - INFO -   Bin 4: RMSE=   50592, MAE=   44054, Rï¿½=-0.0503 (173 samples)
+2025-05-29 18:39:20,439 - MoETrainer - INFO -   Bin 5: RMSE=  413778, MAE=  254760, Rï¿½= 0.1628 (203 samples)
+2025-05-29 18:39:20,455 - MoETrainer - INFO -   2 bins: RMSE=  226445, MAE=  115464, Rï¿½= 0.5341
+2025-05-29 18:39:20,457 - MoETrainer - INFO -   3 bins: RMSE=  205158, MAE=   94953, Rï¿½= 0.6176
+2025-05-29 18:39:20,458 - MoETrainer - INFO -   4 bins: RMSE=  190619, MAE=   79970, Rï¿½= 0.6699
+2025-05-29 18:39:20,459 - MoETrainer - INFO -   5 bins: RMSE=  193486, MAE=   77047, Rï¿½= 0.6599
 2025-05-29 18:39:20,477 - MoETrainer - INFO - === FINAL MODEL SELECTION ===
 2025-05-29 18:39:20,611 - MoETrainer - INFO -   Number of bins: 6
 2025-05-29 18:39:20,701 - MoETrainer - INFO - === Model Evaluation Results ===
 2025-05-29 18:39:20,702 - MoETrainer - INFO - Overall Performance:
 2025-05-29 18:39:20,703 - MoETrainer - INFO -   RMSE: 179412.5730
 2025-05-29 18:39:20,703 - MoETrainer - INFO -   MAE: 68195.0954
-2025-05-29 18:39:20,703 - MoETrainer - INFO -   R²: 0.7076
+2025-05-29 18:39:20,703 - MoETrainer - INFO -   Rï¿½: 0.7076
 2025-05-29 18:39:20,704 - MoETrainer - INFO -   MAPE: 9.14%
 2025-05-29 18:44:39,978 - MoETrainer - INFO - Starting DETAILED IMPROVED MoE Training Pipeline
 2025-05-29 18:44:39,978 - MoETrainer - INFO - Loading data with improved processing...

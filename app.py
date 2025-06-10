@@ -1,104 +1,28 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import shap  # Ensure SHAP is installed
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-import xgboost as xgb
-import joblib
 import os
-import sys
+from sklearn.model_selection import train_test_split
+
+from models.respectiveModels.XGBoost_refactorStreamlit import XGBoostModel
+from models.respectiveModels.linear_regression_refactorStreamlit import LinearRegressionModel
+from models.respectiveModels.random_forest_refactorStreamlit import RandomForestModel
+
+# Importing models from the refactored versions of the codes so that the GUI can easily access the relevant information
+
+st.set_page_config(layout="wide", page_title="House Market ML Analyzer")
 
 
-# All model paths
-sys.path.append(os.path.join(os.path.dirname(__file__), 'models', 'xgboost'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'models', 'linearRegression'))  # If you modularize it
-sys.path.append(os.path.join(os.path.dirname(__file__), 'models', 'randomForest'))  # If you modularize it
-
-# Importing XGBoost class
-try:
-    from XGBoost_core import XGBoostModel
-except ImportError as e:
-    st.error(
-        f"Failed to import XGBoost_core: {e}. Ensure the file is in 'models/xgboost/' and all its dependencies are installed.")
-    XGBoostModel = None
-
-# These functions return Matplotlib figure objects
-def plot_actual_vs_predicted(y_true, y_pred, model_name="Model"):
-    fig, ax = plt.subplots(figsize=(8, 6))
-    ax.scatter(y_true, y_pred, alpha=0.6, edgecolors='w', linewidth=0.5)
-    ax.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], '--k', lw=2, label='Ideal Fit')
-    ax.set_xlabel('Actual Prices', fontsize=12)
-    ax.set_ylabel('Predicted Prices', fontsize=12)
-    ax.set_title(f'Actual vs. Predicted Prices - {model_name}', fontsize=14)
-    ax.legend()
-    ax.grid(True, linestyle='--', alpha=0.7)
-    fig.tight_layout()
-    return fig
-
-
-def plot_residuals(y_true, y_pred, model_name="Model"):
-    residuals = y_true - y_pred
-    fig, ax = plt.subplots(figsize=(8, 6))
-    sns.histplot(residuals, kde=True, ax=ax, color='skyblue', edgecolor='black')
-    ax.axvline(0, color='red', linestyle='--', lw=2)
-    ax.set_xlabel('Residuals (Actual - Predicted)', fontsize=12)
-    ax.set_ylabel('Frequency', fontsize=12)
-    ax.set_title(f'Residual Plot - {model_name}', fontsize=14)
-    ax.grid(True, linestyle='--', alpha=0.7)
-    fig.tight_layout()
-    return fig
-
-
-def plot_feature_importance_generic(importances, feature_names, model_name="Model", top_k=20):
-    if importances is None or feature_names is None:
-        return None
-    indices = np.argsort(importances)[::-1]
-    top_k = min(len(importances), top_k)
-
-    fig, ax = plt.subplots(figsize=(10, 8))
-    ax.set_title(f"Top {top_k} Feature Importances - {model_name}", fontsize=14)
-    ax.bar(range(top_k), importances[indices][:top_k], color='lightgreen', edgecolor='black', align="center")
-    ax.set_xticks(range(top_k))
-    ax.set_xticklabels(np.array(feature_names)[indices][:top_k], rotation=45, ha="right", fontsize=10)
-    ax.set_ylabel('Importance Score', fontsize=12)
-    ax.set_xlabel('Features', fontsize=12)
-    ax.set_xlim([-1, top_k])
-    fig.tight_layout()
-    return fig
-
-
-def plot_shap_summary_generic(shap_values, X_data_df, model_name="Model"):
-    if shap_values is None or X_data_df is None:
-        return None
-    try:
-        fig, ax = plt.subplots(figsize=(10, 8))
-        shap.summary_plot(shap_values, X_data_df, feature_names=X_data_df.columns, show=False, plot_size=None)
-        current_fig = plt.gcf()
-        current_fig.suptitle(f"SHAP Summary Plot - {model_name}",
-                             fontsize=14)
-        current_fig.tight_layout(rect=[0, 0, 1, 0.96])
-        return current_fig
-    except Exception as e:
-        st.warning(f"Could not generate SHAP plot for {model_name}: {e}")
-        return None
-
-
-
-@st.cache_data  # Cache data improves performance
-def load_and_prepare_data(uploaded_file_or_path, target_column='price', is_prediction=False):
+# Preparing data
+@st.cache_data
+def load_and_prepare_data(uploaded_file_or_path, target_column='Price', is_prediction=False):
     if uploaded_file_or_path is None:
         return None, None, None, None
-
     try:
         df = pd.read_csv(uploaded_file_or_path)
-        df_original_for_prediction = df.copy()  # Keep original for joining predictions
+        df_original = df.copy()
 
-        if is_prediction:  # For prediction, target column might not exist or is not used
+        if is_prediction:
             X = df.copy()
             y = None
         elif target_column not in df.columns:
@@ -108,505 +32,173 @@ def load_and_prepare_data(uploaded_file_or_path, target_column='price', is_predi
             X = df.drop(target_column, axis=1)
             y = df[target_column]
 
-        # Basic preprocessing: convert to numeric, simple imputation
-        feature_names = list(X.columns)
-        for col in feature_names:
-            X[col] = pd.to_numeric(X[col], errors='coerce')
-
-        imputation_values = X.mean()
-        X = X.fillna(imputation_values)
+        X = X.select_dtypes(include=np.number)
 
         if y is not None and y.isnull().any():
-            st.warning("Target column contains NaN values. Rows with NaN target have been dropped for training.")
+            st.warning("Target column has NaNs. Rows with NaN target are dropped.")
             valid_indices = ~y.isnull()
-            X = X[valid_indices]
-            y = y[valid_indices]
-            df_original_for_prediction = df_original_for_prediction[valid_indices]
+            X, y, df_original = X[valid_indices], y[valid_indices], df_original[valid_indices]
 
-        if X.empty or (y is not None and y.empty and not is_prediction):
-            st.error("Data is empty after preprocessing or NaN handling.")
+        if X.empty:
+            st.error("Data is empty after preprocessing.")
             return None, None, None, None
 
-        return X, y, list(X.columns), imputation_values if not is_prediction else df_original_for_prediction
-
+        return X, y, list(X.columns), df_original if is_prediction else None
     except Exception as e:
         st.error(f"Error loading or preparing data: {e}")
         return None, None, None, None
 
-# XGBoost
-def run_xgboost_analysis(X_train_df, y_train_series, X_test_df, y_test_series, load_pretrained=False,
-                         model_json_path=None):
-    if XGBoostModel is None:
-        st.error("XGBoostModel class could not be imported. XGBoost analysis cannot proceed.")
-        return None, {}, None, None, None, None, None, None
 
-    # Initialize model instance
-    xgb_model_instance = XGBoostModel(data_path=None, model_path=model_json_path,
-                                      results_path='models/xgboost/visualizations_gui')
-    os.makedirs('models/xgboost/visualizations_gui', exist_ok=True)
+# Analysis and plotting
+def run_analysis(model_choice, X_train, y_train, X_test, y_test, load_pretrained):
 
+    # Model Factory
+    if model_choice == "XGBoost":
+        model = XGBoostModel()
+        model_path = 'models/xgboost/xgboost_model.json'
+    elif model_choice == "Random Forest":
+        model = RandomForestModel()
+        model_path = 'models/randomForest/random_forest_model.joblib'
+    elif model_choice == "Linear Regression":
+        model = LinearRegressionModel()
+        model_path = 'models/linearRegression/linear_regression_model.joblib'
+    else:
+        st.error("Invalid model choice.")
+        return [None] * 6
+
+    # Load or train the model
     if load_pretrained:
-        if model_json_path and os.path.exists(model_json_path):
-            st.write(f"Loading pre-trained XGBoost model from: {model_json_path}")
-            xgb_model_instance.load_model(model_json_path)
-            if xgb_model_instance.model is None:
-                st.error("Failed to load the pre-trained XGBoost model (model attribute is None).")
-                return None, {}, None, None, None, None, None, None
-            st.success("Pre-trained XGBoost model loaded.")
+        if os.path.exists(model_path):
+            st.write(f"Loading pre-trained {model.model_name} model from: {model_path}")
+            model.load_model(model_path)
+            st.success("Model loaded.")
         else:
-            st.error(f"Pre-trained XGBoost model not found at: {model_json_path}")
-            return None, {}, None, None, None, None, None, None
+            st.error(f"Pre-trained model not found at: {model_path}")
+            return [None] * 6
     else:
-        st.write("Training new XGBoost model...")
-        xgb_model_instance.train(X_train_df, y_train_series)
-        st.success("XGBoost training complete.")
+        st.write(f"Training new {model.model_name} model...")
+        model.train(X_train, y_train)
+        st.success("Training complete.")
+        os.makedirs(os.path.dirname(model_path), exist_ok=True)
+        model.save_model(model_path)
+        st.info(f"Trained model saved to {model_path}")
 
-    y_pred_test = xgb_model_instance.predict(X_test_df)
-    
-    metrics, _ = xgb_model_instance.evaluate(X_test_df, y_test_series)
+    model_features = model.feature_names
+    if model_features is None:
+        st.error(f"Model {model.model_name} lacks feature name information. Cannot proceed.")
+        return [None] * 6
 
-    fig_actual_vs_pred = xgb_model_instance.plot_actual_vs_predicted(y_test_series, y_pred_test, 
-                         save_path='models/xgboost/visualizations_gui/actual_vs_pred.png')
-    fig_residuals = xgb_model_instance.plot_residuals(y_test_series, y_pred_test, 
-                    save_path='models/xgboost/visualizations_gui/residuals.png')
-    fig_feat_imp = xgb_model_instance.plot_feature_importance(top_n=20, 
-                   save_path='models/xgboost/visualizations_gui/feature_importance.png')
-    fig_shap = xgb_model_instance.plot_shap_summary(X_train_df, 
-               save_path='models/xgboost/visualizations_gui/shap_summary.png')
-    
-    # ENHANCED: Additional visualizations
-    # 1. SHAP dependence plots for top features
-    fig_shap_dependence_plots = []
-    top_features = []
-    
-    if xgb_model_instance.feature_importance:
-        # Get top 3 features for dependence plots
-        top_features = sorted(xgb_model_instance.feature_importance.items(), 
-                             key=lambda x: x[1], reverse=True)[:3]
-        
-        for i, (feature, _) in enumerate(top_features):
-            plot_path = f'models/xgboost/visualizations_gui/shap_dependence_{feature}.png'
-            fig_dependence = xgb_model_instance.plot_shap_dependence(
-                feature_idx=feature, 
-                save_path=plot_path
-            )
-            if fig_dependence:
-                fig_shap_dependence_plots.append((feature, fig_dependence))
-    
-    # 2. Create distribution of percentage errors visualization
-    if metrics and 'Mean Percentage Error' in metrics:
-        percentage_error = np.abs((y_test_series - y_pred_test) / y_test_series) * 100
-        
-        fig_pct_error = plt.figure(figsize=(10, 6))
-        plt.hist(percentage_error.clip(0, 100), bins=20, color='skyblue', edgecolor='black')
-        plt.axvline(metrics['Mean Percentage Error'], color='red', linestyle='--', 
-                   label=f'Mean: {metrics["Mean Percentage Error"]:.2f}%')
-        plt.axvline(metrics['Median Percentage Error'], color='green', linestyle='--', 
-                   label=f'Median: {metrics["Median Percentage Error"]:.2f}%')
-        plt.xlabel('Percentage Error (%)')
-        plt.ylabel('Frequency')
-        plt.title('Distribution of Percentage Errors')
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig('models/xgboost/visualizations_gui/percentage_error_dist.png')
-    else:
-        fig_pct_error = None
-    
-    # 3. Create price range accuracy visualization 
-    try:
-        # Group by price ranges to see error distribution across different price brackets
-        price_bins = pd.cut(y_test_series, bins=5)
-        price_groups = pd.DataFrame({
-            'Actual': y_test_series, 
-            'Predicted': y_pred_test, 
-            'PriceRange': price_bins
-        }).groupby('PriceRange')
-        
-        mean_errors = price_groups.apply(lambda g: np.mean(np.abs((g['Actual'] - g['Predicted']) / g['Actual'])) * 100)
-        
-        fig_price_accuracy = plt.figure(figsize=(10, 6))
-        mean_errors.plot(kind='bar', color='teal')
-        plt.title('Mean Percentage Error by Price Range')
-        plt.xlabel('Price Range')
-        plt.ylabel('Mean Percentage Error (%)')
-        plt.grid(axis='y', linestyle='--', alpha=0.7)
-        plt.xticks(rotation=45)
-        plt.tight_layout()
-        plt.savefig('models/xgboost/visualizations_gui/price_range_accuracy.png')
-    except Exception as e:
-        st.warning(f"Could not generate price range accuracy plot: {e}")
-        fig_price_accuracy = None
+    imputation_series = pd.Series(st.session_state.imputation_vals)
 
-    return (xgb_model_instance, metrics, fig_actual_vs_pred, fig_residuals, 
-            fig_feat_imp, fig_shap, fig_shap_dependence_plots, fig_pct_error, fig_price_accuracy)
+    X_test_aligned = X_test.reindex(columns=model_features).fillna(imputation_series)
+    X_train_aligned = X_train.reindex(columns=model_features).fillna(imputation_series)
 
+    if X_test_aligned.isnull().values.any():
+        st.warning("NaNs found in test data after alignment. Filling with 0.")
+        X_test_aligned = X_test_aligned.fillna(0)
 
-# Linear Regression
-def run_linear_regression_analysis(X_train, y_train, X_test, y_test, feature_names):
-    st.write("Training Linear Regression model...")
-    model = LinearRegression()
-    model.fit(X_train, y_train)
-    st.success("Linear Regression training complete.")
+    y_pred = model.predict(X_test_aligned)
+    metrics = model.evaluate(y_test, y_pred)
+    fig_avp = model.plot_actual_vs_predicted(y_test, y_pred)
+    fig_res = model.plot_residuals(y_test, y_pred)
+    fig_fi = model.plot_feature_importance()
+    fig_s = model.plot_shap_summary(X_train_aligned, X_test_aligned)
 
-    y_pred_test = model.predict(X_test)
-    metrics = {
-        "MAE": mean_absolute_error(y_test, y_pred_test),
-        "MSE": mean_squared_error(y_test, y_pred_test),
-        "RMSE": np.sqrt(mean_squared_error(y_test, y_pred_test)),
-        "R2 Score": r2_score(y_test, y_pred_test)
-    }
-    fig_actual_vs_pred = plot_actual_vs_predicted(y_test, y_pred_test, "Linear Regression")
-    fig_residuals = plot_residuals(y_test, y_pred_test, "Linear Regression")
+    return model, metrics, fig_avp, fig_res, fig_fi, fig_s
 
-    # Feature importance (coefficients for LR)
-    try:
-        coeffs = model.coef_
-        fig_coeffs = plot_feature_importance_generic(np.abs(coeffs), feature_names, "Linear Regression (Coeff. Mag.)")
-    except Exception as e:
-        st.warning(f"Could not plot coefficients for Linear Regression: {e}")
-        fig_coeffs = None
-
-    return model, metrics, fig_actual_vs_pred, fig_residuals, fig_coeffs, None  # No SHAP for basic LR here
-
-
-# Random Forest
-def run_random_forest_analysis(X_train_df, y_train_series, X_test_df, y_test_series):
-    st.write("Training Random Forest model...")
-    model = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1, oob_score=True)
-    model.fit(X_train_df, y_train_series)
-    st.success("Random Forest training complete.")
-
-    y_pred_test = model.predict(X_test_df)
-    metrics = {
-        "MAE": mean_absolute_error(y_test_series, y_pred_test),
-        "MSE": mean_squared_error(y_test_series, y_pred_test),
-        "RMSE": np.sqrt(mean_squared_error(y_test_series, y_pred_test)),
-        "R2 Score": r2_score(y_test_series, y_pred_test),
-        "OOB Score": model.oob_score_ if hasattr(model, 'oob_score_') else 'N/A'
-    }
-    fig_actual_vs_pred = plot_actual_vs_predicted(y_test_series, y_pred_test, "Random Forest")
-    fig_residuals = plot_residuals(y_test_series, y_pred_test, "Random Forest")
-    fig_feat_imp = plot_feature_importance_generic(model.feature_importances_, X_train_df.columns, "Random Forest")
-
-    # SHAP for Random Forest
-    try:
-        explainer_rf = shap.TreeExplainer(model, X_train_df)  # Background data for explainer
-        shap_values_rf = explainer_rf.shap_values(X_test_df)  # Explain predictions on test set
-        fig_shap = plot_shap_summary_generic(shap_values_rf, X_test_df, "Random Forest")
-    except Exception as e:
-        st.warning(f"Could not generate SHAP plot for Random Forest: {e}")
-        fig_shap = None
-
-    return model, metrics, fig_actual_vs_pred, fig_residuals, fig_feat_imp, fig_shap
-
-
-# APP UI - Streamlit
-st.set_page_config(layout="wide", page_title="House Market ML Analyzer")
+# Application UI by using Streamlit
 st.title("🏘️ House Market Machine Learning Model Analyzer")
 
-# --- Sidebar for Controls ---
 with st.sidebar:
-    st.header("⚙️ Model & Data Configuration")
-
+    st.header("⚙️ Configuration")
     model_choice = st.selectbox("Choose Model:", ["XGBoost", "Random Forest", "Linear Regression"])
 
     st.subheader("Training Data")
-    default_train_path = os.path.join(os.path.dirname(__file__), 'data', 'prepared_data.csv')  # Example default
+    default_train_path = os.path.join('data', 'without30.csv')
+    uploaded_train_file = st.file_uploader("Upload Training Data (CSV)", type="csv")
+    use_default_train = st.checkbox("Use default training data", value=not uploaded_train_file)
 
-    uploaded_train_file = st.file_uploader("Upload Training Data (CSV)", type="csv", key="train_uploader")
+    train_file_source = uploaded_train_file if uploaded_train_file else (
+        default_train_path if use_default_train else None)
+    target_column = st.text_input("Target Column Name:", "Price")
 
-    use_default_train = st.checkbox("Use default 'prepared_data.csv'", value=True, key="default_train_check")
+    load_pretrained = st.checkbox(f"Load Pre-trained {model_choice} Model")
+    run_analysis_button = st.button("🚀 Run Analysis / Train Model")
 
-    train_file_source = None
-    if uploaded_train_file is not None:
-        train_file_source = uploaded_train_file
-        st.info("Using uploaded training file.")
-    elif use_default_train:
-        if os.path.exists(default_train_path):
-            train_file_source = default_train_path
-            st.info(f"Using default training data: {default_train_path}")
-        else:
-            st.warning(f"Default training data '{default_train_path}' not found. Please upload a file.")
-    else:
-        st.info("Please upload a training CSV or select to use the default.")
-
-    target_column = st.text_input("Target Column Name:", "Price", key="target_col_input")
-
-    load_pretrained_xgboost = False
-    if model_choice == "XGBoost":
-        load_pretrained_xgboost = st.checkbox("Load Pre-trained XGBoost Model ('xgboost_model.json')", key="load_xgb_check")
-
-    run_analysis_button = st.button("🚀 Run Analysis / Train Model", key="run_button")
-
-    st.sidebar.markdown("---")
+    st.markdown("---")
     st.subheader("Prediction on New Data")
-    default_predict_path = os.path.join(os.path.dirname(__file__), 'to_predict.csv')  # Example default
-    uploaded_predict_file = st.file_uploader("Upload Data for Prediction (CSV)", type="csv", key="predict_uploader")
+    uploaded_predict_file = st.file_uploader("Upload Prediction Data (CSV)", type="csv", key="predict_uploader")
+    predict_button = st.button("🔮 Make Predictions")
 
-    use_default_predict = st.checkbox("Use default 'to_predict.csv'", value=False, key="default_predict_check")
-
-    predict_file_source = None
-    if uploaded_predict_file is not None:
-        predict_file_source = uploaded_predict_file
-        st.info("Using uploaded file for prediction.")
-    elif use_default_predict:
-        if os.path.exists(default_predict_path):
-            predict_file_source = default_predict_path
-            st.info(f"Using default prediction data: {default_predict_path}")
-        else:
-            st.warning(f"Default prediction data '{default_predict_path}' not found.")
-
-    predict_button = st.button("🔮 Make Predictions", key="predict_action_button")
-
-# Initialize session state variables
-if 'model_trained' not in st.session_state:
-    st.session_state.model_trained = None
-if 'metrics' not in st.session_state:
-    st.session_state.metrics = {}
-if 'fig_actual_vs_pred' not in st.session_state:
-    st.session_state.fig_actual_vs_pred = None
-if 'fig_residuals' not in st.session_state:
-    st.session_state.fig_residuals = None
-if 'fig_feature_importance' not in st.session_state:
-    st.session_state.fig_feature_importance = None
-if 'fig_shap' not in st.session_state:
-    st.session_state.fig_shap = None
-if 'trained_feature_names' not in st.session_state:
-    st.session_state.trained_feature_names = None
-if 'imputation_values_trained' not in st.session_state:
-    st.session_state.imputation_values_trained = None
-# NEW: Session state for additional XGBoost visualization
-if 'fig_shap_dependence_plots' not in st.session_state:
-    st.session_state.fig_shap_dependence_plots = []
-if 'fig_pct_error' not in st.session_state:
-    st.session_state.fig_pct_error = None
-if 'fig_price_accuracy' not in st.session_state:
-    st.session_state.fig_price_accuracy = None
+for key in ['model', 'metrics', 'fig_avp', 'fig_res', 'fig_fi', 'fig_s', 'imputation_vals']:
+    if key not in st.session_state:
+        st.session_state[key] = None
 
 if run_analysis_button:
     if train_file_source and target_column:
-        st.session_state.model_trained = None
-        st.spinner("Loading and preparing data...")
-        X, y, feature_names, imputation_vals = load_and_prepare_data(train_file_source, target_column)
-
+        with st.spinner("Loading data..."):
+            X, y, _, _ = load_and_prepare_data(train_file_source, target_column)
         if X is not None and y is not None:
-            st.session_state.trained_feature_names = feature_names
-            st.session_state.imputation_values_trained = imputation_vals
-
+            # 1. Split data FIRST
             X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-            X_train_df = pd.DataFrame(X_train, columns=feature_names)
-            X_test_df = pd.DataFrame(X_test, columns=feature_names)
-            y_train_series = pd.Series(y_train, name=target_column)
-            y_test_series = pd.Series(y_test, name=target_column)
+            # 2. Calculate imputation values ONLY from training data
+            imputation_values = X_train.mean()
+            st.session_state.imputation_vals = imputation_values.to_dict()  # Save for prediction use
 
-            with st.spinner(f"Processing {model_choice}... This may take a moment."):
-                if model_choice == "XGBoost":
-                    model_path = os.path.join(os.path.dirname(__file__),
-                                            'xgboost_model.json') if load_pretrained_xgboost else None
-                    
-                    # Updated return values for the XGBoost function
-                    model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s, fig_dependence_plots, fig_pct_error, fig_price_accuracy = run_xgboost_analysis(
-                        X_train_df, y_train_series, X_test_df, y_test_series,
-                        load_pretrained=load_pretrained_xgboost, model_json_path=model_path
-                    )
-                    
-                    # Store the additional visualizations in session state
-                    st.session_state.fig_shap_dependence_plots = fig_dependence_plots
-                    st.session_state.fig_pct_error = fig_pct_error
-                    st.session_state.fig_price_accuracy = fig_price_accuracy
+            # 3. Apply imputation to both train and test sets
+            X_train = X_train.fillna(imputation_values)
+            X_test = X_test.fillna(imputation_values)
 
-                elif model_choice == "Random Forest":
-                    model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s = run_random_forest_analysis(
-                        X_train_df, y_train_series, X_test_df, y_test_series
-                    )
-                elif model_choice == "Linear Regression":
-                    model_obj, metrics, fig_avp, fig_res, fig_fi, fig_s = run_linear_regression_analysis(
-                        X_train_df, y_train_series, X_test_df, y_test_series, feature_names
-                    )
-                else:
-                    st.error("Invalid model choice selected.")
-                    st.stop()
-
-                st.session_state.model_trained = model_obj
-                st.session_state.metrics = metrics
-                st.session_state.fig_actual_vs_pred = fig_avp
-                st.session_state.fig_residuals = fig_res
-                st.session_state.fig_feature_importance = fig_fi
-                st.session_state.fig_shap = fig_s
+            with st.spinner(f"Processing {model_choice}..."):
+                results = run_analysis(model_choice, X_train, y_train, X_test, y_test, load_pretrained)
+                st.session_state.model, st.session_state.metrics, st.session_state.fig_avp, st.session_state.fig_res, st.session_state.fig_fi, st.session_state.fig_s = results
             st.success(f"{model_choice} analysis complete!")
         else:
-            st.error("Failed to load or prepare data. Cannot proceed with analysis.")
+            st.error("Failed to load or prepare data.")
     else:
-        st.warning("Please select a training data file and specify the target column.")
+        st.warning("Please select training data and specify target column.")
 
-
-if st.session_state.model_trained is not None or st.session_state.metrics:
-    st.header(f"📊 Analysis Results for {model_choice}")
-
-    tab_metrics, tab_plots, tab_advanced = st.tabs(["Performance Metrics", "Basic Visualizations", "Advanced Visualizations"])
-
+if st.session_state.model:
+    st.header(f"📊 Analysis Results for {st.session_state.model.model_name}")
+    tab_metrics, tab_plots = st.tabs(["Performance Metrics", "Visualizations"])
     with tab_metrics:
         if st.session_state.metrics:
             st.subheader("Evaluation Metrics")
-            for metric_name, value in st.session_state.metrics.items():
-                if isinstance(value, (float, np.floating)):
-                    st.metric(label=metric_name, value=f"{value:.4f}")
-                else:
-                    st.metric(label=metric_name, value=value)
-        else:
-            st.info("Metrics will be shown here after running an analysis.")
-
+            for name, value in st.session_state.metrics.items():
+                st.metric(label=name, value=f"{value:,.4f}")
     with tab_plots:
-        st.subheader("Standard Model Visualizations")
+        st.subheader("Plots")
         col1, col2 = st.columns(2)
-        with col1:
-            if st.session_state.fig_actual_vs_pred:
-                st.pyplot(st.session_state.fig_actual_vs_pred)
-            else:
-                st.caption("Actual vs. Predicted plot will appear here.")
-
-            if st.session_state.fig_feature_importance:
-                st.pyplot(st.session_state.fig_feature_importance)
-            else:
-                st.caption("Feature Importance plot will appear here.")
-
-        with col2:
-            if st.session_state.fig_residuals:
-                st.pyplot(st.session_state.fig_residuals)
-            else:
-                st.caption("Residuals plot will appear here.")
-
-            if st.session_state.fig_shap:
-                st.pyplot(st.session_state.fig_shap)
-            elif model_choice in ["Random Forest", "XGBoost"]:
-                st.caption("SHAP Summary plot will appear here (if applicable).")
-    
-    # NEW: Advanced visualizations tab for XGBoost only
-    with tab_advanced:
-        if model_choice == "XGBoost":
-            st.subheader("Advanced XGBoost Visualizations")
-            
-            # Percentage error distribution
-            if st.session_state.fig_pct_error:
-                st.subheader("Error Distribution")
-                st.pyplot(st.session_state.fig_pct_error)
-                st.write("This chart shows the distribution of percentage errors. The red line represents the mean percentage error, while green shows the median percentage error.")
-            
-            # Price range accuracy 
-            if st.session_state.fig_price_accuracy:
-                st.subheader("Error by Price Range")
-                st.pyplot(st.session_state.fig_price_accuracy)
-                st.write("This visualization shows how the model's accuracy varies across different price ranges. Lower values indicate better performance in that price bracket.")
-            
-            # SHAP dependence plots for individual features
-            if st.session_state.fig_shap_dependence_plots:
-                st.subheader("Feature Impact Analysis (SHAP Dependence Plots)")
-                st.write("""
-                These plots show how specific features impact the prediction. 
-                The Y-axis shows the SHAP value (impact on prediction), while the X-axis shows the feature value. 
-                Colors indicate interactions with another feature.
-                """)
-                
-                # Display each dependence plot with feature name as subheader
-                for feature_name, fig in st.session_state.fig_shap_dependence_plots:
-                    st.markdown(f"##### SHAP Dependence Plot for: {feature_name}")
-                    st.pyplot(fig)
-        else:
-            st.info("Advanced visualizations are only available for XGBoost models.")
-
-# Prediction Tab
+        if st.session_state.fig_avp: col1.pyplot(st.session_state.fig_avp)
+        if st.session_state.fig_fi: col1.pyplot(st.session_state.fig_fi)
+        if st.session_state.fig_res: col2.pyplot(st.session_state.fig_res)
+        if st.session_state.fig_s: col2.pyplot(st.session_state.fig_s)
 if predict_button:
-    if predict_file_source:
-        if st.session_state.model_trained is not None:
-            with st.spinner("Loading prediction data and making predictions..."):
-                X_pred_processed, _, _, df_original_for_pred = load_and_prepare_data(
-                    predict_file_source,
-                    target_column=None,
-                    is_prediction=True
-                )
+    if uploaded_predict_file:
+        if st.session_state.model and st.session_state.imputation_vals is not None:
+            with st.spinner("Making predictions..."):
+                X_pred, _, _, df_original = load_and_prepare_data(uploaded_predict_file, target_column,
+                                                                  is_prediction=True)
+                if X_pred is not None:
+                    # Align prediction data features with the model's features
+                    model_features = st.session_state.model.feature_names
+                    imputation_vals_series = pd.Series(st.session_state.imputation_vals)
+                    X_pred_aligned = X_pred.reindex(columns=model_features).fillna(imputation_vals_series)
 
-                if X_pred_processed is not None:
-                    if st.session_state.trained_feature_names and st.session_state.imputation_values_trained is not None:
-                        X_pred_aligned = pd.DataFrame(columns=st.session_state.trained_feature_names)
-                        for col in st.session_state.trained_feature_names:
-                            if col in X_pred_processed.columns:
-                                X_pred_aligned[col] = X_pred_processed[col]
-                            else:
-                                X_pred_aligned[col] = np.nan
+                    # Final check for Nan
+                    if X_pred_aligned.isnull().values.any():
+                        st.warning("NaNs found in prediction data after alignment. Filling with 0.")
+                        X_pred_aligned = X_pred_aligned.fillna(0)
 
-                        X_pred_aligned = X_pred_aligned.fillna(st.session_state.imputation_values_trained)
-
-                        if X_pred_aligned.isnull().values.any():
-                            st.warning(
-                                "NaN values found in prediction data after aligning and imputing with training data means. Filling remaining NaNs with 0.")
-                            X_pred_aligned = X_pred_aligned.fillna(0)
-
-                    else:
-                        st.error(
-                            "Training feature names or imputation values not found from a previous training run. Cannot reliably align prediction data.")
-                        st.stop()
-
-                    predictions_output = None
-                    current_model_object = st.session_state.model_trained
-
-                    try:
-                        if model_choice == "XGBoost" and XGBoostModel is not None and isinstance(current_model_object,
-                                                                                                 XGBoostModel):
-                            predictions_output = current_model_object.predict(X_pred_aligned)
-                        elif hasattr(current_model_object, 'predict'):
-                            predictions_output = current_model_object.predict(X_pred_aligned)
-                        else:
-                            st.error(
-                                f"The stored model for {model_choice} is not a recognized type for prediction or does not have a 'predict' method.")
-                    except Exception as e:
-                        st.error(f"Error during prediction: {e}")
-                        st.error(
-                            "Ensure the prediction data format matches the training data format (after preprocessing).")
-
-                    if predictions_output is not None:
-                        st.header("🔮 Prediction Results")
-
-                        results_df = df_original_for_pred.copy()
-
-                        final_prediction_df = X_pred_aligned.copy()
-                        final_prediction_df['predicted_price'] = predictions_output
-
-                        st.dataframe(final_prediction_df.head(100))
-
-
-                        @st.cache_data
-                        def convert_df_to_csv(df_to_convert):
-                            return df_to_convert.to_csv(index=False).encode('utf-8')
-
-
-                        csv_predictions = convert_df_to_csv(final_prediction_df)
-                        st.download_button(
-                            label="📥 Download Predictions as CSV",
-                            data=csv_predictions,
-                            file_name=f"predicted_prices_{model_choice.lower().replace(' ', '_')}.csv",
-                            mime="text/csv",
-                        )
-                        
-                        # Create simplified dataframe with just index and predicted price
-                        st.subheader("Simplified Prediction Results")
-                        simplified_df = pd.DataFrame({
-                            'House Index': range(1, len(predictions_output) + 1),
-                            'Predicted Price': predictions_output
-                        })
-                        st.dataframe(simplified_df)
-                        
-                        st.success("Predictions generated and available for download.")
-                    else:
-                        st.error("Could not generate predictions.")
-                else:
-                    st.error("Failed to load or prepare prediction data.")
+                    predictions = st.session_state.model.predict(X_pred_aligned)
+                    st.header("🔮 Prediction Results")
+                    results_df = df_original.copy()
+                    results_df[f'predicted_{target_column}'] = predictions
+                    st.dataframe(results_df)
+                    csv = results_df.to_csv(index=False).encode('utf-8')
+                    st.download_button("📥 Download Predictions", csv, f"predictions.csv", "text/csv")
         else:
-            st.warning("Please train or load a model first before making predictions.")
+            st.warning("Please train or load a model first.")
     else:
-        st.warning("Please upload a file for prediction or select the default prediction file.")
-
-st.sidebar.markdown("---")
-st.sidebar.info(
-    "Ensure CSVs are clean. Preprocessing in this GUI is basic. For best results, use data preprocessed similarly to your model's original training.")
-st.sidebar.markdown(f"Last Refreshed: {pd.Timestamp.now(tz='Europe/Amsterdam').strftime('%Y-%m-%d %H:%M:%S %Z')}")
+        st.warning("Please upload a file for prediction.")

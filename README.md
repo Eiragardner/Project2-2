@@ -1,30 +1,41 @@
-# Project2-2
-For our prototype, we implemented a **Linear Regression** model to predict property prices.
+# Project2-2: House Price Prediction
+In this project we developed a prototype machine learning application that predicts house prices in the Netherlands.
 
-How to Run:
-1. Navigate to the `main/` directory.
-2. Run the `prototype.py` script:
+---
 
-The script will:
+## How to Run the App
 
-    Train a linear regression model using prepared_data.csv
+1. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-    Evaluate the model's performance (MAE, MSE, RMSE, R²)
+2. **Launch the Streamlit app**
+   Run the following command in your terminal:
 
-    Load new data from to_predict.csv
+   ```bash
+   streamlit run app.py
+   ```
 
-    Generate predictions and save them to predicted_prices.csv
+   This will open a local Streamlit interface where you can:
 
-Project Overview
+   * Import the dataset
+   * Select and run different ML models
+   * View predictions values, plotsn and model explanations
+
+---
+
+## Project Overview
 
 The Dutch housing market suffers from issues like overvaluation and inconsistent appraisals. Our goal is to build a reliable and explainable machine learning model that can predict property prices using features like living space, location, year built, and more.
 
-We compare three ML models:
+---
 
-Linear Regression (baseline)
+## Models Implemented
 
-Random Forest
-
-XGBoost
+We evaluate and compare the following ML models:
+* **Linear Regression** *(Baseline model)*
+* **Random Forest**
+* **XGBoost**
 
 We also apply SHAP (SHapley Additive exPlanations) to interpret feature importance.

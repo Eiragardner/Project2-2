@@ -33,9 +33,6 @@ preprocessor = ColumnTransformer(
         ('num', StandardScaler(), numeric_cols)
     ]
 )
-#X = df.drop(columns=["Price"])
-#y = np.log1p(df["Price"])  # log(1 + price)
-#y = df["Price"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -65,16 +62,7 @@ params = {
     'reg_lambda': 0.5467280896406721,
     'n_estimators': 459
 }
-'''
-    'max_depth': 6,
-    'learning_rate': 0.04641482025331578,
-    'subsample': 0.9174351376290615,
-    'colsample_bytree': 0.7144730708753544,
-    'gamma': 2.9463736411349157,
-    'reg_alpha': 0.44507462797741115,
-    'reg_lambda': 1.2744197467583638,
-    'n_estimators': 499
-'''
+
 
 model = StackingRegressor(
     estimators=estimators,
@@ -89,12 +77,12 @@ def shap_score(X, y):
     modelscore.fit(X, y)
 
     explainer = shap.Explainer(modelscore)
-    shap_values = explainer(X)  # returns a matrix of shap values (samples × features)
+    shap_values = explainer(X)  
 
-    # Aggregate absolute SHAP values per feature (mean absolute)
+    
     scores = np.mean(np.abs(shap_values.values), axis=0)
 
-    # Return scores and dummy p-values (required by SelectKBest)
+    
     return scores, np.zeros_like(scores)
 
 pipeline = Pipeline([
@@ -103,12 +91,11 @@ pipeline = Pipeline([
     ('model', model)
 ])
 
-#model.fit(X_train, y_train)
+
 pipeline.fit(X_train, y_train)
-#y_pred = np.expm1(model.predict(X_test))  # model predict
 y_pred = np.expm1(pipeline.predict(X_test))
 y_test_original = np.expm1(y_test)
-#y_pred = model.predict(X_test)
+
 
 
 # Calculate final test set metrics
@@ -123,28 +110,6 @@ print(f"Mean Squared Error (MSE): {mse:,.2f}")
 print(f"Root Mean Squared Error (RMSE): {rmse:,.2f}")
 print(f"R-squared: {r2:.2f}")
 
-'''
-# Inverse transform for evaluation on actual price scale
-def inverse_mae(y_true_log, y_pred_log):
-    y_true = np.expm1(y_true_log)
-    y_pred = np.expm1(y_pred_log)
-    return mean_absolute_error(y_true, y_pred)
-
-def inverse_rmse(y_true_log, y_pred_log):
-    y_true = np.expm1(y_true_log)
-    y_pred = np.expm1(y_pred_log)
-    return np.sqrt(mean_squared_error(y_true, y_pred))
-
-def inverse_r2(y_true_log, y_pred_log):
-    y_true = np.expm1(y_true_log)
-    y_pred = np.expm1(y_pred_log)
-    return r2_score(y_true, y_pred)
-
-# Wrap them as sklearn scorers
-custom_mae = make_scorer(inverse_mae, greater_is_better=False)  # negative because lower is better
-custom_rmse = make_scorer(inverse_rmse, greater_is_better=False)
-custom_r2 = make_scorer(inverse_r2)
-'''
 
 
 
@@ -160,7 +125,8 @@ plt.tight_layout()
 
 # Create output directory if it doesn't exist
 output_dir = Path(__file__).parent.parent.parent / "outputs" / "visualisations" / "stackedModel"
-output_dir.mkdir(parents=True, exist_ok=True)
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
 plt.savefig(output_dir / "actual_vs_predicted.png", dpi=300, bbox_inches='tight')
 plt.close()
