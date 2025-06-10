@@ -1,0 +1,5 @@
+torch>=1.12
+xgboost>=1.7
+lightgbm>=3.3
+scikit-learn>=1.0
+pandas>=1.3

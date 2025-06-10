@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -20,6 +21,7 @@ class dataCleaner:
         for col in ["Total Rooms", "Bedrooms"]:
                 data[col] = pd.to_numeric(data[col], errors="coerce")
                 data[col].fillna(data[col].median(), inplace=True)
+
 
         return data
     def encode_data(data):
