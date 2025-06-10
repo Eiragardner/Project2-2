@@ -38,6 +38,12 @@ We evaluate and compare the following ML models:
 * **Random Forest**
 * **XGBoost**
 * **Stacked Model**
+* **mixed model**
 
 
 We also apply SHAP (SHapley Additive exPlanations) to interpret feature importance.
+
+
+To ru nthe mixed model type for example: 
+python -m models.phase3.baseline_model "California Dataset.csv"
+from the root folder
