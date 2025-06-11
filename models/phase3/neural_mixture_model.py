@@ -7,14 +7,110 @@ from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 from sklearn.linear_model import Ridge, ElasticNet
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from sklearn.preprocessing import StandardScaler
 import torch
 import lightgbm as lgb
 import xgboost as xgb
 
 sys.path.append(str(Path(__file__).parent / 'gates'))
-from neural_gate_fixed_proper import FixedNeuralGateTrainer
+try:
+    from neural_gate_fixed_proper import FixedNeuralGateTrainer
+except ImportError:
+    print("Warning: FixedNeuralGateTrainer not found. Using dummy implementation.")
+    class FixedNeuralGateTrainer:
+        def __init__(self, *args, **kwargs):
+            pass
+        def train(self, *args, **kwargs):
+            return 0.0
+        def predict(self, X):
+            return np.zeros(len(X))
+        def analyze_weights(self, X):
+            return {}
+
+# Try to import evaluation modules
+try:
+    sys.path.append(str(Path(__file__).resolve().parent))
+    from evaluation.evaluator import ModelEvaluator
+except ImportError:
+    ModelEvaluator = None
+    
+try:
+    from core.logger import MoELogger
+except ImportError:
+    MoELogger = None
+
+
+class SimpleLogger:
+    """Simple logger implementation if MoELogger is not available"""
+    def info(self, message):
+        print(message)
+    
+    def warning(self, message):
+        print(f"WARNING: {message}")
+    
+    def error(self, message):
+        print(f"ERROR: {message}")
+
+
+class FallbackEvaluator:
+    """Fallback evaluator if ModelEvaluator is not available"""
+    def evaluate(self, y_true, y_pred):
+        r2 = r2_score(y_true, y_pred)
+        rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+        mae = mean_absolute_error(y_true, y_pred)
+        
+        # Calculate additional metrics
+        errors = np.abs(y_true - y_pred)
+        percentage_errors = (errors / np.abs(y_true)) * 100
+        mape = np.mean(percentage_errors)
+        median_ape = np.median(percentage_errors)
+        
+        # Calculate accuracy brackets
+        within_5_percent = np.mean(percentage_errors <= 5) * 100
+        within_10_percent = np.mean(percentage_errors <= 10) * 100
+        within_15_percent = np.mean(percentage_errors <= 15) * 100
+        
+        # Calculate bias (MPE)
+        signed_errors = ((y_pred - y_true) / np.abs(y_true)) * 100
+        mpe = np.mean(signed_errors)
+        
+        # Calculate other metrics
+        max_error = np.max(errors)
+        error_95th_percentile = np.percentile(errors, 95)
+        
+        overall_metrics = {
+            'r2': r2,
+            'rmse': rmse,
+            'mae': mae,
+            'mape': mape,
+            'median_ape': median_ape,
+            'within_5_percent': within_5_percent,
+            'within_10_percent': within_10_percent,
+            'within_15_percent': within_15_percent,
+            'mpe': mpe,
+            'max_error': max_error,
+            'error_95th_percentile': error_95th_percentile
+        }
+        
+        return {
+            'overall': overall_metrics
+        }
+
+
+def get_evaluator():
+    """Get evaluator with proper logger"""
+    if ModelEvaluator is not None:
+        try:
+            if MoELogger is not None:
+                logger = MoELogger()
+            else:
+                logger = SimpleLogger()
+            return ModelEvaluator(logger)
+        except:
+            pass
+    
+    return FallbackEvaluator()
 
 
 class CaliforniaProcessor:
@@ -48,6 +144,7 @@ class ExpertPool:
     
     def create_experts(self, X_train, y_train, X_val, y_val):
         print("Creating expert pool...")
+        evaluator = get_evaluator()
         
         experts = []
         expert_names = []
@@ -69,30 +166,34 @@ class ExpertPool:
         
         for name, creator_func, param in expert_configs:
             try:
+                print(f"\nTraining {name}...")
                 expert = creator_func(X_train, y_train, param)
                 
                 val_pred = expert.predict(X_val)
-                val_r2 = r2_score(y_val, val_pred)
-                val_rmse = np.sqrt(mean_squared_error(y_val, val_pred))
+                val_metrics = evaluator.evaluate(y_val, val_pred)
                 
                 experts.append(expert)
                 expert_names.append(name)
-                expert_performances.append(max(val_r2, 0.01))
+                expert_performances.append(max(val_metrics['overall']['r2'], 0.01))
                 
-                print(f"{name}: R² = {val_r2:.4f}, RMSE = ${val_rmse:,.0f}")
+                # Quick summary for expert selection
+                overall = val_metrics['overall']
+                print(f"{name}: R²={overall['r2']:.4f}, RMSE=${overall['rmse']:,.0f}, "
+                      f"MAPE={overall['mape']:.1f}%, Within 10%={overall.get('within_10_percent', 0):.1f}%")
                 
             except Exception as e:
                 print(f"{name}: Failed ({e}), using Ridge fallback")
                 expert = Ridge(alpha=10.0, random_state=self.random_state)
                 expert.fit(X_train, y_train)
                 val_pred = expert.predict(X_val)
-                val_r2 = r2_score(y_val, val_pred)
+                val_metrics = evaluator.evaluate(y_val, val_pred)
                 
                 experts.append(expert)
                 expert_names.append(f"{name}_Fallback")
-                expert_performances.append(max(val_r2, 0.01))
+                expert_performances.append(max(val_metrics['overall']['r2'], 0.01))
                 
-                print(f"{name}_Fallback: R² = {val_r2:.4f}")
+                overall = val_metrics['overall']
+                print(f"{name}_Fallback: R²={overall['r2']:.4f}, RMSE=${overall['rmse']:,.0f}")
         
         performance_indices = np.argsort(expert_performances)[::-1]
         top_k = min(6, len(experts))
@@ -103,7 +204,7 @@ class ExpertPool:
         
         print(f"\nSelected top {top_k} experts:")
         for i, (name, perf) in enumerate(zip(final_names, final_performances)):
-            print(f"{i}: {name} (R² = {perf:.4f})")
+            print(f"{i+1}: {name} (R² = {perf:.4f})")
         
         return final_experts, final_names, final_performances
     
@@ -223,12 +324,16 @@ class NeuralMixtureModel:
             X_train, y_train, X_val, y_val
         )
         
+        # Calculate ensemble baseline
         ensemble_pred = self._predict_ensemble(X_test)
-        ensemble_r2 = r2_score(y_test, ensemble_pred)
-        ensemble_rmse = np.sqrt(mean_squared_error(y_test, ensemble_pred))
+        evaluator = get_evaluator()
         
-        print(f"\nWeighted Ensemble: R² = {ensemble_r2:.4f}, RMSE = ${ensemble_rmse:,.0f}")
+        print("\n" + "="*60)
+        print("BASELINE PERFORMANCE (Weighted Ensemble):")
+        ensemble_metrics = evaluator.evaluate(y_test, ensemble_pred)
+        self._print_metrics(ensemble_metrics['overall'], "Weighted Ensemble")
         
+        # Train neural gate
         print("\nTraining neural gate...")
         self.gate_trainer = FixedNeuralGateTrainer(
             n_features=X.shape[1],
@@ -241,29 +346,245 @@ class NeuralMixtureModel:
             epochs=300, lr=1e-3
         )
         
+        # Calculate neural mixture performance
         neural_pred = self.gate_trainer.predict(X_test)
-        neural_r2 = r2_score(y_test, neural_pred)
-        neural_rmse = np.sqrt(mean_squared_error(y_test, neural_pred))
         
-        print("\nFINAL RESULTS:")
-        print(f"Weighted Ensemble: R² = {ensemble_r2:.4f}, RMSE = ${ensemble_rmse:,.0f}")
-        print(f"Neural Mixture:    R² = {neural_r2:.4f}, RMSE = ${neural_rmse:,.0f}")
+        print("\n" + "="*60)
+        print("NEURAL MIXTURE PERFORMANCE:")
+        neural_metrics = evaluator.evaluate(y_test, neural_pred)
+        self._print_metrics(neural_metrics['overall'], "Neural Mixture")
         
-        improvement = neural_r2 - ensemble_r2
-        print(f"Improvement: {improvement:+.4f} R² points")
+        # Calculate improvements
+        improvements = self._calculate_improvements_comprehensive(
+            ensemble_metrics['overall'], neural_metrics['overall']
+        )
         
-        if improvement > 0:
-            print("Neural gate outperforms weighted ensemble")
+        print("\n" + "="*60)
+        print("PERFORMANCE COMPARISON & IMPROVEMENTS:")
+        self._print_comprehensive_comparison(
+            ensemble_metrics['overall'], 
+            neural_metrics['overall'], 
+            improvements
+        )
         
-        weight_analysis = self.gate_trainer.analyze_weights(X_test[:1000])
+        # Expected improvement analysis
+        print("\n" + "="*60)
+        print("EXPECTED IMPROVEMENT ANALYSIS:")
+        self._analyze_expected_improvement_comprehensive(improvements, neural_metrics['overall'])
+        
+        # Weight analysis
+        try:
+            weight_analysis = self.gate_trainer.analyze_weights(X_test[:1000])
+        except:
+            weight_analysis = {}
+        
+        # Print chosen models summary
+        print("\n" + "="*60)
+        print("CHOSEN EXPERT MODELS:")
+        for i, (name, expert, perf) in enumerate(zip(self.expert_names, self.experts, self.expert_performances)):
+            model_type = type(expert).__name__
+            if hasattr(expert, 'model'):
+                model_type = type(expert.model).__name__
+            print(f"{i+1}. {name}")
+            print(f"   Type: {model_type}")
+            print(f"   Validation R²: {perf:.4f}")
+            if hasattr(expert, 'n_estimators'):
+                print(f"   Trees: {expert.n_estimators}")
+            elif hasattr(expert, 'model') and hasattr(expert.model, 'n_estimators'):
+                print(f"   Trees: {expert.model.n_estimators}")
+            print()
         
         return {
-            'ensemble_r2': ensemble_r2,
-            'neural_r2': neural_r2,
-            'ensemble_rmse': ensemble_rmse,
-            'neural_rmse': neural_rmse,
-            'improvement': improvement
+            'ensemble_metrics': ensemble_metrics,
+            'neural_metrics': neural_metrics,
+            'improvements': improvements,
+            'weight_analysis': weight_analysis,
+            'expert_names': self.expert_names,
+            'expert_performances': self.expert_performances
         }
+    
+    def _print_metrics(self, metrics, model_name):
+        """Print formatted metrics"""
+        print(f"{model_name} Results:")
+        print(f"  R² = {metrics['r2']:.4f}")
+        print(f"  RMSE = ${metrics['rmse']:,.0f}")
+        print(f"  MAE = ${metrics['mae']:,.0f}")
+        print(f"  MAPE = {metrics['mape']:.1f}%")
+        print(f"  Within 5% = {metrics.get('within_5_percent', 0):.1f}%")
+        print(f"  Within 10% = {metrics.get('within_10_percent', 0):.1f}%")
+        print(f"  Within 15% = {metrics.get('within_15_percent', 0):.1f}%")
+        if 'mpe' in metrics:
+            bias_direction = 'over' if metrics['mpe'] > 0 else 'under'
+            print(f"  MPE (Bias) = {metrics['mpe']:+.1f}% ({bias_direction}prediction)")
+    
+    def _calculate_improvements_comprehensive(self, baseline_metrics, neural_metrics):
+        """Calculate comprehensive improvement metrics using evaluator results"""
+        improvements = {}
+        
+        # Absolute improvements
+        improvements['r2_improvement'] = neural_metrics['r2'] - baseline_metrics['r2']
+        improvements['rmse_improvement'] = baseline_metrics['rmse'] - neural_metrics['rmse']
+        improvements['mae_improvement'] = baseline_metrics['mae'] - neural_metrics['mae']
+        improvements['mape_improvement'] = baseline_metrics['mape'] - neural_metrics['mape']
+        improvements['mpe_improvement'] = baseline_metrics.get('mpe', 0) - neural_metrics.get('mpe', 0)
+        
+        # Percentage improvements
+        improvements['rmse_pct_improvement'] = (improvements['rmse_improvement'] / baseline_metrics['rmse']) * 100
+        improvements['mae_pct_improvement'] = (improvements['mae_improvement'] / baseline_metrics['mae']) * 100
+        improvements['mape_pct_improvement'] = (improvements['mape_improvement'] / baseline_metrics['mape']) * 100
+        
+        # Accuracy bracket improvements
+        for bracket in ['within_5_percent', 'within_10_percent', 'within_15_percent']:
+            baseline_val = baseline_metrics.get(bracket, 0)
+            neural_val = neural_metrics.get(bracket, 0)
+            improvements[f'{bracket}_improvement'] = neural_val - baseline_val
+        
+        # Bias improvements
+        improvements['bias_improvement'] = abs(baseline_metrics.get('mpe', 0)) - abs(neural_metrics.get('mpe', 0))
+        
+        return improvements
+    
+    def _print_comprehensive_comparison(self, baseline_metrics, neural_metrics, improvements):
+        """Print comprehensive comparison using evaluator metrics"""
+        print("WEIGHTED ENSEMBLE vs NEURAL MIXTURE:")
+        print()
+        
+        # Core metrics comparison
+        print("Core Metrics:")
+        print(f"                    Ensemble    Neural      Improvement")
+        print(f"  R²              {baseline_metrics['r2']:8.4f}  {neural_metrics['r2']:8.4f}  {improvements['r2_improvement']:+8.4f}")
+        print(f"  RMSE           ${baseline_metrics['rmse']:8,.0f} ${neural_metrics['rmse']:8,.0f} ${improvements['rmse_improvement']:+8,.0f} ({improvements['rmse_pct_improvement']:+.1f}%)")
+        print(f"  MAE            ${baseline_metrics['mae']:8,.0f} ${neural_metrics['mae']:8,.0f} ${improvements['mae_improvement']:+8,.0f} ({improvements['mae_pct_improvement']:+.1f}%)")
+        print(f"  MAPE           {baseline_metrics['mape']:8.1f}% {neural_metrics['mape']:8.1f}% {improvements['mape_improvement']:+8.1f}% ({improvements['mape_pct_improvement']:+.1f}%)")
+        
+        # Bias analysis
+        baseline_mpe = baseline_metrics.get('mpe', 0)
+        neural_mpe = neural_metrics.get('mpe', 0)
+        print(f"  MPE (Bias)     {baseline_mpe:+8.1f}% {neural_mpe:+8.1f}% {improvements['mpe_improvement']:+8.1f}%")
+        
+        # Accuracy brackets
+        print()
+        print("Accuracy Brackets:")
+        for bracket, label in [('within_5_percent', 'Within 5%'), ('within_10_percent', 'Within 10%'), ('within_15_percent', 'Within 15%')]:
+            baseline_val = baseline_metrics.get(bracket, 0)
+            neural_val = neural_metrics.get(bracket, 0)
+            improvement = improvements.get(f'{bracket}_improvement', 0)
+            print(f"  {label:12} {baseline_val:8.1f}% {neural_val:8.1f}% {improvement:+8.1f}%")
+        
+        # Additional insights
+        print()
+        print("Additional Metrics:")
+        print(f"  Median APE     {baseline_metrics.get('median_ape', 0):8.1f}% {neural_metrics.get('median_ape', 0):8.1f}%")
+        print(f"  Max Error     ${baseline_metrics.get('max_error', 0):8,.0f} ${neural_metrics.get('max_error', 0):8,.0f}")
+        print(f"  95th Pct Err  ${baseline_metrics.get('error_95th_percentile', 0):8,.0f} ${neural_metrics.get('error_95th_percentile', 0):8,.0f}")
+    
+    def _analyze_expected_improvement_comprehensive(self, improvements, neural_metrics):
+        """Comprehensive expected improvement analysis"""
+        r2_improvement = improvements['r2_improvement']
+        rmse_pct_improvement = improvements['rmse_pct_improvement']
+        mae_pct_improvement = improvements['mae_pct_improvement']
+        within_10_improvement = improvements.get('within_10_percent_improvement', 0)
+        bias_improvement = improvements.get('bias_improvement', 0)
+        
+        print("Neural Gate vs Weighted Ensemble Analysis:")
+        print()
+        
+        # R² improvement analysis
+        if r2_improvement >= 0.05:
+            r2_status = "EXCELLENT"
+        elif r2_improvement >= 0.02:
+            r2_status = "GOOD"
+        elif r2_improvement >= 0.01:
+            r2_status = "MODERATE"
+        elif r2_improvement > 0:
+            r2_status = "MINIMAL"
+        else:
+            r2_status = "NO IMPROVEMENT"
+        
+        print(f"R² Improvement: {r2_status} ({r2_improvement:+.4f})")
+        
+        # Error reduction analysis
+        avg_error_reduction = (rmse_pct_improvement + mae_pct_improvement) / 2
+        
+        if avg_error_reduction >= 5.0:
+            error_status = "SIGNIFICANT"
+        elif avg_error_reduction >= 2.0:
+            error_status = "MODERATE"
+        elif avg_error_reduction >= 1.0:
+            error_status = "SMALL"
+        elif avg_error_reduction > 0:
+            error_status = "MINIMAL"
+        else:
+            error_status = "NO REDUCTION"
+        
+        print(f"Error Reduction: {error_status} ({avg_error_reduction:+.2f}% average)")
+        
+        # Accuracy improvement
+        if within_10_improvement >= 5.0:
+            accuracy_status = "SIGNIFICANT"
+        elif within_10_improvement >= 2.0:
+            accuracy_status = "MODERATE"
+        elif within_10_improvement >= 1.0:
+            accuracy_status = "SMALL"
+        elif within_10_improvement > 0:
+            accuracy_status = "MINIMAL"
+        else:
+            accuracy_status = "NO IMPROVEMENT"
+        
+        print(f"Accuracy Improvement (10% bracket): {accuracy_status} ({within_10_improvement:+.1f}%)")
+        
+        # Overall assessment
+        print()
+        print("EXPECTED IMPROVEMENT OVER WEIGHTED ENSEMBLE:")
+        
+        # Multi-dimensional assessment
+        improvement_score = 0
+        if r2_improvement >= 0.02: improvement_score += 3
+        elif r2_improvement >= 0.01: improvement_score += 2
+        elif r2_improvement > 0: improvement_score += 1
+        
+        if avg_error_reduction >= 2.0: improvement_score += 2
+        elif avg_error_reduction >= 1.0: improvement_score += 1
+        
+        if within_10_improvement >= 2.0: improvement_score += 2
+        elif within_10_improvement >= 1.0: improvement_score += 1
+        
+        if bias_improvement >= 1.0: improvement_score += 1
+        
+        if improvement_score >= 6:
+            assessment = "SUBSTANTIAL - Neural gate provides significant multi-dimensional improvement"
+        elif improvement_score >= 4:
+            assessment = "MODERATE - Neural gate provides meaningful improvement across multiple metrics"
+        elif improvement_score >= 2:
+            assessment = "MARGINAL - Neural gate provides some improvement in key areas"
+        else:
+            assessment = "MINIMAL - Weighted ensemble remains competitive"
+        
+        print(f"{assessment}")
+        print(f"Improvement Score: {improvement_score}/8")
+        
+        # Performance tier
+        if neural_metrics['r2'] >= 0.90:
+            tier = "EXCELLENT (R² ≥ 0.90)"
+        elif neural_metrics['r2'] >= 0.85:
+            tier = "VERY GOOD (R² ≥ 0.85)"
+        elif neural_metrics['r2'] >= 0.80:
+            tier = "GOOD (R² ≥ 0.80)"
+        elif neural_metrics['r2'] >= 0.75:
+            tier = "ACCEPTABLE (R² ≥ 0.75)"
+        else:
+            tier = "NEEDS IMPROVEMENT (R² < 0.75)"
+        
+        print(f"Overall Performance Tier: {tier}")
+        
+        # Key insights
+        within_10_pct = neural_metrics.get('within_10_percent', 0)
+        if within_10_pct >= 80:
+            print(f"✓ High Accuracy: {within_10_pct:.1f}% of predictions within 10%")
+        elif within_10_pct >= 60:
+            print(f"• Moderate Accuracy: {within_10_pct:.1f}% of predictions within 10%")
+        else:
+            print(f"⚠ Low Accuracy: {within_10_pct:.1f}% of predictions within 10%")
     
     def _create_strata(self, y, n_bins=10):
         return pd.qcut(y, q=n_bins, labels=False, duplicates='drop')
@@ -333,21 +654,27 @@ def main():
         model = NeuralMixtureModel()
         results = model.train(data_file)
         
-        print("\nTraining Complete!")
+        print("\n" + "="*60)
+        print("TRAINING COMPLETE!")
+        print("="*60)
         
-        improvement = results['improvement']
-        neural_r2 = results['neural_r2']
+        neural_metrics = results['neural_metrics']['overall']
+        improvements = results['improvements']
         
-        print(f"\nPerformance Summary:")
-        print(f"Neural R²: {neural_r2:.4f}")
-        print(f"Improvement: {improvement:+.4f} R² points")
+        print(f"Final Neural Mixture Performance:")
+        print(f"  R² = {neural_metrics['r2']:.4f}")
+        print(f"  RMSE = ${neural_metrics['rmse']:,.0f}")
+        print(f"  MAE = ${neural_metrics['mae']:,.0f}")
+        print(f"  MAPE = {neural_metrics['mape']:.1f}%")
         
-        if neural_r2 >= 0.85:
-            print("Performance: Good")
-        elif neural_r2 >= 0.75:
-            print("Performance: Acceptable")
-        else:
-            print("Performance: Needs improvement")
+        print(f"\nKey Improvements over Weighted Ensemble:")
+        print(f"  R² gained: {improvements['r2_improvement']:+.4f} points")
+        print(f"  RMSE reduced: ${improvements['rmse_improvement']:+,.0f} ({improvements['rmse_pct_improvement']:+.2f}%)")
+        print(f"  MAE reduced: ${improvements['mae_improvement']:+,.0f} ({improvements['mae_pct_improvement']:+.2f}%)")
+        
+        print(f"\nFinal Expert Selection:")
+        for i, name in enumerate(results['expert_names']):
+            print(f"  {i+1}. {name} (R² = {results['expert_performances'][i]:.4f})")
         
     except Exception as e:
         print(f"Error: {e}")
